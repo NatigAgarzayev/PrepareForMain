@@ -1,0 +1,132 @@
+.login {
+
+    &__content {
+        padding-top: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 50px;
+    }
+
+    &__form {
+        width: 440px;
+        h2{
+            font-weight: 800;
+            font-size: 48px;
+            line-height: 56px;
+            color: #563939;
+        }
+        small{
+            font-weight: 400;
+            font-size: 24px;
+            line-height: 28px;
+            color: #563939;
+        }
+    }
+
+    &__input {
+        margin-top: 30px;
+        width: 440px;
+        padding: 20px 50px;
+        border: 0;
+        outline: 0;
+        background: #E3E3E3;
+        border-radius: 7.6793px;
+        font-weight: 400;
+        font-size: 20.4781px;
+        line-height: 24px;
+        &::placeholder{
+            font-weight: 400;
+            font-size: 20.4781px;
+            line-height: 24px;
+            color: #969696;
+        }
+    }
+
+    &__offer {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        p{
+            line-height: 21px;
+            color: #563939;
+        }
+        a{
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 23px;
+            color: #4E9BB9;
+        }
+    }
+
+    &__offer-item {
+    }
+
+    &__btn {
+        margin-top: 60px;
+        margin-left: 80px;
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 28px;
+        color: #FFFFFF;
+        background: #4E9BB9;
+        border-radius: 10px;
+        padding: 17px 93px;
+        border: 0;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        &:hover{
+            background: #095775;
+        }
+    }
+
+    &__image {
+        img{
+            max-width: 100%;
+            height: auto;
+        }
+    }
+}
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    &__content {
+        h2{
+            font-weight: 700;
+            font-size: 68px;
+            line-height: 80px;
+            color: #000000;
+        }
+        small{
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 21px;
+            color: #563939;
+        }
+    }
+}
+.nav {
+
+    &__btn {
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 28px;
+        background: #6FC7E9;
+        border-radius: 100px;
+        padding: 17px 81px;
+        color: white;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        &:hover{
+            background: #3ab7e9;
+        }
+    }
+}
