@@ -94,6 +94,3 @@ export const getMe = async(req, res) => {
         res.json({message: "Error getting user data!"})
     }
 }
-
-//Login
-//Me
