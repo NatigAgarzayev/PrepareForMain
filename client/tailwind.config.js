@@ -5,10 +5,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      flex: {
-        '0': '0 0 40px',
-        '1': '0 0 150px',
-      }
     },
   },
   plugins: [],

@@ -92,7 +92,6 @@ export const authSlice = createSlice({
     [getMe.pending]: (state) => {
         state.isLoading = true
         state.status = null
-        
     },
     [getMe.fulfilled]: (state, action) => {
         state.isLoading = false
@@ -107,8 +106,8 @@ export const authSlice = createSlice({
   }
 })
 
-export const {logout} = authSlice.actions
-
 export const checkIsAuth = (state) => Boolean(state.auth.token)
+
+export const {logout} = authSlice.actions
 
 export default authSlice.reducer

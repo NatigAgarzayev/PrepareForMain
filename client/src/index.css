@@ -2,20 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-@tailwind base{
-  *{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 400;
-  }
-  
-  a{
-    text-decoration: none;
-  }
-  
-  li{
-    list-style: none;
-  }
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+}
+
+a{
+  text-decoration: none;
+}
+
+li{
+  list-style: none;
 }

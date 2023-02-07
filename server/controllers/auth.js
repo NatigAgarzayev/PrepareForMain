@@ -24,7 +24,7 @@ export const register = async(req, res) => {
                 id: newUser._id
             }, 
             process.env.JWT_SECRET,
-            {expiresIn: '24h'}
+            {expiresIn: '30d'}
         )
 
         await newUser.save()
@@ -57,7 +57,7 @@ export const login = async(req, res) => {
                 id: user._id
             }, 
             process.env.JWT_SECRET,
-            {expiresIn: '24h'}
+            {expiresIn: '30d'}
         )
 
         res.json({
