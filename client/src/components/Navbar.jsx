@@ -14,7 +14,6 @@ function Navbar() {
         e.target.parentElement.nextElementSibling.classList.toggle('hidden')
     }
 
-
     const logoutHandle = () => {
         dispatch(logout())
         window.localStorage.removeItem('token')
@@ -25,10 +24,12 @@ function Navbar() {
         <div className='py-3 shadow-md'>
             <div className="container mx-auto px-2">
                 <div className='flex items-center justify-between gap-5'>
-                    <div className="md:flex items-center gap-2 ">
-                        <img src={logo} alt="Connect" />
-                        <h2 className='hidden md:block text-2xl font-bold'>connect</h2>
-                    </div>
+                    <Link to="/">
+                        <div className="md:flex items-center gap-2">
+                            <img src={logo} alt="Connect" />
+                            <h2 className='hidden md:block text-2xl font-bold'>connect</h2>
+                        </div>
+                    </Link>
                     {
                         isAuth
                             ? (

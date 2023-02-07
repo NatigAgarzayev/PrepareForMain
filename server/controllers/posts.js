@@ -46,3 +46,9 @@ export const createPost = async (req, res) => {
         res.json({message: "Something go wrong!"})
     }
 }
+
+//Get all posts
+export const getPosts = async (req, res) => {
+    const posts = await Post.find()
+    res.json(posts)
+}

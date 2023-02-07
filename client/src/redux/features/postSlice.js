@@ -15,6 +15,14 @@ export const createPost = createAsyncThunk('post/createPost', async (params) => 
         console.log(error)
     }
 })
+export const getPosts = createAsyncThunk('post/getPosts', async () => {
+    try {
+        const {data} = await axios.get('/posts')
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+})
 
 export const postSlice = createSlice({
     name: 'post',
@@ -32,7 +40,17 @@ export const postSlice = createSlice({
         },
         [createPost.rejected]: (state) => {
             state.loading = false
-        }
+        },
+        [getPosts.pending]: (state) => {
+            state.loading = true
+        },
+        [getPosts.fulfilled]: (state, action) => {
+            state.loading = false
+            state.posts = action.payload
+        },
+        [getPosts.rejected]: (state) => {
+            state.loading = false
+        },
     }
 })
 
