@@ -21,7 +21,6 @@ export const createPost = async (req, res) => {
                 imageUrl: fileName,
                 author: req.userId
             })
-
             await newPostWithImage.save()
             await User.findOneAndUpdate(req.userId, {
                 $push: {posts: newPostWithImage}
