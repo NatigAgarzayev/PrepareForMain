@@ -3,15 +3,19 @@ import mongoose from "mongoose"
 import dotenv from 'dotenv'
 import cors from 'cors'
 import authRoute from './routes/auth.js'
+import postRoute from './routes/posts.js'
+import fileUpload from "express-fileupload"
 const app = express()
 dotenv.config()
 
 //Midllerware
 app.use(cors())
+app.use(fileUpload())
 app.use(express.json())
-
+app.use(express.static('uploads'))
 //Routes
 app.use('/api/auth', authRoute)
+app.use('/api/posts', postRoute)
 
 const start = async () => {
     try {

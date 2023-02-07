@@ -17,5 +17,4 @@ router.post('/login', login)
 //http://localhost:4444/api/auth/me
 router.get('/me', checkAuth, getMe)
 
-
 export default router
