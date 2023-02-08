@@ -17,3 +17,45 @@ a{
 li{
   list-style: none;
 }
+
+/* Works on Firefox */
+* {
+  scrollbar-width: thin;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba(128, 128, 128, 0.295);
+  border-radius: 50px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(128, 128, 128, 0.753);
+  border-radius: 50px;
+}
+
+.calc__height{
+  overflow: hidden;
+  height: calc(100vh - 78px);
+}
+
+.menu__dropdown{
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.1s ease;
+}
+
+.menu__btn{
+}
+.menu__btn button{
+  background-color: transparent;
+}
+
+.menu__btn:hover .menu__dropdown{
+  opacity: 1;
+  visibility: visible;
+}
