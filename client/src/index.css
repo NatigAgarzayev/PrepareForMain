@@ -59,3 +59,7 @@ li{
   opacity: 1;
   visibility: visible;
 }
+
+.shad{
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255,255,255,1) 100%) !important;
+}

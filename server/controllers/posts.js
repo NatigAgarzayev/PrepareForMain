@@ -2,6 +2,7 @@ import Post from '../models/Post.js'
 import User from '../models/User.js'
 import path, {dirname} from 'path'
 import { fileURLToPath } from 'url'
+import { json } from 'express'
 
 //Create post
 export const createPost = async (req, res) => {
@@ -23,7 +24,7 @@ export const createPost = async (req, res) => {
             })
 
             await newPostWithImage.save()
-            await User.findOneAndUpdate(req.userId, {
+            await User.findByIdAndUpdate(req.userId, {
                 $push: {posts: newPostWithImage}
             })
 
@@ -34,15 +35,35 @@ export const createPost = async (req, res) => {
             username: user.username,
             title,
             text,
-            imageUrl,
+            imageUrl: '',
             author: req.userId,
         })
         await newPostWithoutImage.save()
-        await User.findOneAndUpdate(req.userId, {
+        await User.findByIdAndUpdate(req.userId, {
             $push: {posts: newPostWithoutImage}
         })
 
         res.json(newPostWithoutImage)
+    } catch (error) {
+        res.json({message: "Something go wrong!"})
+    }
+}
+
+//Get All
+export const getAll = async (req, res) => {
+    try {
+        const posts = await Post.find().sort('-createdAt')
+        const popularPosts = await Post.find().limit(5).sort('-views')
+
+        if(!posts){
+            return res.json({message: "There are no questions!"})
+        }
+
+        res.json({
+            posts,
+            popularPosts
+        })
+
     } catch (error) {
         res.json({message: "Something go wrong!"})
     }

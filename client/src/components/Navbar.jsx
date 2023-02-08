@@ -10,10 +10,6 @@ function Navbar() {
     const dispatch = useDispatch()
     const isAuth = useSelector(checkIsAuth)
     const userInfo = (useSelector((state) => state.auth.user) || { username: 'User', createdAt: '2023' })
-    // const handleDropdown = (e) => {
-    //     e.target.parentElement.nextElementSibling.classList.toggle('hidden')
-    // }
-
 
     const logoutHandle = () => {
         dispatch(logout())
