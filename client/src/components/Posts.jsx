@@ -5,14 +5,20 @@ import logo from '../images/logo-auth.svg'
 import arr_up from '../images/arr_up.svg'
 import arr_down from '../images/arr_down.svg'
 import Moment from 'react-moment'
+import { useNavigate } from 'react-router-dom'
 
 function Posts({ posts }) {
+    const navigate = useNavigate()
+    const handlePostById = (id) => {
+        navigate(`/${id}`)
+    }
+
     return (
         <div>
             {
                 posts.length > 0
                     ? posts.map(item => (
-                        <div key={item._id} className="relative mb-10 shadow-lg p-[30px] flex gap-4 cursor-pointer">
+                        <div onClick={() => handlePostById(item._id)} key={item._id} className="relative mb-10 shadow-lg p-[30px] flex gap-4 cursor-pointer">
                             <div className="absolute right-5 top-5">
                                 <img className='w-10 h-10 rounded-full' src={logo} alt="" />
                             </div>
