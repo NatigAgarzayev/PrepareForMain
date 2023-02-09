@@ -1,7 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import logo from '../images/logo-main.svg'
-import notification from '../images/notification.svg'
 import { checkIsAuth, logout } from '../redux/features/authSlice'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -21,10 +20,10 @@ function Navbar() {
         <div className='py-3 shadow-md z-10 relative'>
             <div className="container mx-auto px-2">
                 <div className='flex items-center justify-between gap-5'>
-                    <div className="md:flex items-center gap-2 ">
+                    <Link to='/' className="md:flex items-center gap-2 ">
                         <img src={logo} alt="Connect" />
                         <h2 className='hidden md:block text-2xl font-bold'>connect</h2>
-                    </div>
+                    </Link>
                     {
                         isAuth
                             ? (
@@ -40,8 +39,13 @@ function Navbar() {
                                         </div>
                                     </div>
                                     <div className='flex gap-10 items-center'>
-                                        <div className='hover:bg-gray-200/80 cursor-pointer rounded-full w-[40px] h-[40px] flex items-center justify-center'>
-                                            <img className='relative z-10' src={notification} alt="" />
+                                        <div className='relative hover:bg-gray-200/80 cursor-pointer rounded-full w-[40px] h-[40px] flex items-center justify-center'>
+                                            <svg width="22" height="30" viewBox="0 0 22 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M16 15C16 13.4087 15.3679 11.8826 14.2426 10.7574C13.1174 9.63214 11.5913 9 10 9C8.4087 9 6.88258 9.63214 5.75736 10.7574C4.63214 11.8826 4 13.4087 4 15C4 22 1 24 1 24H19C19 24 16 22 16 15Z" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                <path d="M11.73 28C11.5542 28.3031 11.3019 28.5547 10.9982 28.7295C10.6946 28.9044 10.3504 28.9965 10 28.9965C9.64964 28.9965 9.30541 28.9044 9.00179 28.7295C8.69818 28.5547 8.44583 28.3031 8.27002 28" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                <circle className="" cx="14.5" cy="7.5" r="6.5" fill="#4E9BB9" stroke="white" stroke-width="2" />
+                                            </svg>
+                                            <span class="absolute animate-ping inline-flex rounded-full top-[7.2px] right-[11.5px] h-[10px] w-[10px] bg-sky-500"></span>
                                         </div>
                                         <div className="menu__btn md:order-2 relative">
                                             <button type="button" className=" w-10 h-10 flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">

@@ -6,6 +6,7 @@ import arr_up from '../images/arr_up.svg'
 import arr_down from '../images/arr_down.svg'
 import Moment from 'react-moment'
 import { useNavigate } from 'react-router-dom'
+import nofound from '../images/404.gif'
 
 function Posts({ posts }) {
     const navigate = useNavigate()
@@ -16,9 +17,61 @@ function Posts({ posts }) {
     return (
         <div>
             {
-                posts.length > 0
+                posts.length === 0 &&
+                (
+                    <div>
+                        <div class="shadow rounded-md max-w-sm min-w-full h-[270px] p-[30px] mx-auto mb-10">
+                            <div class="animate-pulse flex space-x-4">
+                                <div class="flex-1 space-y-6 py-1">
+                                    <div class="h-6 bg-slate-200 rounded"></div>
+                                    <div class="space-y-10">
+                                        <div class="grid grid-cols-3 gap-4">
+                                            <div class="h-6 bg-slate-200 rounded col-span-2"></div>
+                                        </div>
+                                        <div class="h-6 bg-slate-200 rounded col-span-1"></div>
+                                        <div class="h-6 bg-slate-200 rounded"></div>
+                                    </div>
+                                </div>
+                                <div class="rounded-full bg-slate-200 h-10 w-10"></div>
+                            </div>
+                        </div>
+                        <div class="shadow rounded-md max-w-sm min-w-full h-[270px] p-[30px] mx-auto mb-10">
+                            <div class="animate-pulse flex space-x-4">
+                                <div class="flex-1 space-y-6 py-1">
+                                    <div class="h-6 bg-slate-200 rounded"></div>
+                                    <div class="space-y-10">
+                                        <div class="grid grid-cols-3 gap-4">
+                                            <div class="h-6 bg-slate-200 rounded col-span-2"></div>
+                                        </div>
+                                        <div class="h-6 bg-slate-200 rounded col-span-1"></div>
+                                        <div class="h-6 bg-slate-200 rounded"></div>
+                                    </div>
+                                </div>
+                                <div class="rounded-full bg-slate-200 h-10 w-10"></div>
+                            </div>
+                        </div>
+                        <div class="shadow rounded-md max-w-sm min-w-full h-[270px] p-[30px] mx-auto mb-10">
+                            <div class="animate-pulse flex space-x-4">
+                                <div class="flex-1 space-y-6 py-1">
+                                    <div class="h-6 bg-slate-200 rounded"></div>
+                                    <div class="space-y-10">
+                                        <div class="grid grid-cols-3 gap-4">
+                                            <div class="h-6 bg-slate-200 rounded col-span-2"></div>
+                                        </div>
+                                        <div class="h-6 bg-slate-200 rounded col-span-1"></div>
+                                        <div class="h-6 bg-slate-200 rounded"></div>
+                                    </div>
+                                </div>
+                                <div class="rounded-full bg-slate-200 h-10 w-10"></div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+            {
+                posts
                     ? posts.map(item => (
-                        <div onClick={() => handlePostById(item._id)} key={item._id} className="relative mb-10 shadow-lg p-[30px] flex gap-4 cursor-pointer">
+                        <div onClick={() => handlePostById(item._id)} key={item._id} className="animate-[fadeIn_1s_ease-in-out] relative mb-10 shadow-lg p-[30px] flex gap-4 cursor-pointer">
                             <div className="absolute right-5 top-5">
                                 <img className='w-10 h-10 rounded-full' src={logo} alt="" />
                             </div>
@@ -64,9 +117,11 @@ function Posts({ posts }) {
                         </div>
                     ))
                     :
-                    (<div className='text-2xl text-center mt-20'>Not posts</div>)
+                    (
+                        <img className='mx-auto w-90 h-80' src={nofound} alt="" />
+                    )
             }
-        </div>
+        </div >
     )
 }
 

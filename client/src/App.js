@@ -64,7 +64,7 @@ function App() {
   return (
     <>
         <RouterProvider router={router} />
-        <ToastContainer position='bottom-left'/>
+        <ToastContainer position='bottom-right'/>
     </>
   )
 }
