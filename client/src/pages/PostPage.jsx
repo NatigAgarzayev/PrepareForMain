@@ -4,11 +4,12 @@ import view from '../images/view.svg'
 import chat from '../images/chat.svg'
 import logo from '../images/logo-auth.svg'
 import Moment from 'react-moment'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import axios from '../utils/axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { removePost } from '../redux/features/postSlice'
 import { toast } from 'react-toastify'
+import { Helmet } from 'react-helmet'
 function PostPage() {
     const dispatch = useDispatch()
     const { user } = useSelector(state => state.auth)
@@ -18,7 +19,7 @@ function PostPage() {
     const [item, setItem] = useState({})
     const handleDelete = async () => {
         try {
-            dispatch(removePost(id))
+            await dispatch(removePost(id))
             toast('Question deleted!')
             navigate('/')
         } catch (error) {
@@ -34,26 +35,22 @@ function PostPage() {
     }, [fetchPosts])
     return (
         <div className='flex calc__height'>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>{item.title || 'Question'}</title>
+            </Helmet>
             <div>
                 <SidebarLeft />
             </div>
             <div className="relative flex-1">
                 {
                     isLoading && (
-                        <div class="shadow rounded-md max-w-sm min-w-full h-[270px] p-[30px] mx-auto mb-10">
-                            <div class="animate-pulse flex space-x-4">
-                                <div class="flex-1 space-y-6 py-1">
-                                    <div class="h-6 bg-slate-200 rounded"></div>
-                                    <div class="space-y-10">
-                                        <div class="grid grid-cols-3 gap-4">
-                                            <div class="h-6 bg-slate-200 rounded col-span-2"></div>
-                                        </div>
-                                        <div class="h-6 bg-slate-200 rounded col-span-1"></div>
-                                        <div class="h-6 bg-slate-200 rounded"></div>
-                                    </div>
-                                </div>
-                                <div class="rounded-full bg-slate-200 h-10 w-10"></div>
-                            </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" className='w-10 h-10 mx-auto mt-24' viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                                <circle cx="50" cy="50" fill="none" stroke="#1d3f72" strokeWidth="10" r="35" strokeDasharray="164.93361431346415 56.97787143782138">
+                                    <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+                                </circle>
+                            </svg>
                         </div>
                     )
                 }

@@ -6,6 +6,7 @@ import SidebarRight from '../components/SidebarRight'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllPosts } from '../redux/features/postSlice'
 import Posts from '../components/Posts'
+import { Helmet } from "react-helmet";
 function MainPage() {
     const dispatch = useDispatch()
     const [sorted, setSorted] = useState(false)
@@ -17,6 +18,10 @@ function MainPage() {
 
     return (
         <div className='flex gap-5 calc__height'>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>connect.com  </title>
+            </Helmet>
             <div className="">
                 <SidebarLeft />
             </div>
@@ -31,7 +36,7 @@ function MainPage() {
                         <span className='text-[18px] font-normal'>Trending</span>
                     </button>
                 </div>
-                <div className='mt-20 h-full px-2 pb-20 pt-10 overflow-y-scroll'>
+                <div className='mt-20 h-full px-2 pb-20 overflow-y-scroll'>
                     {
                         !sorted
                             ?

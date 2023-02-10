@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { createPost } from '../redux/features/postSlice'
-
+import { Helmet } from 'react-helmet'
 function AddPostPage() {
     const [title, setTitle] = useState('')
     const [text, setText] = useState('')
@@ -39,8 +39,12 @@ function AddPostPage() {
 
     return (
         <div className='py-20'>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>New question  </title>
+            </Helmet>
             <div className="container mx-auto px-5">
-                <h1 className='text-5xl font-semibold'>Add Your Post</h1>
+                <h1 className='text-5xl font-semibold'>Add New Question</h1>
                 <form className='mt-10'>
                     <div className="grid md:grid-cols-1 md:gap-6">
                         <div className="relative z-0 w-full mb-6 group">

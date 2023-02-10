@@ -21,51 +21,11 @@ function Posts({ posts }) {
                 isLoading &&
                 (
                     <div>
-                        <div class="shadow rounded-md max-w-sm min-w-full h-[270px] p-[30px] mx-auto mb-10">
-                            <div class="animate-pulse flex space-x-4">
-                                <div class="flex-1 space-y-6 py-1">
-                                    <div class="h-6 bg-slate-200 rounded"></div>
-                                    <div class="space-y-10">
-                                        <div class="grid grid-cols-3 gap-4">
-                                            <div class="h-6 bg-slate-200 rounded col-span-2"></div>
-                                        </div>
-                                        <div class="h-6 bg-slate-200 rounded col-span-1"></div>
-                                        <div class="h-6 bg-slate-200 rounded"></div>
-                                    </div>
-                                </div>
-                                <div class="rounded-full bg-slate-200 h-10 w-10"></div>
-                            </div>
-                        </div>
-                        <div class="shadow rounded-md max-w-sm min-w-full h-[270px] p-[30px] mx-auto mb-10">
-                            <div class="animate-pulse flex space-x-4">
-                                <div class="flex-1 space-y-6 py-1">
-                                    <div class="h-6 bg-slate-200 rounded"></div>
-                                    <div class="space-y-10">
-                                        <div class="grid grid-cols-3 gap-4">
-                                            <div class="h-6 bg-slate-200 rounded col-span-2"></div>
-                                        </div>
-                                        <div class="h-6 bg-slate-200 rounded col-span-1"></div>
-                                        <div class="h-6 bg-slate-200 rounded"></div>
-                                    </div>
-                                </div>
-                                <div class="rounded-full bg-slate-200 h-10 w-10"></div>
-                            </div>
-                        </div>
-                        <div class="shadow rounded-md max-w-sm min-w-full h-[270px] p-[30px] mx-auto mb-10">
-                            <div class="animate-pulse flex space-x-4">
-                                <div class="flex-1 space-y-6 py-1">
-                                    <div class="h-6 bg-slate-200 rounded"></div>
-                                    <div class="space-y-10">
-                                        <div class="grid grid-cols-3 gap-4">
-                                            <div class="h-6 bg-slate-200 rounded col-span-2"></div>
-                                        </div>
-                                        <div class="h-6 bg-slate-200 rounded col-span-1"></div>
-                                        <div class="h-6 bg-slate-200 rounded"></div>
-                                    </div>
-                                </div>
-                                <div class="rounded-full bg-slate-200 h-10 w-10"></div>
-                            </div>
-                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" className='w-20 h-20 mx-auto mt-36' viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                            <circle cx="50" cy="50" fill="none" stroke="#1d3f72" strokeWidth="10" r="35" strokeDasharray="164.93361431346415 56.97787143782138">
+                                <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+                            </circle>
+                        </svg>
                     </div>
                 )
             }

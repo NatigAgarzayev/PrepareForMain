@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { checkIsAuth, loginUser } from '../redux/features/authSlice'
+import { Helmet } from 'react-helmet'
 function LoginPage() {
     const navigate = useNavigate()
     const isAuth = useSelector(checkIsAuth)
@@ -41,6 +42,10 @@ function LoginPage() {
 
     return (
         <div className='h-screen flex items-center'>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>Log in</title>
+            </Helmet>
             <div className="container mx-auto px-5">
                 <div className='w-full flex justify-center gap-0 items-center md:gap-10 xl:gap-20'>
                     <div>

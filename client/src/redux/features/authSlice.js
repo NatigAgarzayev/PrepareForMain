@@ -14,9 +14,9 @@ export const registerUser = createAsyncThunk('auth/registerUser', async ({userna
             username,
             password
         })
-        if(data.token){
-            window.localStorage.setItem('token', data.token)
-        }
+        // if(data.token){
+        //     window.localStorage.setItem('token', data.token)
+        // }
         return data
     } catch (error) {
         console.log(error)

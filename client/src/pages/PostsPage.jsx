@@ -4,9 +4,12 @@ import Posts from '../components/Posts'
 import axios from '../utils/axios'
 import nofound from '../images/404.gif'
 import { Link, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { Helmet } from 'react-helmet'
 function PostsPage() {
     const [posts, setPosts] = useState([])
     const navigate = useNavigate()
+    const isLoading = useSelector(state => state.post.loading)
     const fetchMyPosts = async () => {
         try {
             const { data } = await axios.get('/posts/user/me')
@@ -20,6 +23,10 @@ function PostsPage() {
     }, [])
     return (
         <div className='flex gap-5 calc__height'>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>My questions</title>
+            </Helmet>
             <div className="">
                 <SidebarLeft />
             </div>
@@ -31,15 +38,15 @@ function PostsPage() {
                     <h1 className='text-5xl py-10 font-bold'>My Questions</h1>
                 </div>
                 {
-                    posts.length === 0 && (
+                    <Posts posts={posts} />
+                }
+                {
+                    !isLoading && posts.length === 0 && (
                         <div className='max-w-fit mx-auto'>
                             <img className='w-90 h-80' src={nofound} alt="" />
                             <Link to="/new" className="flex justify-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-6 py-3.5 text-center" >Add Question</Link>
                         </div>
                     )
-                }
-                {
-                    <Posts posts={posts} />
                 }
             </div>
         </div >

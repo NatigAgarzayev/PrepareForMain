@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { checkIsAuth, registerUser } from '../redux/features/authSlice'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import { Helmet } from 'react-helmet'
 function RegisterPage() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -41,11 +42,10 @@ function RegisterPage() {
         }
         try {
             dispatch(registerUser({ username, password }))
-            setTimeout(() => {
-                setUsername('')
-                setPassword('')
-                setPasswordCon('')
-            }, 1000)
+            setUsername('')
+            setPassword('')
+            setPasswordCon('')
+            navigate('/login')
         } catch (error) {
             console.log(error)
         }
@@ -53,6 +53,10 @@ function RegisterPage() {
 
     return (
         <div className='h-screen flex items-center'>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>Sign Up</title>
+            </Helmet>
             <div className="container mx-auto px-5">
                 <div className='w-full flex justify-center gap-0 items-center md:gap-10 xl:gap-20'>
                     <div className='w-80'>
