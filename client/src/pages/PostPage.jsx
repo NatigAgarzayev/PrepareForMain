@@ -4,11 +4,27 @@ import view from '../images/view.svg'
 import chat from '../images/chat.svg'
 import logo from '../images/logo-auth.svg'
 import Moment from 'react-moment'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import axios from '../utils/axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { removePost } from '../redux/features/postSlice'
+import { toast } from 'react-toastify'
 function PostPage() {
+    const dispatch = useDispatch()
+    const { user } = useSelector(state => state.auth)
+    const isLoading = useSelector(state => state.post.loading)
+    const navigate = useNavigate()
     const { id } = useParams()
     const [item, setItem] = useState({})
+    const handleDelete = async () => {
+        try {
+            dispatch(removePost(id))
+            toast('Question deleted!')
+            navigate('/')
+        } catch (error) {
+            console.log(error)
+        }
+    }
     const fetchPosts = useCallback(async () => {
         await axios.get(`/posts/${id}`)
             .then(res => setItem(res.data))
@@ -23,7 +39,7 @@ function PostPage() {
             </div>
             <div className="relative flex-1">
                 {
-                    !item && (
+                    isLoading && (
                         <div class="shadow rounded-md max-w-sm min-w-full h-[270px] p-[30px] mx-auto mb-10">
                             <div class="animate-pulse flex space-x-4">
                                 <div class="flex-1 space-y-6 py-1">
@@ -44,9 +60,9 @@ function PostPage() {
                 {
                     item && (
                         <>
-                            <Link to="/" type="button" className="mt-5 ml-5 mb-5 text-slate-500 border border-slate-500 hover:bg-slate-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800">
+                            <button onClick={() => navigate(-1)} type="button" className="mt-5 ml-5 mb-5 text-slate-500 border border-slate-500 hover:bg-slate-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800">
                                 <svg aria-hidden="true" class="rotate-180 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                            </Link>
+                            </button>
                             <div className='animate-[fadeIn_1s_ease-in-out] h-full px-2 pb-20 overflow-y-scroll'>
                                 <div key={item._id} className="relative mb-10 shadow-lg p-[30px] flex gap-4">
                                     <div className="absolute right-5 top-5">
@@ -70,6 +86,11 @@ function PostPage() {
                                         <p className='max-w-[666px] text-gray-400 h-12 mt-6 mb-12'>{item.text}</p>
                                     </div>
                                     <div className="absolute right-5 bottom-5 flex gap-5 items-center">
+                                        {
+                                            user?._id === item.author && (
+                                                <button onClick={handleDelete} class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Delete</button>
+                                            )
+                                        }
                                         <div className="flex gap-2 items-center">
                                             <img src={view} alt="" />
                                             <span className='text-gray-900/50 font-semibold'>{item.views}</span>
@@ -85,7 +106,7 @@ function PostPage() {
                     )
                 }
             </div>
-        </div>
+        </div >
     )
 }
 

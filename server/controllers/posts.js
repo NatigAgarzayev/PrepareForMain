@@ -80,3 +80,34 @@ export const getById = async (req, res) => {
         res.json({message: "Something go wrong!"})
     }
 }
+
+//Get my posts
+export const getMyPosts = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId)
+        const list = await Promise.all(
+            user.posts.map(post => {
+                return Post.findById(post._id)
+            }),
+        )
+        res.json(list)
+    } catch (error) {
+        res.json({message: "Something go wrong!"})
+    }
+}
+
+//Delete post
+export const removePost = async (req, res) => {
+    try {
+        const post = await Post.findByIdAndDelete(req.params.id)
+        if(!post){
+            return res.json({message: "The question doesn't exist!"})
+        }
+        await User.findByIdAndUpdate(req.userId, {
+            $pull: {posts: req.params.id}
+        })
+        res.json({message: "The post was deleted succesfully!"})
+    } catch (error) {
+        res.json({message: "Something go wrong!"})
+    }
+}

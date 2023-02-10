@@ -41,9 +41,11 @@ function RegisterPage() {
         }
         try {
             dispatch(registerUser({ username, password }))
-            setUsername('')
-            setPassword('')
-            setPasswordCon('')
+            setTimeout(() => {
+                setUsername('')
+                setPassword('')
+                setPasswordCon('')
+            }, 1000)
         } catch (error) {
             console.log(error)
         }

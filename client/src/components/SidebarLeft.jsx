@@ -98,7 +98,7 @@ function SidebarLeft() {
                                 <ul className="pt-2 pb-4 space-y-1 text-sm">
                                     <li className="rounded-sm hover:bg-blue-600/20 border-l-4 border-white hover:border-l-4 hover:border-indigo-500">
                                         <NavLink
-                                            to="/"
+                                            to="/posts"
                                             className="flex items-center p-2 pl-16 space-x-3 rounded-md"
                                         >
                                             <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
