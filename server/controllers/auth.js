@@ -82,7 +82,7 @@ export const getMe = async(req, res) => {
                 id: user._id
             }, 
             process.env.JWT_SECRET,
-            {expiresIn: '24h'}
+            {expiresIn: '30d'}
         )
 
         res.json({

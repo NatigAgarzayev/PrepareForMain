@@ -1,8 +1,8 @@
 import Post from '../models/Post.js'
 import User from '../models/User.js'
+import Comment from '../models/Comment.js'
 import path, {dirname} from 'path'
 import { fileURLToPath } from 'url'
-import { json } from 'express'
 
 //Create post
 export const createPost = async (req, res) => {
@@ -106,7 +106,22 @@ export const removePost = async (req, res) => {
         await User.findByIdAndUpdate(req.userId, {
             $pull: {posts: req.params.id}
         })
-        res.json({message: "The post was deleted succesfully!"})
+        res.json({message: "The post was deleted!"})
+    } catch (error) {
+        res.json({message: "Something go wrong!"})
+    }
+}
+
+//get post comments
+export const getPostComments = async(req, res) => {
+    try {
+        const post = await Post.findById(req.params.id)
+        const list = await Promise.all(
+            post.comments.map((comment) => {
+                return Comment.findById(comment)
+            })
+        )
+        res.json(list)
     } catch (error) {
         res.json({message: "Something go wrong!"})
     }
