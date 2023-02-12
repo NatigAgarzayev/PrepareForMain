@@ -11,7 +11,6 @@ function MainPage() {
     const dispatch = useDispatch()
     const [sorted, setSorted] = useState(false)
     let { posts, popularPosts } = useSelector(state => state.post)
-
     useEffect(() => {
         dispatch(getAllPosts())
     }, [dispatch])

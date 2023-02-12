@@ -32,9 +32,9 @@ function Posts({ posts }) {
             {
                 posts
                 && posts.map(item => (
-                    <div onClick={() => handlePostById(item._id)} key={item._id} className="animate-[fadeIn_1s_ease-in-out] relative mb-10 shadow-lg p-[30px] flex gap-4 cursor-pointer">
+                    <div key={item._id} className="animate-[fadeIn_1s_ease-in-out] relative mb-10 shadow-lg p-[30px] flex gap-4 cursor-pointer">
                         <div className="absolute right-5 top-5">
-                            <img className='w-10 h-10 rounded-full' src={logo} alt="" />
+                            <img className='w-10 h-10 rounded-full border' src={logo} alt="" />
                         </div>
                         <div className='flex justify-start'>
                             <div className="flex flex-col items-center justify-center gap-[5px]">
@@ -48,12 +48,12 @@ function Posts({ posts }) {
                             </div>
                         </div>
                         <div className="w-full pr-8">
-                            <h3 className='text-zinc-600 text-2xl font-semibold'>{item.title}</h3>
+                            <h3 onClick={() => handlePostById(item._id)} className='text-zinc-600 text-2xl font-semibold'>{item.title}</h3>
                             <small className='mt-[5px] text-[16px] text-zinc-800'>
                                 <Moment date={item.createdAt} format='DD MMM YYYY, hh:mm' />
                             </small>
-                            <p className='text-slate-700'>Author: <span className='text-slate-500 font-semibold hover:underline'>{item.username}</span></p>
-                            <div className={item.imageUrl ? 'relative mt-5 flex rounded-sm overflow-hidden h-[150px]' : 'flex rounded-sm overflow-hidden'}>
+                            <p className='text-slate-700'>Author: <span onClick={() => navigate(`profile/${item.author}`)} className='text-slate-500 font-semibold hover:underline'>{item.username}</span></p>
+                            <div onClick={() => handlePostById(item._id)} className={item.imageUrl ? 'relative mt-5 flex rounded-sm overflow-hidden h-[150px]' : 'flex rounded-sm overflow-hidden'}>
                                 {
                                     item.imageUrl && (
                                         <>
@@ -63,7 +63,7 @@ function Posts({ posts }) {
                                     )
                                 }
                             </div>
-                            <p className='max-w-[666px] text-gray-400 h-12 mt-6 mb-12'>{item.text}</p>
+                            <p onClick={() => handlePostById(item._id)} className='max-w-[666px] text-gray-400 h-12 mt-6 mb-12'>{item.text}</p>
                         </div>
                         <div className="absolute right-5 bottom-5 flex gap-5 items-center">
                             <div className="flex gap-2 items-center">

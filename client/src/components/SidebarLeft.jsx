@@ -11,7 +11,7 @@ function SidebarLeft() {
     const handleLogout = () => {
         dispatch(logout())
         window.localStorage.removeItem('token')
-        toast('You logged out!')
+        toast.info('You logged out!')
     }
     return (
         <div>

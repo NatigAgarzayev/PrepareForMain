@@ -1,20 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import logo from '../images/logo-main.svg'
 import { checkIsAuth, logout } from '../redux/features/authSlice'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 
 function Navbar() {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const isAuth = useSelector(checkIsAuth)
+    let { posts } = useSelector(state => state.post)
     const userInfo = (useSelector((state) => state.auth.user))
+    const [search, setSearch] = useState('')
+    const [isSearch, setIsSearch] = useState(false)
     const logoutHandle = () => {
         dispatch(logout())
         window.localStorage.removeItem('token')
         toast('You logged out!')
     }
+
+    const handleProfile = (id) => {
+        navigate(`profile/${id}`)
+    }
+
+    const handleSearch = (e) => {
+        setSearch(e.target.value)
+        if (e.target.value.trim() === '') {
+            setIsSearch(false)
+        }
+        else {
+            setIsSearch(true)
+        }
+    }
+
 
     return (
         <div className='py-3 shadow-md z-10 relative'>
@@ -35,7 +54,20 @@ function Navbar() {
                                                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                                     <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                                                 </div>
-                                                <input type="text" id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Posts" required />
+                                                <input value={search} onChange={handleSearch} type="text" id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Posts" autoComplete="off" />
+                                                <ul className={isSearch ? "border rounded-lg w-full absolute bg-white py-5" : "hidden"}>
+                                                    {
+                                                        isSearch &&
+                                                        (posts
+                                                            .filter(item => item.title.toLowerCase().includes(search.toLowerCase())).length !== 0 ? posts
+                                                                .filter(item => item.title.toLowerCase().includes(search.toLowerCase()))
+                                                                .map(item => (
+                                                                    <li onClick={() => { navigate(`/${item._id}`); setSearch(''); setIsSearch(false) }} className='w-full p-5 bg-slate-200 cursor-pointer font-semibold hover:bg-slate-300' key={item._id}>{item.title}</li>
+                                                                ))
+                                                            :
+                                                            <div className='text-center text-xl text-slate-400'>Not found</div>)
+                                                    }
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
@@ -58,7 +90,7 @@ function Navbar() {
                                                     <span className="block text-sm font-medium text-gray-500 truncate dark:text-gray-400">{userInfo.createdAt.replace(/[a-z]/gi, " / ").split('').slice(0, -7).join('')}</span>
                                                 </div>
                                                 <ul className="py-2" aria-labelledby="user-menu-button">
-                                                    <li className='cursor-pointer'>
+                                                    <li onClick={() => handleProfile(userInfo._id)} className='cursor-pointer'>
                                                         <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Profile</p>
                                                     </li>
                                                     <li className='cursor-pointer'>

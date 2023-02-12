@@ -15,6 +15,7 @@ import AddPostPage from './pages/AddPostPage'
 import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 import EditPostPage from './pages/EditPostPage'
+import ProfilePage from './pages/ProfilePage';
 
 
  const router = createBrowserRouter([
@@ -52,6 +53,10 @@ import EditPostPage from './pages/EditPostPage'
       path: "/login",
       element: <LoginPage />
     },
+    {
+      path: "/profile/:id",
+      element: <ProfilePage />
+    }
   ]);
 
 function App() {
@@ -64,7 +69,7 @@ function App() {
   return (
     <>
         <RouterProvider router={router} />
-        <ToastContainer position='bottom-right'/>
+        <ToastContainer autoClose={1500} theme="dark" position='bottom-center'/>
     </>
   )
 }
