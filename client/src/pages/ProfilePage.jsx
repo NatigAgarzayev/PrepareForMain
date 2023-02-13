@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Logo from '../images/logo-auth.svg'
 import { getUserById } from '../redux/features/profileSlice'
 
 function ProfilePage() {
+    const navigate = useNavigate()
     const { isLoading } = useSelector(state => state.profile)
     const userInfo = useSelector(state => state.profile.user)
     const { id } = useParams()
@@ -36,6 +37,9 @@ function ProfilePage() {
                         <section className="relative z-20 pt-16 h-[50vh] bg-slate-200">
                             <div className="container mx-auto px-4">
                                 <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
+                                    <button onClick={() => navigate(-1)} type="button" className="absolute mt-5 ml-5 mb-5 text-slate-500 border border-slate-500 hover:bg-slate-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800">
+                                        <svg aria-hidden="true" className="rotate-180 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+                                    </button>
                                     <div className="px-6">
                                         <div className="flex flex-wrap justify-center">
                                             <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">

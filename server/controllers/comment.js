@@ -4,7 +4,7 @@ import User from '../models/User.js'
 
 export const createComment = async (req, res) => {
     try {
-        const {postId, comment} = req.body
+        const {postId, comment, parentId} = req.body
         const user = await User.findById(req.userId)
         if(!comment){
             res.json({message: "The comment can't be empty!"})
@@ -15,6 +15,7 @@ export const createComment = async (req, res) => {
             like: 0, 
             dislike: 0,
             comment,
+            parentId,
             author: req.userId
         })
         await newComment.save()

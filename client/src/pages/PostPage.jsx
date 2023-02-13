@@ -47,7 +47,8 @@ function PostPage() {
         }
         try {
             const postId = id
-            dispatch(createComment({ postId, comment }))
+            const parentId = null
+            dispatch(createComment({ postId, comment, parentId }))
             setComment('')
             toast("Comment added : )")
         } catch (error) {
@@ -105,7 +106,7 @@ function PostPage() {
                                             <small className='mt-[5px] text-[16px] text-zinc-800'>
                                                 <Moment date={item.createdAt} format='DD MMM YYYY, hh:mm' />
                                             </small>
-                                            <p className='text-slate-700'>Author: <span className='text-slate-500 font-semibold cursor-pointer hover:underline'>{item.username}</span></p>
+                                            <p className='text-slate-700'>Author: <span onClick={() => navigate(`/profile/${item.author}`)} className='text-slate-500 font-semibold cursor-pointer hover:underline'>{item.username}</span></p>
                                             <div className={item.imageUrl ? 'relative mt-5 flex rounded-sm overflow-hidden' : 'flex rounded-sm overflow-hidden'}>
                                                 {
                                                     item.imageUrl && (

@@ -6,11 +6,12 @@ const initialState = {
     loading: false
 }
 
-export const createComment = createAsyncThunk('comment/createComment', async({postId, comment}) => {
+export const createComment = createAsyncThunk('comment/createComment', async({postId, comment, parentId}) => {
     try {
         const {data} = await axios.post(`/comments/${postId}`, {
             postId,
-            comment
+            comment,
+            parentId
         })   
         return data
     } catch (error) {
