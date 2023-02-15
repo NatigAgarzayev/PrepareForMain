@@ -12,8 +12,6 @@ export const createComment = async (req, res) => {
 
         const newComment = new Comment({
             username: user.username,
-            like: 0, 
-            dislike: 0,
             comment,
             parentId,
             author: req.userId
@@ -28,7 +26,7 @@ export const createComment = async (req, res) => {
         }
         res.json(newComment)
     } catch (error) {
-        res.json({message: "Smth going worng!"})
+        res.json({message: "Couldn't create the post :("})
     }
 }
 
@@ -44,6 +42,35 @@ export const removeComment = async (req, res) => {
         })
         res.json({message: "The comment was deleted!"})
     } catch (error) {
-        res.json({message: "Smth going worng!"})
+        res.json({message: "Couldn't remove the post :(!"})
+    }
+}
+
+export const likeComment = async (req, res) => {
+    try {
+        const comment = await Comment.findById(req.params.id)
+        if(!comment){
+            return res.json({message: "Comment doesn't exist!"})
+        }
+        await Comment.findByIdAndUpdate(req.params.id, {
+            $push: {likes: req.userId}
+        })
+        res.json({message: "You liked it!"})
+    } catch (error) {
+        res.json({message: "Couldn't like the post :("})
+    }
+}
+export const unlikeComment = async (req, res) => {
+    try {
+        const comment = await Comment.findById(req.params.id)
+        if(!comment){
+            return res.json({message: "Comment doesn't exist!"})
+        }
+        await Comment.findByIdAndUpdate(req.params.id, {
+            $pull: {likes: req.userId}
+        })
+        res.json({message: "You unliked it!"})
+    } catch (error) {
+        res.json({message: "Couldn't like the post :("})
     }
 }

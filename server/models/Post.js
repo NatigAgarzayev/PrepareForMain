@@ -5,6 +5,7 @@ const PostSchema = new Schema({
     title: {type: String, required: true},
     text: {type: String, required: true},
     imageUrl: {type: String, default: ''},
+    likes: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
     views: {type: Number, default: 0},
     author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     comments:  [{

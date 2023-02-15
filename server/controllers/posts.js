@@ -126,3 +126,34 @@ export const getPostComments = async(req, res) => {
         res.json({message: "Something go wrong!"})
     }
 }
+
+export const likePost = async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id)
+        if(!post){
+            return res.json({message: "Post doesn't exist!"})
+        }
+        await Post.findByIdAndUpdate(req.params.id, {
+            $push: {likes: req.userId}
+        })
+        res.json({message: "You liked it!"})
+    } catch (error) {
+        res.json({message: "Couldn't like the post :("})
+    }
+}
+
+export const unlikePost = async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id)
+        if(!post){
+            return res.json({message: "Post doesn't exist!"})
+        }
+        console.log(req.userId, req.params.id)
+        await Post.findByIdAndUpdate(req.params.id, {
+            $pull: {likes: req.userId}
+        })
+        res.json({message: "You unliked it!"})
+    } catch (error) {
+        res.json({message: "Couldn't unlike the post :("})
+    }
+}

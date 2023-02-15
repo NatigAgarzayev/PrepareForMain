@@ -38,6 +38,25 @@ export const removeComment = createAsyncThunk('comment/removeComment', async({ i
     }
 })
 
+
+export const likeTheComment = createAsyncThunk('post/likeTheComment', async (id) => {
+    try {
+        const {data} = await axios.post(`/comments/like/${id}`, id)
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+export const unlikeTheComment = createAsyncThunk('post/unlikeTheComment', async(id) => {
+    try {
+        const {data} = await axios.delete(`/comments/unlike/${id}`, id)
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 export const commentSlice = createSlice({
     name: 'comment',
     initialState,

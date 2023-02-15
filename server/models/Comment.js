@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose";
 const CommentSchema = new Schema({
     username: {type: String},
     comment: {type: String},
-    likes: {type: Number, default: 0},
+    likes: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
     author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     parentId: {type: mongoose.Schema.Types.ObjectId, ref: 'Comment', default: null}
 },{timestamps: true})

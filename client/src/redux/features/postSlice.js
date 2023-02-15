@@ -34,6 +34,24 @@ export const removePost = createAsyncThunk('post/removePost', async (id) => {
     }
 })
 
+export const likeThePost = createAsyncThunk('post/likeThePost', async (id) => {
+    try {
+        const {data} = await axios.post(`/posts/like/${id}`, id)
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+export const unlikeThePost = createAsyncThunk('post/unlikeThePost', async(id) => {
+    try {
+        const {data} = await axios.delete(`/posts/unlike/${id}`, id)
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 export const postSlice = createSlice({
     name: 'post',
     initialState,
