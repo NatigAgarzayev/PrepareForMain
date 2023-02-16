@@ -6,6 +6,7 @@ import authRoute from './routes/auth.js'
 import postRoute from './routes/posts.js'
 import commentRoute from './routes/comment.js'
 import profileRoute from './routes/profile.js'
+import followersRoute from './routes/followers.js'
 import fileUpload from "express-fileupload"
 import bodyParser from "body-parser"
 const app = express()
@@ -21,6 +22,7 @@ app.use('/api/auth', authRoute)
 app.use('/api/posts', postRoute)
 app.use('/api/comments', commentRoute)
 app.use('/api/profile', profileRoute)
+app.use('/api/followers', followersRoute)
 
 const start = async () => {
     try {

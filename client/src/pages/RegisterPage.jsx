@@ -46,7 +46,6 @@ function RegisterPage() {
             setUsername('')
             setPassword('')
             setPasswordCon('')
-            navigate('/login')
         } catch (error) {
             console.log(error)
         }

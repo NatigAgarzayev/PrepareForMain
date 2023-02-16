@@ -60,6 +60,7 @@ export const likeComment = async (req, res) => {
         res.json({message: "Couldn't like the post :("})
     }
 }
+
 export const unlikeComment = async (req, res) => {
     try {
         const comment = await Comment.findById(req.params.id)

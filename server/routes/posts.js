@@ -19,7 +19,7 @@ router.get('/:id', getById)
 //http://localhost:4444/api/posts/user/me
 router.get('/user/me', checkAuth, getMyPosts)
 
-//Deelete my post
+//Delete my post
 //http://localhost:4444/api/posts/:id
 router.delete('/:id', checkAuth, removePost)
 
