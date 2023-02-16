@@ -18,7 +18,7 @@ function SidebarRight({ popularPosts }) {
                     </div>
                     <div className="flex-1">
                         <ul className="pt-2 pb-4 space-y-1 text-sm">
-                            {
+                            {/* {
                                 isLoading && (
                                     <div>
                                         <svg xmlns="http://www.w3.org/2000/svg" className='w-10 h-10 mx-auto mt-24' viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
@@ -28,7 +28,7 @@ function SidebarRight({ popularPosts }) {
                                         </svg>
                                     </div>
                                 )
-                            }
+                            } */}
                             {
                                 popularPosts
                                     ? (popularPosts.map(item => (

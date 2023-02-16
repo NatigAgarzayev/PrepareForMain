@@ -89,7 +89,25 @@ export const postSlice = createSlice({
         },
         [removePost.rejected]: (state) => {
             state.loading = false
-        }
+        },
+        [likeThePost.pending]: (state) => {
+            state.loading = true
+        },
+        [likeThePost.fulfilled]: (state) => {
+            state.loading = false
+        },
+        [likeThePost.rejected]: (state) => {
+            state.loading = false
+        },
+        [unlikeThePost.pending]: (state) => {
+            state.loading = true
+        },
+        [unlikeThePost.fulfilled]: (state) => {
+            state.loading = false
+        },
+        [unlikeThePost.rejected]: (state) => {
+            state.loading = false
+        },
     }
 })
 

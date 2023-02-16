@@ -26,7 +26,7 @@ function PostPage() {
     const handleDelete = async () => {
         try {
             await dispatch(removePost(id))
-            toast('Question deleted!')
+            toast.success('Post deleted!')
             navigate('/')
         } catch (error) {
             console.log(error)
@@ -72,7 +72,7 @@ function PostPage() {
         <div className='flex calc__height'>
             <Helmet>
                 <meta charSet="utf-8" />
-                <title>{item.title || 'Question'}</title>
+                <title>{item?.title || 'Question'}</title>
             </Helmet>
             <div>
                 <SidebarLeft />
@@ -97,7 +97,7 @@ function PostPage() {
                                     <svg aria-hidden="true" className="rotate-180 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
                                 </button>
                                 <div className='animate-[fadeIn_1s_ease-in-out] h-full px-2 pb-20 overflow-y-scroll'>
-                                    <div key={item._id} className="relative mb-10 shadow-lg p-[30px] flex gap-4">
+                                    <div key={item?._id} className="relative mb-10 shadow-lg p-[30px] flex gap-4">
                                         <div className="absolute right-5 top-5">
                                             <img className='w-10 h-10 rounded-full' src={logo} alt="" />
                                         </div>
@@ -106,10 +106,10 @@ function PostPage() {
                                             <small className='mt-[5px] text-[16px] text-zinc-800'>
                                                 <Moment date={item.createdAt} format='DD MMM YYYY, hh:mm' />
                                             </small>
-                                            <p className='text-slate-700'>Author: <span onClick={() => navigate(`/profile/${item.author}`)} className='text-slate-500 font-semibold cursor-pointer hover:underline'>{item.username}</span></p>
-                                            <div className={item.imageUrl ? 'relative mt-5 flex rounded-sm overflow-hidden' : 'flex rounded-sm overflow-hidden'}>
+                                            <p className='text-slate-700'>Author: <span onClick={() => navigate(`/profile/${item?.author}`)} className='text-slate-500 font-semibold cursor-pointer hover:underline'>{item?.username}</span></p>
+                                            <div className={item?.imageUrl ? 'relative mt-5 flex rounded-sm overflow-hidden' : 'flex rounded-sm overflow-hidden'}>
                                                 {
-                                                    item.imageUrl && (
+                                                    item?.imageUrl && (
                                                         <>
                                                             <img className='object-cover w-1/2 h-auto' src={`http://localhost:4444/${item.imageUrl}`} alt='' />
                                                         </>
@@ -120,7 +120,7 @@ function PostPage() {
                                         </div>
                                         <div className='absolute bottom-5'>
                                             {
-                                                user?._id === item.author && (
+                                                user?._id === item?.author && (
                                                     <button onClick={handleDelete} className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Delete</button>
                                                 )
                                             }
