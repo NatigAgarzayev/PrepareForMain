@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import Logo from '../images/logo-auth.svg'
 import { checkIsAuth } from '../redux/features/authSlice'
 import { followUser, getUserFollowers, unfollowUser } from '../redux/features/followersSlice'
+import { getUserLatestPost } from '../redux/features/postSlice'
 import { getUserById } from '../redux/features/profileSlice'
 
 function ProfilePage() {
@@ -16,9 +17,11 @@ function ProfilePage() {
     const followers = useSelector(state => state.followers.followers)
     const { id } = useParams()
     const dispatch = useDispatch()
+    const { latestPost } = useSelector(state => state.post)
     const fetchUser = useCallback(async () => {
         try {
             await dispatch(getUserById(id))
+            dispatch(getUserLatestPost(id))
         } catch (error) {
             console.log(error)
         }
@@ -52,7 +55,6 @@ function ProfilePage() {
         fetchFollowers()
     }, [fetchFollowers])
 
-    //followers.filter(x => x._id === user?._id).length !== 1
     return (
         <>
             {
@@ -79,7 +81,7 @@ function ProfilePage() {
                                             <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
                                                 <div className="py-6 px-3 mt-32 sm:mt-0">
                                                     {
-                                                        user?._id !== id ? (followers.filter(x => x === user?._id).length !== 1 ? (
+                                                        user?._id !== id ? (followers.filter(x => x.user === user?._id).length !== 1 ? (
                                                             <button disabled={isAuth ? false : true} onClick={handleFollow} className="bg-pink-500 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150" type="button">
                                                                 Follow
                                                             </button>
@@ -109,14 +111,32 @@ function ProfilePage() {
                                                 {userInfo?.username}
                                             </h3>
                                             <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
-                                                <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
                                                 Los Angeles, California
                                             </div>
-                                            <div className="mb-2 text-blueGray-600 mt-10">
-                                                <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>Solution Manager - Creative Tim Officer
-                                            </div>
-                                            <div className="mb-2 text-blueGray-600">
-                                                <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>University of Computer Science
+                                            <div className="text-2xl text-start ml-20 py-10 leading-normal mt-0 mb-2 font-bold capitalize">
+                                                Last update
+                                                {
+                                                    latestPost._id ? (<div className="max-w-sm mt-5 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                                                        <div>
+                                                            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{latestPost.title}</h5>
+                                                        </div>
+                                                        <p className="mb-3 h-5 text-[14px] font-normal overflow-hidden text-ellipsis text-gray-700 dark:text-gray-400">{latestPost.text}</p>
+                                                        <div onClick={() => navigate(`/${latestPost._id}`)} className="inline-flex items-center px-3 py-2 cursor-pointer text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                            Read more
+                                                            <svg aria-hidden="true" className="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                        </div>
+                                                    </div>)
+                                                        :
+                                                        user?._id === id ?
+                                                            (<div div className='flex gap-4 items-center'>
+                                                                <div className='text-lg text-slate-600'>Let's create youe first post</div>
+                                                                <button onClick={() => navigate('/new')} className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create</button>
+                                                            </div>)
+                                                            :
+                                                            (<div className='flex gap-4 items-center'>
+                                                                <div className='text-lg text-slate-600 normal-case'><span className='font-bold text-black capitalize'>{userInfo?.username || 'This user'}</span> doesn't have any posts!</div>
+                                                            </div>)
+                                                }
                                             </div>
                                         </div>
                                     </div>

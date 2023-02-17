@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { createPost, getAll, getById, getMyPosts, removePost, getPostComments, likePost, unlikePost  } from "../controllers/posts.js"
+import { createPost, getAll, getById, getMyPosts, removePost, getPostComments, likePost, unlikePost, getUserPosts  } from "../controllers/posts.js"
 import { checkAuth } from "../utils/checkAuth.js"
 const router = new Router() 
 
@@ -14,6 +14,10 @@ router.get('/', getAll)
 //Get by ID
 //http://localhost:4444/api/posts/:id
 router.get('/:id', getById)
+
+//get post by Id
+//http://localhost:4444/api/posts/user/:id
+router.get('/user/:id', getUserPosts)
 
 //Get my posts
 //http://localhost:4444/api/posts/user/me

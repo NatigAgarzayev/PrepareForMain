@@ -3,13 +3,17 @@ import User from '../models/User.js'
 
 export const doFollow = async(req, res) => {
     try {
-        console.log(req.userId, req.params.id)
         const user = await User.findById(req.params.id)
+        const me = await User.findById(req.userId)
         if(!user){
             return res.json({message: "This user doesn't exist!"})
         }
+        const followerInfo = {
+            user: me._id,
+            username: me.username,
+        }
         const followers = await User.findByIdAndUpdate(req.params.id, {
-            $push: {followers: req.userId}
+            $push: {followers: followerInfo}
         })
         res.json(followers.followers)
     } catch (error) {
@@ -32,15 +36,14 @@ export const getFollow = async (req, res) => {
 
 export const unFollow = async(req, res) => {
     try {
-        console.log(req.userId, req.params.id)
         const user = await User.findById(req.params.id)
         if(!user){
             return res.json({message: "This user doesn't exist!"})
         }
         await User.findByIdAndUpdate(req.params.id, {
-            $pull: {followers: req.userId}
+            $pull: {followers: {user: req.userId}}
         })
-        res.json({message: "You follow to this user!"})
+        res.json({message: "You unfollow to this user!"})
     } catch (error) {
         res.json({message: "You can't follow!"})
     }

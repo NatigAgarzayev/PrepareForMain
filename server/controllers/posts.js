@@ -157,3 +157,17 @@ export const unlikePost = async (req, res) => {
         res.json({message: "Couldn't unlike the post :("})
     }
 }
+
+export const getUserPosts = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id)
+        if(!user){
+            return res.json({message: "User doesn't exist!"})
+        }
+        const postId = user.posts[user.posts.length - 1]._id + ''
+        const post = await Post.findById(postId)
+        res.json(post)
+    } catch (error) {
+        res.json({message: "We can't get user's post"})
+    }
+}

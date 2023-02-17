@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
 import { checkIsAuth, logout } from '../redux/features/authSlice'
 import { toast } from 'react-toastify'
 import premium_team from '../images/premium-team.png'
 import upgrade from '../images/upgrade.svg'
+import MyFollowers from './MyFollowers'
 function SidebarLeft() {
     const dispatch = useDispatch()
     const isAuth = useSelector(checkIsAuth)
+    const [modal, setModal] = useState(false)
     const handleLogout = () => {
         dispatch(logout())
         window.localStorage.removeItem('token')
@@ -110,21 +112,26 @@ function SidebarLeft() {
                                             <span className='font-bold text-gray-700'>My Questions</span>
                                         </NavLink>
                                     </li>
-                                    <li className="flex items-center rounded-sm hover:bg-blue-600/20 border-l-4 border-white hover:border-l-4 hover:border-indigo-500">
-                                        <NavLink
-                                            to="/"
+                                    <li onClick={() => setModal(true)} className="flex items-center cursor-pointer rounded-sm hover:bg-blue-600/20 border-l-4 border-white hover:border-l-4 hover:border-indigo-500">
+                                        <div
                                             className="flex items-center p-2 pl-16 space-x-3 rounded-md"
                                         >
-                                            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M28 13H22V26H28C28.2652 26 28.5196 25.8946 28.7071 25.7071C28.8946 25.5196 29 25.2652 29 25V14C29 13.7348 28.8946 13.4804 28.7071 13.2929C28.5196 13.1054 28.2652 13 28 13V13Z" stroke="#374151" strokeWidth="3.00322" strokeLinecap="round" strokeLinejoin="round" />
-                                                <path d="M22 13L17 3C15.9391 3 14.9217 3.42143 14.1716 4.17157C13.4214 4.92172 13 5.93913 13 7V10H5.2625C4.97891 9.9993 4.69846 10.0593 4.43998 10.176C4.1815 10.2926 3.95098 10.4632 3.7639 10.6764C3.57682 10.8895 3.43752 11.1402 3.35535 11.4116C3.27318 11.683 3.25004 11.9689 3.2875 12.25L4.7875 24.25C4.84819 24.7317 5.08204 25.1749 5.44544 25.4969C5.80884 25.8189 6.27697 25.9977 6.7625 26H22" stroke="#374151" strokeWidth="3.00322" strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
+                                            <svg width="24" height="20" xmlns="http://www.w3.org/2000/svg" fill='#374151' viewBox="0 0 448 512"><path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" /></svg>
                                             <span className='font-bold text-gray-700'>My Followers</span>
-                                        </NavLink>
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
 
+                            {
+                                modal && (
+                                    <>
+                                        <div onClick={() => setModal(false)} className='w-full h-screen cursor-pointer absolute -top-[12px] left-0 z-20 overflow-hidden bg-black/20'>
+                                        </div>
+                                        <MyFollowers />
+                                    </>
+                                )
+                            }
                             <div className="flex-1 pt-28 pl-3">
                                 <div className="w-[270px] h-[270px] bg-cyan-600/30 rounded-xl">
                                     <img className='-translate-y-16 mx-auto' src={premium_team} alt="" />

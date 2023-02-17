@@ -4,6 +4,7 @@ import axios from '../../utils/axios'
 const initialState = {
     posts: [],
     popularPosts: [],
+    latestPost: {},
     loading: false
 }
 
@@ -22,6 +23,15 @@ export const getAllPosts = createAsyncThunk('post/getAllPosts', async () => {
         return data
     } catch (error) {
         console.log(error)
+    }
+})
+
+export const getUserLatestPost = createAsyncThunk('post/getUserLatestPost', async(id) => {
+    try {
+        const {data} = await axios.get(`/posts/user/${id}`, id)
+        return data
+    } catch (error) {
+        console.log(error)   
     }
 })
 
@@ -106,6 +116,16 @@ export const postSlice = createSlice({
             state.loading = false
         },
         [unlikeThePost.rejected]: (state) => {
+            state.loading = false
+        },
+        [getUserLatestPost.pending]: (state) => {
+            state.loading = true
+        },
+        [getUserLatestPost.fulfilled]: (state, action) => {
+            state.loading = false
+            state.latestPost = action.payload
+        },
+        [getUserLatestPost.rejected]: (state) => {
             state.loading = false
         },
     }

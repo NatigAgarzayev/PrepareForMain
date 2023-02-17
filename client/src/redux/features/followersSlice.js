@@ -50,7 +50,7 @@ export const followersSlice = createSlice({
         },
         [unfollowUser.fulfilled]: (state, action) => {
             state.loading = false
-            state.followers = state.followers.filter(x => x !== action.payload)
+            state.followers = state.followers.filter(x => x.user !== action.payload.user)
         },
         [unfollowUser.rejected]: (state) => {
             state.loading = false
