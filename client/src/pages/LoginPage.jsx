@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import tempo from '../images/temporary.jpg'
+import back from '../images/profile-bg.avif'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
@@ -43,28 +43,28 @@ function LoginPage() {
     }
 
     return (
-        <div className='h-screen flex items-center'>
+        <div className='h-screen flex px-2 back items-center dark:bg-gray-600 '>
             <Helmet>
                 <meta charSet="utf-8" />
                 <title>Log In</title>
             </Helmet>
-            <div className="container mx-auto px-5">
+            <div className="container mx-auto p-5 backdrop-blur-lg border-4 rounded-2xl">
                 <div className='w-full flex justify-center gap-0 items-center md:gap-10 xl:gap-20'>
                     <div>
-                        <h1 className='text-2xl sm:text-3xl mb-4 md:text-5xl font-bold mb-16'>Sign In</h1>
+                        <h1 className='text-4xl sm:text-4xl md:text-5xl font-bold mb-16 text-white'>Log In</h1>
                         <form className='w-full sm:min-w-[330px]' onSubmit={(e) => e.preventDefault()}>
                             <div className='mt-5'>
-                                <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username <span className='text-red-600'>*</span></label>
+                                <label htmlFor="username" className="block mb-2 text-[16px] font-bold text-white/90">Username <span className='text-red-600'>*</span></label>
                                 <div>
                                     <input ref={valid} value={username} onChange={e => setUsername(e.target.value)} id="username" maxLength={20} className="w-full rounded rounded-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Username" />
                                 </div>
                             </div>
                             <div className='mt-5'>
-                                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password <span className='text-red-600'>*</span></label>
+                                <label htmlFor="password" className="block mb-2 text-[16px] font-bold text-white/90">Password <span className='text-red-600'>*</span></label>
                                 <div className='relative'>
                                     <input ref={valid2} value={password} onChange={e => setPassword(e.target.value)} type={hide ? 'password' : 'text'} id="password" maxLength={18} className="w-full rounded rounded-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Password" />
                                     <div onClick={() => setHide(!hide)} className='absolute right-3 top-2.5 cursor-pointer'>
-                                        <svg className='w-6 h-6' xmlns="http://www.w3.org/2000/svg" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512">
+                                        <svg className='w-6 h-6 dark:fill-white' xmlns="http://www.w3.org/2000/svg" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512">
                                             <g>
                                                 <g>
                                                     <path d="M399.521,370.534c-6.925-9.084-19.902-10.835-28.986-3.911c-33.25,25.344-72.908,39.117-114.703,39.835    c-55.803-0.051-108.9-26.38-157.827-78.256C70.98,299.546,52.65,270.47,44.311,256.051c24.801-43.157,57.449-80.353,97.17-110.686    c9.078-6.933,10.818-19.912,3.885-28.99c-6.933-9.078-19.912-10.818-28.99-3.885C68.981,148.682,30.653,193.675,2.458,246.22    c-3.177,5.922-3.28,13.018-0.274,19.028c0.928,1.858,23.22,45.993,64.914,90.466c24.773,26.424,51.341,47.551,78.968,62.793    c35.256,19.452,72.243,29.315,109.935,29.315c0.113,0,0.225-0.001,0.338-0.003c50.746-0.829,98.906-17.53,139.271-48.299    C404.695,392.596,406.446,379.619,399.521,370.534z" />
@@ -94,18 +94,18 @@ function LoginPage() {
                                     </div>
                                 </div>
                             </div>
-                            <Link to="/"><p className='text-blue-400 flex justify-end mt-5 underline hover:text-blue-600'>Forgotten Password</p></Link>
+                            <Link to="/"><p className='text-white flex justify-end mt-5 font-semibold underline hover:text-white/90'>Forgotten Password</p></Link>
                             <button onClick={handleLogin} className="md:whitespace-nowrap mt-5 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ">Sign In</button>
                         </form>
                         <div className='flex items-center gap-5 mt-20 md:mt-40'>
-                            <p className='text-black font-semibold'>Don’t have account yet?</p>
+                            <p className='text-white font-semibold'>Don’t have account yet?</p>
                             <Link to="/register">
                                 <button className="whitespace-nowrap text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Create Account</button>
                             </Link>
                         </div>
                     </div>
                     <div>
-                        <img className='hidden md:block' src={tempo} alt="" />
+                        <img src={back} className="w-[500px] hidden h-[650px] rounded-lg object-cover md:block" alt="" />
                     </div>
                 </div>
             </div>

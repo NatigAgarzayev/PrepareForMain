@@ -61,7 +61,12 @@ import ProfilePage from './pages/ProfilePage';
 
 function App() {
   const dispatch = useDispatch()
-  
+  if (window.localStorage.getItem('theme') === 'light') {
+    document.documentElement.classList.add('light')
+  }
+  else if (window.localStorage.getItem('theme') === 'dark') {
+    document.documentElement.classList.add('dark')
+  }
   useEffect(() => {
     dispatch(getMe())
   }, [dispatch])

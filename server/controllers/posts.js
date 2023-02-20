@@ -90,6 +90,7 @@ export const getMyPosts = async (req, res) => {
                 return Post.findById(post._id)
             }),
         )
+        console.log(list)
         res.json(list)
     } catch (error) {
         res.json({message: "Something go wrong!"})

@@ -60,14 +60,14 @@ function ProfilePage() {
             {
                 !isLoading && (
                     <>
-                        <section className="relative block h-[50vh] bg-slate-200">
+                        <section className="relative block h-[50vh] bg-slate-200 dark:bg-slate-600">
                             <div className="back absolute top-0 w-full h-full -skew-y-1 -translate-y-10">
                                 <span id="blackOverlay" className="z-10 w-full h-full absolute opacity-50 bg-black"></span>
                             </div>
                         </section >
-                        <section className="relative z-20 pt-16 h-[50vh] bg-slate-200">
+                        <section className="relative z-20 pt-16 h-[50vh] bg-slate-200 dark:bg-slate-600">
                             <div className="container mx-auto px-4">
-                                <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
+                                <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64 dark:bg-slate-700">
                                     <button onClick={() => navigate(-1)} type="button" className="absolute mt-5 ml-5 mb-5 text-slate-500 border border-slate-500 hover:bg-slate-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800">
                                         <svg aria-hidden="true" className="rotate-180 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
                                     </button>
@@ -98,22 +98,22 @@ function ProfilePage() {
                                             <div className="w-full lg:w-4/12 px-4 lg:order-1">
                                                 <div className="flex justify-center py-4 lg:pt-4 pt-8">
                                                     <div className="mr-4 p-3 text-center">
-                                                        <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">{followers?.length || 0}</span><span className="text-sm text-blueGray-400">Followers</span>
+                                                        <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600 dark:text-white">{followers?.length || 0}</span><span className="text-sm text-blueGray-400 dark:text-white">Followers</span>
                                                     </div>
                                                     <div className="mr-4 p-3 text-center">
-                                                        <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">{userInfo?.posts.length || 0}</span><span className="text-sm text-blueGray-400">Posts</span>
+                                                        <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600 dark:text-white">{userInfo?.posts.length || 0}</span><span className="text-sm text-blueGray-400 dark:text-white">Posts</span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="text-center mt-12 pb-10">
-                                            <h3 className="text-4xl font-semibold leading-normal text-blueGray-700 mb-2">
+                                        <div className="text-center mt-8 pb-10">
+                                            <h3 className="text-4xl font-semibold leading-normal text-blueGray-700 mb-2 dark:text-white">
                                                 {userInfo?.username}
                                             </h3>
-                                            <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
+                                            <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase dark:text-white/90">
                                                 Los Angeles, California
                                             </div>
-                                            <div className="text-2xl text-start ml-20 py-10 leading-normal mt-0 mb-2 font-bold capitalize">
+                                            <div className="text-2xl text-start ml-20 py-10 leading-normal mt-0 mb-2 font-bold capitalize dark:text-white">
                                                 Last update
                                                 {
                                                     latestPost._id ? (<div className="max-w-sm mt-5 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -123,18 +123,18 @@ function ProfilePage() {
                                                         <p className="mb-3 h-5 text-[14px] font-normal overflow-hidden text-ellipsis text-gray-700 dark:text-gray-400">{latestPost.text}</p>
                                                         <div onClick={() => navigate(`/${latestPost._id}`)} className="inline-flex items-center px-3 py-2 cursor-pointer text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                             Read more
-                                                            <svg aria-hidden="true" className="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                            <svg aria-hidden="true" className="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
                                                         </div>
                                                     </div>)
                                                         :
                                                         user?._id === id ?
                                                             (<div div className='flex gap-4 items-center'>
-                                                                <div className='text-lg text-slate-600'>Let's create youe first post</div>
+                                                                <div className='text-lg text-slate-600 dark:text-white'>Let's create youe first post</div>
                                                                 <button onClick={() => navigate('/new')} className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create</button>
                                                             </div>)
                                                             :
                                                             (<div className='flex gap-4 items-center'>
-                                                                <div className='text-lg text-slate-600 normal-case'><span className='font-bold text-black capitalize'>{userInfo?.username || 'This user'}</span> doesn't have any posts!</div>
+                                                                <div className='text-lg text-slate-600 normal-case dark:text-white/90'><span className='font-bold text-black capitalize dark:text-white'>{userInfo?.username || 'This user'}</span> doesn't have any posts!</div>
                                                             </div>)
                                                 }
                                             </div>

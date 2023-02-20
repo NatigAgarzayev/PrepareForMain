@@ -36,13 +36,13 @@ function Navbar() {
 
 
     return (
-        <div className='py-3 shadow-md z-10 relative'>
+        <div className='py-3 shadow-md z-10 relative dark:bg-gray-800'>
 
             <div className="container mx-auto px-2">
                 <div className='flex items-center justify-between gap-5'>
                     <Link to='/' className="md:flex items-center gap-2 ">
                         <img src={logo} alt="Connect" />
-                        <h2 className='hidden md:block text-2xl font-bold'>Connect</h2>
+                        <h2 className='hidden md:block text-2xl font-bold text-black dark:text-white'>Connect</h2>
                     </Link>
                     {
                         isAuth
@@ -55,17 +55,17 @@ function Navbar() {
                                                     <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                                                 </div>
                                                 <input value={search} onChange={handleSearch} type="text" id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Posts" autoComplete="off" />
-                                                <ul className={isSearch ? "border rounded-lg w-full absolute bg-white py-5" : "hidden"}>
+                                                <ul className={isSearch ? "border overflow-hidden rounded-lg w-full absolute bg-white dark:bg-gray-600" : "hidden"}>
                                                     {
                                                         isSearch &&
                                                         (posts
                                                             .filter(item => item.title.toLowerCase().includes(search.toLowerCase())).length !== 0 ? posts
                                                                 .filter(item => item.title.toLowerCase().includes(search.toLowerCase()))
                                                                 .map(item => (
-                                                                    <li onClick={() => { navigate(`/${item._id}`); setSearch(''); setIsSearch(false) }} className='w-full p-5 bg-slate-200 cursor-pointer font-semibold hover:bg-slate-300' key={item._id}>{item.title}</li>
+                                                                    <li onClick={() => { navigate(`/${item._id}`); setSearch(''); setIsSearch(false) }} className='w-full p-5 bg-slate-200 cursor-pointer font-semibold hover:bg-slate-300 dark:bg-slate-700 text-white dark:hover:bg-slate-800' key={item._id}>{item.title}</li>
                                                                 ))
                                                             :
-                                                            <div className='text-center text-xl text-slate-400'>Not found</div>)
+                                                            <div className='text-center text-xl py-5 text-slate-400'>Not found</div>)
                                                     }
                                                 </ul>
                                             </div>
@@ -94,7 +94,7 @@ function Navbar() {
                                                         <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Profile</p>
                                                     </li>
                                                     <li className='cursor-pointer'>
-                                                        <Link to="/new"><p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">New Question</p></Link>
+                                                        <Link to="/new"><p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Add New Post</p></Link>
                                                     </li>
                                                     <li className='cursor-pointer'>
                                                         <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Settings</p>

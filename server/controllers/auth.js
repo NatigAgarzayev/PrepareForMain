@@ -32,7 +32,7 @@ export const register = async(req, res) => {
         res.json({
             newUser,
             // token,
-            message: "Registartion was successfull!"
+            message: "Registration was successfull!"
         })
     } catch (error) {
         res.json({message: "Error during create user!"})
