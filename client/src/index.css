@@ -18,6 +18,15 @@ li{
   list-style: none;
 }
 
+@keyframes fadeIn {
+  from{
+    opacity: 0;
+  }
+  to{
+    opacity: 1;
+  }
+}
+
 /* Works on Firefox */
 * {
   scrollbar-width: thin;
@@ -64,4 +73,9 @@ li{
 
 .back{
   background: url('./images/profile-bg.avif') no-repeat center / cover;
+}
+
+.fadeIn{
+  animation-name: fadeIn;
+  animation-duration: 1s;
 }

@@ -94,7 +94,7 @@ function LoginPage() {
                                     </div>
                                 </div>
                             </div>
-                            <Link to="/"><p className='text-white flex justify-end mt-5 font-semibold underline hover:text-white/90'>Forgotten Password</p></Link>
+                            <Link to="/reset"><p className='text-white flex justify-end mt-5 font-semibold underline hover:text-white/90'>Forgotten Password</p></Link>
                             <button onClick={handleLogin} className="md:whitespace-nowrap mt-5 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ">Sign In</button>
                         </form>
                         <div className='flex items-center gap-5 mt-20 md:mt-40'>

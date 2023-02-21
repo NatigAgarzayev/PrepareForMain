@@ -16,6 +16,8 @@ import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 import EditPostPage from './pages/EditPostPage'
 import ProfilePage from './pages/ProfilePage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
+import WriteEmailPage from './pages/WriteEmailPage'
 
 
  const router = createBrowserRouter([
@@ -56,6 +58,14 @@ import ProfilePage from './pages/ProfilePage';
     {
       path: "/profile/:id",
       element: <ProfilePage />
+    },
+    {
+      path: "/reset",
+      element: <WriteEmailPage />,
+    },
+    {
+      path: "/reset/:token",
+      element: <ResetPasswordPage />,
     }
   ]);
 
@@ -74,7 +84,7 @@ function App() {
   return (
     <>
         <RouterProvider router={router} />
-        <ToastContainer autoClose={1500} theme="dark" position='bottom-center'/>
+        <ToastContainer autoClose={1500} theme="dark" position='top-center'/>
     </>
   )
 }

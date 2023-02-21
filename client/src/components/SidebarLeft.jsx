@@ -4,7 +4,6 @@ import { Link, NavLink } from 'react-router-dom'
 import { checkIsAuth, logout } from '../redux/features/authSlice'
 import { toast } from 'react-toastify'
 import premium_team from '../images/premium-team.png'
-import upgrade from '../images/upgrade.svg'
 import MyFollowers from './MyFollowers'
 import Settings from './Settings'
 function SidebarLeft() {

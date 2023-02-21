@@ -8,10 +8,11 @@ const initialState = {
   status: null
 }
 
-export const registerUser = createAsyncThunk('auth/registerUser', async ({username, password}) => {
+export const registerUser = createAsyncThunk('auth/registerUser', async ({username, email, password}) => {
     try {
         const {data} = await axios.post('/auth/register', {
             username,
+            email,
             password
         })
         // if(data.token){

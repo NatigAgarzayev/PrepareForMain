@@ -4,6 +4,7 @@ import logo from '../images/logo-main.svg'
 import { checkIsAuth, logout } from '../redux/features/authSlice'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import Settings from './Settings'
 
 
 function Navbar() {
@@ -13,6 +14,7 @@ function Navbar() {
     let { posts } = useSelector(state => state.post)
     const userInfo = (useSelector((state) => state.auth.user))
     const [search, setSearch] = useState('')
+    const [setting, setSetting] = useState(false)
     const [isSearch, setIsSearch] = useState(false)
     const logoutHandle = () => {
         dispatch(logout())
@@ -36,9 +38,17 @@ function Navbar() {
 
 
     return (
-        <div className='py-3 shadow-md z-10 relative dark:bg-gray-800'>
-
-            <div className="container mx-auto px-2">
+        <div className='py-3 relative z-10 shadow-md dark:bg-gray-800'>
+            {
+                setting && (
+                    <>
+                        <div onClick={() => setSetting(false)} className='w-full h-screen cursor-pointer absolute top-0 left-0 z-20 overflow-hidden bg-black/20'>
+                        </div>
+                        <div className='h-screen -top-[12px] absolute left-1/2'><Settings /></div >
+                    </>
+                )
+            }
+            <div className=" container mx-auto px-2">
                 <div className='flex items-center justify-between gap-5'>
                     <Link to='/' className="md:flex items-center gap-2 ">
                         <img src={logo} alt="Connect" />
@@ -48,7 +58,7 @@ function Navbar() {
                         isAuth
                             ? (
                                 <>
-                                    <div>
+                                    <div >
                                         <div className='hidden sm:block w-full md:w-[636px]'>
                                             <div className="relative">
                                                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -71,7 +81,7 @@ function Navbar() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className='flex gap-10 items-center'>
+                                    <div className='z-10 flex gap-10 items-center'>
                                         <div className='relative hover:bg-gray-200/80 cursor-pointer rounded-full w-[40px] h-[40px] flex items-center justify-center'>
                                             <svg width="22" height="30" viewBox="0 0 22 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M16 15C16 13.4087 15.3679 11.8826 14.2426 10.7574C13.1174 9.63214 11.5913 9 10 9C8.4087 9 6.88258 9.63214 5.75736 10.7574C4.63214 11.8826 4 13.4087 4 15C4 22 1 24 1 24H19C19 24 16 22 16 15Z" stroke="#808080" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -96,7 +106,8 @@ function Navbar() {
                                                     <li className='cursor-pointer'>
                                                         <Link to="/new"><p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Add New Post</p></Link>
                                                     </li>
-                                                    <li className='cursor-pointer'>
+                                                    <li onClick={() => setSetting(true)} className='cursor-pointer'>
+
                                                         <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Settings</p>
                                                     </li>
                                                     <li className='cursor-pointer'>

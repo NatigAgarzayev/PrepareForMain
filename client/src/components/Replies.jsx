@@ -82,7 +82,7 @@ function Replies({ reply, replyId, itemId }) {
                                     className="mr-2 w-6 h-6 rounded-full"
                                     src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
                                     alt={reply?.username} />
-                                    <span onClick={() => navigate(`/profile/${reply.author}`)} className={user?._id === reply.author ? 'bg-yellow-400 rounded-3xl px-3 py-0.5 font-semibold text-gray-600 cursor-pointer' : 'font-semibold text-zync-600 cursor-pointer'}>{reply?.username}</span></p>
+                                    <span onClick={() => navigate(`/profile/${reply.author}`)} className={user?._id === reply.author ? 'bg-yellow-400 rounded-3xl px-3 py-0.5 font-semibold text-gray-600 cursor-pointer text-black/80' : 'font-semibold text-zync-600 cursor-pointer'}>{reply?.username}</span></p>
                                 <p className="text-sm text-gray-600 dark:text-white">
                                     <Moment date={reply?.createdAt} format='DD MMM YYYY, hh:mm' />
                                 </p>

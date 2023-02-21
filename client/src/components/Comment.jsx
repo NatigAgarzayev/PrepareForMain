@@ -106,7 +106,7 @@ function Comment({ comments }) {
                                                 className="mr-2 w-6 h-6 rounded-full"
                                                 src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
                                                 alt={item?.username} />
-                                            <span onClick={() => navigate(`/profile/${item.author}`)} className={user?._id === item.author ? 'bg-yellow-400 rounded-3xl px-3 py-0.5 font-semibold text-gray-600 cursor-pointer dark:text-black/80' : 'font-semibold text-zync-600 cursor-pointer dark:text-black/80'}>{item?.username}</span></p>
+                                            <span onClick={() => navigate(`/profile/${item.author}`)} className={user?._id === item.author ? 'bg-yellow-400 rounded-3xl px-3 py-0.5 font-semibold text-gray-600 cursor-pointer dark:text-black/80' : 'font-semibold text-zync-600 cursor-pointer'}>{item?.username}</span></p>
                                         <p className="text-sm text-gray-600 dark:text-white">
                                             <Moment date={item?.createdAt} format='DD MMM YYYY, hh:mm' />
                                         </p>

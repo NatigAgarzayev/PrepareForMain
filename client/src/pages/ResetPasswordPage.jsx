@@ -1,48 +1,28 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useEffect, useState } from 'react'
 import back from '../images/profile-bg.avif'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { checkIsAuth, registerUser } from '../redux/features/authSlice'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { Helmet } from 'react-helmet'
-function RegisterPage() {
-    const [username, setUsername] = useState('')
-    const [email, setEmail] = useState('')
+import { resetUserPass } from '../redux/features/resetSlice'
+function ResetPasswordPage() {
     const [password, setPassword] = useState('')
     const [passwordCon, setPasswordCon] = useState('')
     const [hide, setHide] = useState(true)
-    const isAuth = useSelector(checkIsAuth)
+    const { status } = useSelector(state => state.reset)
     const dispatch = useDispatch()
-    const { status } = useSelector((state) => state.auth)
     const navigate = useNavigate()
-    const mailvalid = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
-    useEffect(() => {
-        if (status) {
-            toast.info(status)
-        }
-        if (isAuth) navigate('/')
-    }, [status, isAuth, navigate])
-
-    const handleRegistration = () => {
-        if (username.trim() === '') {
-            toast.warning('Please write your username!')
-            return
-        }
-        if (email.trim() === '') {
-            toast.warning('Please write your email!')
-            return
-        }
+    const { token } = useParams()
+    const handleResetPass = () => {
         if (password.trim() === '') {
             toast.warning('Please write your password!')
             return
         }
         if (passwordCon.trim() === '') {
             toast.warning('Please confirm the password!')
-            return
-        }
-        if (email.replace(mailvalid, '') !== '') {
-            toast.warning('Your email is not correct!')
             return
         }
         if (password !== passwordCon) {
@@ -52,40 +32,31 @@ function RegisterPage() {
             return
         }
         try {
-            dispatch(registerUser({ username, email, password }))
-            setUsername('')
-            setPassword('')
-            setPasswordCon('')
+            dispatch(resetUserPass({ password, token }))
         } catch (error) {
             console.log(error)
         }
     }
 
+    useEffect(() => {
+        if (status) {
+            toast.info(status)
+        }
+    }, [status])
+
     return (
         <div className='h-screen flex px-2 back items-center dark:bg-gray-600'>
             <Helmet>
                 <meta charSet="utf-8" />
-                <title>Sign Up</title>
+                <title>New Password</title>
             </Helmet>
-            <div className=" container mx-auto p-5 backdrop-blur-lg border-4 rounded-2xl">
-                <div className='w-full flex justify-center gap-0 items-center md:gap-10 xl:gap-20'>
-                    <div className='w-80'>
-                        <h1 className='text-4xl sm:text-4xl md:text-5xl font-bold mb-12 text-white'>Sign Up</h1>
+            <div className=" container mx-auto">
+                <div className='w-96 py-10 backdrop-blur-lg border-2 rounded-2xl mx-auto'>
+                    <div className='w-80 mx-auto'>
+                        <h1 className='text-4xl sm:text-4xl md:text-5xl font-bold mb-12 text-white'>Reset Password</h1>
                         <form className='w-full sm:min-w-[330px]' onSubmit={e => e.preventDefault()}>
                             <div className='mt-5'>
-                                <label htmlFor="username" className="block mb-2 text-[16px] font-bold text-white/90">Username <span className='text-red-600'>*</span></label>
-                                <div>
-                                    <input value={username} onChange={e => setUsername(e.target.value)} id="username" maxLength={20} className="w-full rounded rounded-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Username" />
-                                </div>
-                            </div>
-                            <div className='mt-5'>
-                                <label htmlFor="mail" className="block mb-2 text-[16px] font-bold text-white/90">Your email <span className='text-red-600'>*</span></label>
-                                <div>
-                                    <input value={email} onChange={e => setEmail(e.target.value)} type='text' id="mail" className="w-full rounded bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 text-[16px] border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your email" />
-                                </div>
-                            </div>
-                            <div className='mt-5'>
-                                <label htmlFor="password" className="block mb-2 text-[16px] font-bold text-white/90">Password <span className='text-red-600'>*</span></label>
+                                <label htmlFor="password" className="block mb-2 text-[16px] font-bold text-white/90">New Password <span className='text-red-600'>*</span></label>
                                 <div className='relative'>
                                     <input value={password} onChange={e => setPassword(e.target.value)} type={hide ? 'password' : 'text'} maxLength={18} id="password" className="w-full rounded rounded-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Password" />
                                     <div onClick={() => setHide(!hide)} className='absolute right-3 top-2.5 cursor-pointer'>
@@ -125,17 +96,14 @@ function RegisterPage() {
                                     <input value={passwordCon} onChange={e => setPasswordCon(e.target.value)} type={hide ? 'password' : 'text'} maxLength={18} id="cpassword" className="w-full rounded rounded-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Confirm Password" />
                                 </div>
                             </div>
-                            <button onClick={handleRegistration} className="md:whitespace-nowrap mt-8 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ">Create an Account</button>
+                            <button onClick={handleResetPass} className="md:whitespace-nowrap mt-8 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Reset Password</button>
                         </form>
-                        <div className='flex items-center gap-5 mt-20 md:mt-30'>
+                        {/* <div className='flex items-center justify-center gap-5 mt-10 md:mt-30'>
                             <p className='text-white font-semibold'>Already have an account?</p>
                             <Link to="/login">
                                 <button className="whitespace-nowrap text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign In</button>
                             </Link>
-                        </div>
-                    </div>
-                    <div>
-                        <img src={back} className="w-[500px] hidden h-[650px] rounded-lg object-cover md:block" alt="" />
+                        </div> */}
                     </div>
                 </div>
             </div>
@@ -144,4 +112,4 @@ function RegisterPage() {
     )
 }
 
-export default RegisterPage
+export default ResetPasswordPage
