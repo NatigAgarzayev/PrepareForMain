@@ -146,7 +146,7 @@ function SidebarLeft() {
                             }
                             <div className="flex-1 pt-28 pl-3">
                                 <div className="w-[270px] h-[270px] bg-cyan-600/30 rounded-xl dark:bg-white/30">
-                                    <img className='-translate-y-16 mx-auto' src={premium_team} alt="" />
+                                    <img className='-translate-y-16 mx-auto select-none' src={premium_team} alt="" />
                                     <div className='-mt-14'>
                                         <p className='text-center font-medium text-xl mb-5 text-gray-800 dark:text-white'>Upgrade to Premium</p>
                                         <button type="button" className="text-white bg-cyan-600 hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center flex items-center justify-center mx-auto gap-3 dark:bg-white text-black">
@@ -204,7 +204,7 @@ function SidebarLeft() {
 
                             <div className="flex-1 absolute bottom-28 pl-3">
                                 <div className="w-[270px] h-[270px] bg-cyan-600/30 rounded-xl">
-                                    <img className='-translate-y-16 mx-auto' src={premium_team} alt="" />
+                                    <img className='-translate-y-16 mx-auto select-none' src={premium_team} alt="" />
                                     <div className='-mt-14'>
                                         <p className='text-center font-medium text-xl mb-5 text-gray-800 dark:text-white'>Upgrade to Premium</p>
                                         <button type="button" className="text-white bg-cyan-600 hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center flex items-center justify-center mx-auto gap-3 dark:bg-white text-black">
