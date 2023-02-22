@@ -6,7 +6,6 @@ const initialState = {
 
 export const sendResetEmail = createAsyncThunk('reset/sendResetEmail', async({username, email}) => {
     try {
-        console.log(username, email)
         const { data } = await axios.post('http://localhost:4444/api/reset', { username, email })
         return data
     } catch (error) {

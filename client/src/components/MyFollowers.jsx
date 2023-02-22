@@ -11,7 +11,6 @@ function MyFollowers() {
     const fetchFollowers = useCallback(() => {
         try {
             dispatch(getUserFollowers(user._id))
-            console.log(user.followers)
         } catch (error) {
             console.log(error)
         }

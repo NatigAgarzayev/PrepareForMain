@@ -62,7 +62,7 @@ function LoginPage() {
                             <div className='mt-5'>
                                 <label htmlFor="password" className="block mb-2 text-[16px] font-bold text-white/90">Password <span className='text-red-600'>*</span></label>
                                 <div className='relative'>
-                                    <input ref={valid2} value={password} onChange={e => setPassword(e.target.value)} type={hide ? 'password' : 'text'} id="password" maxLength={18} className="w-full rounded rounded-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Password" />
+                                    <input ref={valid2} value={password} onChange={e => setPassword(e.target.value)} autoComplete='true' type={hide ? 'password' : 'text'} id="password" maxLength={18} className="w-full rounded rounded-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Password" />
                                     <div onClick={() => setHide(!hide)} className='absolute right-3 top-2.5 cursor-pointer'>
                                         <svg className='w-6 h-6 dark:fill-white' xmlns="http://www.w3.org/2000/svg" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512">
                                             <g>

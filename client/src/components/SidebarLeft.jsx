@@ -166,7 +166,7 @@ function SidebarLeft() {
                     (<div className="relative pt-20 flex flex-col h-screen bg-white shadow w-[300px] dark:bg-gray-700 text-white">
                         <div className="space-y-3">
                             <div className="flex items-center">
-                                <h2 className="ml-16 text-xl font-light uppercase">Menu</h2>
+                                <h2 className="ml-16 text-xl font-light uppercase text-black dark:text-white">Menu</h2>
                             </div>
                             <div className="flex-1">
                                 <ul className="pt-2 pb-4 space-y-1 text-sm">
