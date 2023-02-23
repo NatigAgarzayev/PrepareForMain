@@ -40,7 +40,7 @@ function AddPostPage() {
 
 
     return (
-        <div className='py-20 calc__height dark:bg-gray-600'>
+        <div className='py-20 dark:bg-gray-600'>
             <Helmet>
                 <meta charSet="utf-8" />
                 <title>New question  </title>
