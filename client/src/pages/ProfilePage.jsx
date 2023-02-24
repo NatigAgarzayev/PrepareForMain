@@ -6,12 +6,15 @@ import Logo from '../images/logo-auth.svg'
 import { checkIsAuth } from '../redux/features/authSlice'
 import { followUser, getUserFollowers, getUserFollowing, unfollowUser } from '../redux/features/followersSlice'
 import { getUserLatestPost } from '../redux/features/postSlice'
-import { getUserById } from '../redux/features/profileSlice'
+import { changeUserAvatar, getUserAvatar, getUserById, resetUserAvatar } from '../redux/features/profileSlice'
 import PulseLoader from 'react-spinners/PulseLoader'
 function ProfilePage() {
     const navigate = useNavigate()
     const [modal, setModal] = useState(false)
     const [modal2, setModal2] = useState(false)
+    const [avatar, setAvatar] = useState(false)
+    const [view, setView] = useState(false)
+    const [image, setImage] = useState('')
     const { user } = useSelector(state => state.auth)
     const isAuth = useSelector(checkIsAuth)
     const { isLoading } = useSelector(state => state.profile)
@@ -21,6 +24,7 @@ function ProfilePage() {
     const { id } = useParams()
     const dispatch = useDispatch()
     const { latestPost } = useSelector(state => state.post)
+    const userAvatar = useSelector(state => state.profile.avatar)
     useEffect(() => {
         if (status) {
             toast.info(status)
@@ -28,6 +32,7 @@ function ProfilePage() {
     }, [status])
 
     useEffect(() => {
+        dispatch(getUserAvatar(id))
         dispatch(getUserFollowers(id))
         dispatch(getUserFollowing(id))
     }, [id, dispatch])
@@ -78,8 +83,62 @@ function ProfilePage() {
         dispatch(getUserFollowing(id))
     }
 
+    const handleAvatar = async () => {
+        try {
+            setAvatar(false)
+            const data = new FormData()
+            data.append('image', image)
+            await dispatch(changeUserAvatar(data))
+            dispatch(getUserAvatar(id))
+            setImage('')
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleReset = async () => {
+        await dispatch(resetUserAvatar(id))
+        dispatch(getUserAvatar(id))
+    }
+
     return (
         <>
+            {
+                avatar && (
+                    <div className='absolute z-30 w-full h-screen bg-black/20 flex items-center justify-center'>
+                        <div id="popup-modal" tabIndex="-1" className="absolute flex items-center justify-center">
+                            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                <button onClick={() => setAvatar(false)} type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="popup-modal">
+                                    <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+                                </button>
+                                <div className="p-6 text-center">
+                                    <div className='flex justify-center mb-5'>
+                                        {
+                                            image ? (
+                                                <img className='border w-[140px] h-[140px] object-cover rounded-full bg-white' src={URL.createObjectURL(image)} alt="Logo" />
+                                            )
+                                                :
+                                                (<img className='border w-[140px] h-[140px] object-cover rounded-full bg-white' src={`http://localhost:4444/${userAvatar}`} alt="Logo" />)
+                                        }
+                                    </div>
+                                    <form>
+                                        <label htmlFor="avatar-file">
+                                            <input onChange={e => setImage(e.target.files[0])} type="file" id='avatar-file' className="" accept='.jpeg, .png,.jpg' />
+                                        </label>
+                                        <h3 className="my-5 text-lg font-normal text-gray-500 dark:text-gray-400">Choose your avatar.</h3>
+                                        <button disabled={image === '' ? true : false} typeof='button' onClick={handleAvatar} data-modal-hide="popup-modal" type="button" className="text-white bg-red-600 disabled:bg-red-400 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                            Change
+                                        </button>
+                                        <button onClick={handleReset} data-modal-hide="popup-modal" type="button" className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
             {
                 modal && (
                     <>
@@ -121,7 +180,7 @@ function ProfilePage() {
                                                 </li>
                                             ))
                                                 :
-                                                <div className='text-center text-sm text-slate-400'>You don't have followers!</div>
+                                                <div className='text-center text-sm text-slate-400'>User doesn't have followers!</div>
                                         }
                                     </ul>
                                 </div>
@@ -171,7 +230,7 @@ function ProfilePage() {
                                                 </li>
                                             ))
                                                 :
-                                                <div className='text-center text-sm text-slate-400'>You don't have followings!</div>
+                                                <div className='text-center text-sm text-slate-400'>User doesn't follow anybody!</div>
                                         }
                                     </ul>
                                 </div>
@@ -181,14 +240,21 @@ function ProfilePage() {
                 )
             }
             {
+                view && (
+                    <div onClick={() => setView(false)} className='w-full h-screen cursor-pointer absolute left-0 z-50 overflow-hidden bg-black/20'>
+                        <img className='border absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  w-[740px] h-[740px] object-cover rounded-full bg-white' src={`http://localhost:4444/${userAvatar}`} alt="User avatar" />
+                    </div>
+                )
+            }
+            {
                 !isLoading ? (
                     <>
-                        <section className="relative block h-[50vh] bg-slate-200 dark:bg-slate-600">
+                        <section className="  relative block h-[50vh] bg-slate-200 dark:bg-slate-600">
                             <div className="back absolute top-0 w-full h-full -skew-y-1 -translate-y-10">
                                 <span id="blackOverlay" className="z-10 w-full h-full absolute opacity-50 bg-black"></span>
                             </div>
                         </section >
-                        <section className="relative z-20 pt-16 h-[50vh] bg-slate-200 dark:bg-slate-600">
+                        <section className=" relative z-20 pt-16 h-[50vh] bg-slate-200 dark:bg-slate-600">
                             <div className="container mx-auto px-4">
                                 <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64 dark:bg-slate-700">
                                     <button onClick={() => navigate(-1)} type="button" className="absolute mt-5 ml-5 mb-5 text-slate-500 border border-slate-500 hover:bg-slate-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800">
@@ -198,7 +264,23 @@ function ProfilePage() {
                                         <div className="flex flex-wrap justify-center">
                                             <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
                                                 <div className='absolute -top-16'>
-                                                    <img className='border rounded-full bg-white' src={Logo} alt="Logo" />
+                                                    {/* HERE */}
+                                                    <div className='relative overflow-hidden rounded-full'>
+                                                        <img className='border w-[140px] h-[140px] object-cover rounded-full bg-white' src={`http://localhost:4444/${userAvatar}`} alt="User avatar" />
+                                                        {
+                                                            user?._id === id ?
+                                                                (
+                                                                    <div onClick={() => setAvatar(true)} className='edit__user w-full h-[140px] left-0 top-0 bg-red z-30 absolute flex items-center cursor-pointer rounded-full justify-center'>
+                                                                        <svg className=' fill-white/70 w-8 h-8' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H322.8c-3.1-8.8-3.7-18.4-1.4-27.8l15-60.1c2.8-11.3 8.6-21.5 16.8-29.7l40.3-40.3c-32.1-31-75.7-50.1-123.9-50.1H178.3zm435.5-68.3c-15.6-15.6-40.9-15.6-56.6 0l-29.4 29.4 71 71 29.4-29.4c15.6-15.6 15.6-40.9 0-56.6l-14.4-14.4zM375.9 417c-4.1 4.1-7 9.2-8.4 14.9l-15 60.1c-1.4 5.5 .2 11.2 4.2 15.2s9.7 5.6 15.2 4.2l60.1-15c5.6-1.4 10.8-4.3 14.9-8.4L576.1 358.7l-71-71L375.9 417z" /></svg>
+                                                                    </div>
+                                                                )
+                                                                :
+                                                                (
+                                                                    <div onClick={() => setView(true)} className='edit__user w-full h-[140px] left-0 top-0 bg-red z-30 absolute flex items-center cursor-pointer rounded-full justify-center'>
+                                                                    </div>
+                                                                )
+                                                        }
+                                                    </div >
                                                 </div>
                                             </div>
                                             <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">

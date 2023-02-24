@@ -19,7 +19,9 @@ const UserSchema = new Schema({
     posts: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post'
-    }]
+    }],
+    avatar: {type: String, default: "defaultavatar.png"},
+    role: {type: String, required: true, default: 'USER'}
 },{timestamps: true})
 
 export default mongoose.model('User', UserSchema)

@@ -56,7 +56,7 @@ function Posts({ posts }) {
                             <small onClick={() => handlePostById(item?._id)} className='mt-[5px] text-[16px] text-zinc-800 dark:text-white'>
                                 <Moment date={item?.createdAt} format='DD MMM YYYY, hh:mm' />
                             </small>
-                            <p className='text-slate-700 dark:text-white/90'>Author: <span onClick={() => navigate(`/profile/${item?.author}`)} className='text-slate-500 font-semibold hover:underline dark:text-white'>{item?.username}</span></p>
+                            <p className='text-slate-700 mt-2 dark:text-white/90'>Author: <span onClick={() => navigate(`/profile/${item?.author}`)} className='text-slate-500 font-semibold hover:underline dark:text-white'>{item?.username}</span></p>
                             <div onClick={() => handlePostById(item?._id)} className={item?.imageUrl ? 'relative mt-5 flex rounded-sm overflow-hidden min-h-[300px] max-h-[500px]' : 'flex rounded-sm overflow-hidden'}>
                                 {
 

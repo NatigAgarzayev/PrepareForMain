@@ -14,7 +14,7 @@ export const createComment = async (req, res) => {
             username: user.username,
             comment,
             parentId,
-            author: req.userId
+            author: req.userId,
         })
         await newComment.save()
         try {

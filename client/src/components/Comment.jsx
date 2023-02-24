@@ -19,6 +19,7 @@ function Comment({ comments }) {
     useEffect(() => {
         document.addEventListener("click", handleCommentMenu, true)
     }, [])
+
     const postId = id
     const handleDeleteComment = async (id) => {
         try {
@@ -102,12 +103,13 @@ function Comment({ comments }) {
                             <article key={item?._id} className="relative max-w-[960px] mx-auto py-6 text-base bg-white border-gray-200 border-l-2 pl-4 mb-6 dark:border-white-700 dark:bg-gray-800" >
                                 <footer className="flex justify-between items-center mb-2">
                                     <div className="flex items-center">
-                                        <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
-                                            <img
-                                                className="mr-2 w-6 h-6 rounded-full"
-                                                src={logo}
-                                                alt={item?.username} />
-                                            <span onClick={() => navigate(`/profile/${item.author}`)} className={user?._id === item.author ? 'bg-yellow-400 rounded-3xl px-3 py-0.5 font-semibold text-gray-600 cursor-pointer dark:text-black/80' : 'font-semibold text-zync-600 cursor-pointer'}>{item?.username}</span></p>
+                                        <p onClick={() => navigate(`/profile/${item.author}`)} className="inline-flex cursor-pointer items-center mr-3 text-sm text-gray-900 dark:text-white">
+                                            {/* <img
+                                                className="mr-2 w-10 h-10 object-cover rounded-full"
+                                                src={`http://localhost:4444/${user.avatar}`}
+                                                alt={item?.username} /> */}
+                                            <span className={user?._id === item.author ? 'bg-yellow-400 rounded-3xl px-3 py-0.5 font-semibold text-gray-600 cursor-pointer dark:text-black/80' : 'border rounded-3xl px-3 py-0.5 font-semibold text-zync-600 cursor-pointer'}>{item?.username}</span>
+                                        </p>
                                         <p className="text-sm text-gray-600 dark:text-white">
                                             <Moment date={item?.createdAt} format='DD MMM YYYY, hh:mm' />
                                         </p>

@@ -22,13 +22,22 @@ function AddPostPage() {
             toast.warning('Please write title!')
             return
         }
+        if (title.trim().split('').length < 20) {
+            val1.current.focus()
+            toast.warning('At least 20 letters!')
+            return
+        }
         if (text.trim() === '') {
             val2.current.focus()
             toast.warning('Please write text!')
             return
         }
+        if (text.trim().split('').length < 30) {
+            val2.current.focus()
+            toast.warning('At least 30 letters!')
+            return
+        }
         try {
-            console.log(image)
             const data = new FormData()
             data.append('title', title)
             data.append('text', text)
@@ -73,7 +82,7 @@ function AddPostPage() {
                                                     <source src={URL.createObjectURL(image)} type="video/mp4" />
                                                 </video>
                                                 :
-                                                < img className='h-1/2 w-1/2' src={URL.createObjectURL(image)} alt={image.name} />
+                                                <img className='h-1/2 w-1/2' src={URL.createObjectURL(image)} alt={image.name} />
                                         )
                                     }
                                 </div>

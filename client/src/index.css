@@ -79,3 +79,13 @@ li{
   animation-name: fadeIn;
   animation-duration: 1s;
 }
+
+.edit__user{
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.edit__user:hover{
+  background-color: rgba(0, 0, 0, 0.7);
+  opacity: 1;
+}

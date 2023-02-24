@@ -5,7 +5,7 @@ const CommentSchema = new Schema({
     comment: {type: String},
     likes: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
     author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-    parentId: {type: mongoose.Schema.Types.ObjectId, ref: 'Comment', default: null}
+    parentId: {type: mongoose.Schema.Types.ObjectId, ref: 'Comment', default: null},
 },{timestamps: true})
 
 export default mongoose.model('Comment', CommentSchema)

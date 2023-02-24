@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import logo from '../images/logo-main.svg'
 import { checkIsAuth, logout } from '../redux/features/authSlice'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Settings from './Settings'
+import { getUserAvatar } from '../redux/features/profileSlice'
 
 
 function Navbar() {
@@ -16,6 +17,12 @@ function Navbar() {
     const [search, setSearch] = useState('')
     const [setting, setSetting] = useState(false)
     const [isSearch, setIsSearch] = useState(false)
+    const { avatar } = useSelector(state => state.profile)
+    const { user } = useSelector(state => state.auth)
+    useEffect(() => {
+        dispatch(getUserAvatar(user?._id))
+    }, [user?._id, dispatch])
+
     const logoutHandle = () => {
         dispatch(logout())
         window.localStorage.removeItem('token')
@@ -91,8 +98,8 @@ function Navbar() {
                                             <span className="absolute animate-ping inline-flex rounded-full top-[7.2px] right-[11.5px] h-[10px] w-[10px] bg-sky-500"></span>
                                         </div>
                                         <div className="menu__btn md:order-2 relative">
-                                            <button type="button" className=" w-10 h-10 flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 ring-4 ring-gray-300" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
-                                                <img className="w-10 h-10 rounded-full" src={logo} alt="" />
+                                            <button type="button" className=" w-12 h-12 flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 ring-4 ring-gray-300" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+                                                <img className="w-12 h-12 rounded-full object-cover" src={`http://localhost:4444/${avatar}`} alt="nf" />
                                             </button>
                                             <div className="menu__dropdown absolute top-6 right-0 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
                                                 <div className="px-4 py-3">

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Moment from 'react-moment'
 import logo from '../images/logo-auth.svg'
@@ -7,6 +7,7 @@ import { removeComment, getPostComments, likeTheComment, unlikeTheComment } from
 import { toast } from 'react-toastify'
 import { checkIsAuth } from '../redux/features/authSlice'
 import { createComment } from '../redux/features/commentSlice'
+import { getUserAvatar } from '../redux/features/profileSlice'
 function Replies({ reply, replyId, itemId }) {
     const navigate = useNavigate()
     const { id } = useParams()
@@ -16,6 +17,7 @@ function Replies({ reply, replyId, itemId }) {
     const isAuth = useSelector(checkIsAuth)
     const postId = id
     const inp = useRef()
+
     const handleDeleteComment = async (id) => {
         try {
             await dispatch(removeComment({ id, postId }))
@@ -79,11 +81,13 @@ function Replies({ reply, replyId, itemId }) {
                     <article className="relative max-w-[930px] bg-white border-l-2 pl-4 border-gray-200 ml-auto py-6 mb-6 mt-6 text-base dark:bg-gray-800" >
                         <footer className="flex justify-between items-center mb-2">
                             <div className="flex items-center">
-                                <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white"><img
-                                    className="mr-2 w-6 h-6 rounded-full"
-                                    src={logo}
-                                    alt={reply?.username} />
-                                    <span onClick={() => navigate(`/profile/${reply.author}`)} className={user?._id === reply.author ? 'bg-yellow-400 rounded-3xl px-3 py-0.5 font-semibold text-gray-600 cursor-pointer text-black/80' : 'font-semibold text-zync-600 cursor-pointer'}>{reply?.username}</span></p>
+                                <p onClick={() => navigate(`/profile/${reply.author}`)} className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
+                                    {/* <img
+                                        className="mr-2 w-10 h-10 object-cover rounded-full"
+                                        src={`http://localhost:4444/${user.avatar}`}
+                                        alt={reply?.username} /> */}
+                                    <span className={user?._id === reply.author ? 'bg-yellow-400 rounded-3xl px-3 py-0.5 font-semibold text-gray-600 cursor-pointer text-black/80' : 'border rounded-3xl px-3 py-0.5 font-semibold text-zync-600 cursor-pointer'}>{reply?.username}</span>
+                                </p>
                                 <p className="text-sm text-gray-600 dark:text-white">
                                     <Moment date={reply?.createdAt} format='DD MMM YYYY, hh:mm' />
                                 </p>
