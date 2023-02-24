@@ -10,6 +10,12 @@ const UserSchema = new Schema({
             username: {type: String},
         }
     ],
+    following: [
+        {
+            user: { type: mongoose.Schema.Types.ObjectId, ref: "User"},
+            username: {type: String},
+        }
+    ],
     posts: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post'

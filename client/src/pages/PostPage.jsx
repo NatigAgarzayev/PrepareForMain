@@ -1,8 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import SidebarLeft from '../components/SidebarLeft'
-import view from '../images/view.svg'
-import chat from '../images/chat.svg'
-import logo from '../images/logo-auth.svg'
 import Moment from 'react-moment'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from '../utils/axios'
@@ -13,16 +10,38 @@ import { Helmet } from 'react-helmet'
 import Comment from '../components/Comment'
 import { createComment, getPostComments } from '../redux/features/commentSlice'
 import { checkIsAuth } from '../redux/features/authSlice'
+import { Link } from 'react-router-dom'
 function PostPage() {
     const dispatch = useDispatch()
     const isAuth = useSelector(checkIsAuth)
     const { user } = useSelector(state => state.auth)
-    const isLoading = useSelector(state => state.post.loading)
     const { comments } = useSelector(state => state.comment)
     const navigate = useNavigate()
     const { id } = useParams()
     const [item, setItem] = useState({})
+    const [muted, setMuted] = useState(window.sessionStorage.getItem('mute'))
     const [comment, setComment] = useState('')
+    useEffect(() => {
+        document.addEventListener("click", handlePostMenu, true)
+    }, [])
+    const handlePostMenu = (e) => {
+        if (e.target.classList.contains('btn-trigger-2')) {
+            if (e.target.parentElement.classList.contains('btn-trigger-2') && e.target.tagName !== 'path') {
+                e.target.parentElement.parentElement.children[1].classList.remove('hidden')
+            }
+            if (e.target.parentElement.classList.contains('btn-trigger-2') && e.target.tagName === 'path') {
+                e.target.parentElement.parentElement.parentElement.children[1].classList.remove('hidden')
+            }
+            if (e.target.parentElement.tagName === 'DIV' && e.target.tagName === 'BUTTON') {
+                e.target.parentElement.children[1].classList.remove('hidden')
+            }
+        }
+        else {
+            document.querySelectorAll('.drop-2').forEach(el => {
+                el.classList.add('hidden')
+            });
+        }
+    }
     const handleDelete = async () => {
         try {
             await dispatch(removePost(id))
@@ -68,6 +87,17 @@ function PostPage() {
         fetchComments()
     }, [fetchComments])
 
+    const muteHandler = () => {
+        if (muted === 'true') {
+            setMuted('false')
+            window.sessionStorage.setItem('mute', 'false')
+        }
+        else {
+            setMuted('true')
+            window.sessionStorage.setItem('mute', 'true')
+        }
+    }
+
     return (
         <div className='flex calc__height'>
             <Helmet>
@@ -87,32 +117,66 @@ function PostPage() {
                                 </button>
                                 <div className='animate-[fadeIn_1s_ease-in-out] h-full px-2 pb-20 overflow-y-scroll '>
                                     <div key={item?._id} className="relative mb-10 border p-[30px] flex gap-4 rounded-lg dark:bg-gray-800">
-                                        <div className="absolute right-5 top-5">
-                                            <img className='w-10 h-10 rounded-full' src={logo} alt="" />
+                                        <div className="absolute right-0 top-5">
+                                            <button id="dropdownComment1Button" data-dropdown-toggle="dropdownComment1"
+                                                className="btn-trigger-2 inline-flex items-center p-2 mr-5 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                                                type="button">
+                                                <svg className="btn-trigger-2 w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        className='btn-trigger-2'
+                                                        d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                            <div
+                                                className="absolute drop-2 hidden right-10 top-10 z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                                                <ul className="py-1 text-sm text-gray-700 dark:text-gray-200"
+                                                    aria-labelledby="dropdownMenuIconHorizontalButton">
+                                                    {
+                                                        user?._id === item.author && (
+                                                            <li onClick={handleDelete}>
+                                                                <p className="block py-2 px-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Remove</p>
+                                                            </li>
+                                                        )
+                                                    }
+                                                    <li>
+                                                        <Link to="/"
+                                                            className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Report</Link>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                         <div className="w-full pr-8">
-                                            <h3 className='text-zinc-600 text-2xl font-semibold dark:text-white'>{item.title}</h3>
+                                            <h3 className='text-zinc-600 text-5xl font-semibold mb-3 dark:text-white'>{item.title}</h3>
                                             <small className='mt-[5px] text-[16px] text-zinc-800 dark:text-white'>
                                                 <Moment date={item.createdAt} format='DD MMM YYYY, hh:mm' />
                                             </small>
                                             <p className='text-slate-700 dark:text-white/90'>Author: <span onClick={() => navigate(`/profile/${item?.author}`)} className='text-slate-500 font-semibold cursor-pointer hover:underline dark:text-white'>{item?.username}</span></p>
-                                            <div className={item?.imageUrl ? 'relative mt-5 flex rounded-sm overflow-hidden' : 'flex rounded-sm overflow-hidden'}>
+                                            <div className={item.imageUrl ? 'relative mt-5 flex rounded-sm overflow-hidden min-h-[400px] max-h-[600px]' : 'flex rounded-sm overflow-hidden'}>
                                                 {
-                                                    item?.imageUrl && (
-                                                        <>
-                                                            <img className='object-cover w-1/2 h-auto' src={`http://localhost:4444/${item.imageUrl}`} alt='' />
-                                                        </>
-                                                    )
+                                                    item?.imageUrl && item.imageUrl.includes('.mp4') ?
+                                                        <div className='relative mx-auto'>
+                                                            <p className='absolute z-10 select-none left-5 top-5 text-2xl text-white'>{item?.imageUrl.slice(13)}</p>
+                                                            <div className='absolute z-10 cursor-pointer right-5 top-5' onClick={muteHandler}>
+                                                                {
+                                                                    muted === 'true' ?
+                                                                        <svg className='w-7 h-7 fill-white' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M320 64c0-12.6-7.4-24-18.9-29.2s-25-3.1-34.4 5.3L131.8 160H64c-35.3 0-64 28.7-64 64v64c0 35.3 28.7 64 64 64h67.8L266.7 471.9c9.4 8.4 22.9 10.4 34.4 5.3S320 460.6 320 448V64z" /></svg>
+                                                                        :
+                                                                        <svg className='w-7 h-7 fill-white' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M533.6 32.5C598.5 85.3 640 165.8 640 256s-41.5 170.8-106.4 223.5c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C557.5 398.2 592 331.2 592 256s-34.5-142.2-88.7-186.3c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zM473.1 107c43.2 35.2 70.9 88.9 70.9 149s-27.7 113.8-70.9 149c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C475.3 341.3 496 301.1 496 256s-20.7-85.3-53.2-111.8c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zm-60.5 74.5C434.1 199.1 448 225.9 448 256s-13.9 56.9-35.4 74.5c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C393.1 284.4 400 271 400 256s-6.9-28.4-17.7-37.3c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zM301.1 34.8C312.6 40 320 51.4 320 64V448c0 12.6-7.4 24-18.9 29.2s-25 3.1-34.4-5.3L131.8 352H64c-35.3 0-64-28.7-64-64V224c0-35.3 28.7-64 64-64h67.8L266.7 40.1c9.4-8.4 22.9-10.4 34.4-5.3z" /></svg>
+                                                                }
+                                                            </div>
+                                                            <video controls muted={muted === 'true' ? true : false} onMouseOver={(e) => e.target.play()} loop className="w-[1000px] mx-auto cursor-pointer embed-responsive embed-responsive-16by9 relative overflow-hidden rounded-3xl" >
+                                                                <source src={`http://localhost:4444/${item?.imageUrl}`} type="video/mp4" />
+                                                            </video>
+                                                        </div>
+                                                        : (
+                                                            <img className='object-cover w-full mx-auto ' src={`http://localhost:4444/${item?.imageUrl}`} alt='' />
+                                                        )
+
                                                 }
                                             </div>
-                                            <p className='max-w-[75%] text-gray-400 mt-6 mb-12 dark:text-white/60'>{item.text}</p>
-                                        </div>
-                                        <div className='absolute bottom-5'>
-                                            {
-                                                user?._id === item?.author && (
-                                                    <button onClick={handleDelete} className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Delete</button>
-                                                )
-                                            }
+                                            <p className='max-w-[75%] text-gray-400 mt-6 mb-12 dark:text-white/90'>{item.text}</p>
                                         </div>
                                         <div className="absolute right-5 bottom-5 flex gap-5 items-center">
                                             <div className="flex gap-3 items-center">

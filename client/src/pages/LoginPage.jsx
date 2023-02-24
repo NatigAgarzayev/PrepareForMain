@@ -22,7 +22,7 @@ function LoginPage() {
             toast.info(status)
         }
         if (isAuth) navigate('/')
-    }, [status, isAuth, navigate])
+    }, [status, isAuth])
 
     function handleLogin() {
         if (username.trim() === '') {
@@ -99,9 +99,9 @@ function LoginPage() {
                         </form>
                         <div className='flex items-center gap-5 mt-20 md:mt-40'>
                             <p className='text-white font-semibold'>Don’t have account yet?</p>
-                            <Link to="/register">
-                                <button className="whitespace-nowrap text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Create Account</button>
-                            </Link>
+                            {/* <Link to="/register"> */}
+                            <button onClick={() => navigate('/register')} className="whitespace-nowrap text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Create Account</button>
+                            {/* </Link> */}
                         </div>
                     </div>
                     <div>

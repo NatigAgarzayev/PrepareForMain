@@ -1,7 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import logo from '../images/logo-auth.svg'
 import nofound from '../images/404.gif'
+import { getUserFollowing } from '../redux/features/followersSlice'
 function SidebarRight({ popularPosts }) {
+    const dispatch = useDispatch()
+    const { user } = useSelector(state => state.auth)
+    useEffect(() => {
+        dispatch(getUserFollowing(user?._id))
+    }, [dispatch, user?._id])
+    const { limitedFollowing } = useSelector(state => state.followers)
     const navigate = useNavigate()
     return (
         <div className="relative pt-20 flex flex-col h-screen bg-white shadow w-[300px] dark:bg-gray-700">

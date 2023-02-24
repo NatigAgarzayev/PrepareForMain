@@ -101,7 +101,7 @@ export const postSlice = createSlice({
             state.loading = false
         },
         [likeThePost.pending]: (state) => {
-            state.loading = true
+            state.loading = false
         },
         [likeThePost.fulfilled]: (state) => {
             state.loading = false
@@ -110,7 +110,7 @@ export const postSlice = createSlice({
             state.loading = false
         },
         [unlikeThePost.pending]: (state) => {
-            state.loading = true
+            state.loading = false
         },
         [unlikeThePost.fulfilled]: (state) => {
             state.loading = false

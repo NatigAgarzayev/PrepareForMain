@@ -12,10 +12,20 @@ export const doFollow = async(req, res) => {
             user: me._id,
             username: me.username,
         }
+        const followingInfo = {
+            user: user._id,
+            username: user.username,
+        }
         const followers = await User.findByIdAndUpdate(req.params.id, {
             $push: {followers: followerInfo}
         })
-        res.json(followers.followers)
+        const following = await User.findByIdAndUpdate(req.userId, {
+            $push: {following: followingInfo}
+        })
+        res.json({
+            followers, 
+            following
+        })
     } catch (error) {
         res.json({message: "You can't follow!"})
     }
@@ -33,6 +43,18 @@ export const getFollow = async (req, res) => {
         res.json({message: "We can't get followers!"})
     }
 }
+export const getFollowing = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id)
+        if(!user){
+            return res.json({message: "This user doesnt exist!"})
+        }
+        const userFollowing = user.following
+        res.json(userFollowing)
+    } catch (error) {
+        res.json({message: "We can't get followers!"})
+    }
+}
 
 export const unFollow = async(req, res) => {
     try {
@@ -42,6 +64,9 @@ export const unFollow = async(req, res) => {
         }
         await User.findByIdAndUpdate(req.params.id, {
             $pull: {followers: {user: req.userId}}
+        })
+        await User.findByIdAndUpdate(req.userId, {
+            $pull: {following: {user: req.params.id}}
         })
         res.json({message: "You unfollow to this user!"})
     } catch (error) {

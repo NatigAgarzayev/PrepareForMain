@@ -17,6 +17,7 @@ dotenv.config()
 app.use(cors())
 app.use(fileUpload())
 app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static('uploads'))
 //Routes
 app.use('/api/auth', authRoute)
@@ -25,6 +26,7 @@ app.use('/api/comments', commentRoute)
 app.use('/api/profile', profileRoute)
 app.use('/api/followers', followersRoute)
 app.use('/api/reset', resetRoute)
+
 
 const start = async () => {
     try {

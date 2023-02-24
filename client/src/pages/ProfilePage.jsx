@@ -1,23 +1,37 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Logo from '../images/logo-auth.svg'
 import { checkIsAuth } from '../redux/features/authSlice'
-import { followUser, getUserFollowers, unfollowUser } from '../redux/features/followersSlice'
+import { followUser, getUserFollowers, getUserFollowing, unfollowUser } from '../redux/features/followersSlice'
 import { getUserLatestPost } from '../redux/features/postSlice'
 import { getUserById } from '../redux/features/profileSlice'
-
+import PulseLoader from 'react-spinners/PulseLoader'
 function ProfilePage() {
     const navigate = useNavigate()
+    const [modal, setModal] = useState(false)
+    const [modal2, setModal2] = useState(false)
     const { user } = useSelector(state => state.auth)
     const isAuth = useSelector(checkIsAuth)
     const { isLoading } = useSelector(state => state.profile)
     const userInfo = useSelector(state => state.profile.user)
-    const followers = useSelector(state => state.followers.followers)
+    const { followers } = useSelector(state => state.followers)
+    const { status } = useSelector(state => state.followers)
     const { id } = useParams()
     const dispatch = useDispatch()
     const { latestPost } = useSelector(state => state.post)
+    useEffect(() => {
+        if (status) {
+            toast.info(status)
+        }
+    }, [status])
+
+    useEffect(() => {
+        dispatch(getUserFollowers(id))
+        dispatch(getUserFollowing(id))
+    }, [id, dispatch])
+
     const fetchUser = useCallback(async () => {
         try {
             await dispatch(getUserById(id))
@@ -42,23 +56,132 @@ function ProfilePage() {
         dispatch(getUserFollowers(id))
         toast.success('You unfollow this user!')
     }
+    const handleFollowUser = async (id) => {
+        await dispatch(followUser(id))
+        dispatch(getUserFollowers(id))
+        toast.success('You are following this user now!')
+    }
 
-    const fetchFollowers = useCallback(() => {
-        try {
-            dispatch(getUserFollowers(id))
-        } catch (error) {
-            console.log(error)
-        }
-    }, [id, dispatch])
+    const handleUnfollowUser = async (id) => {
+        await dispatch(unfollowUser(id))
+        dispatch(getUserFollowers(id))
+        toast.success('You unfollow this user!')
+    }
 
-    useEffect(() => {
-        fetchFollowers()
-    }, [fetchFollowers])
+    const handleModal = () => {
+        setModal(true)
+        dispatch(getUserFollowers(id))
+    }
+
+    const handleModal2 = () => {
+        setModal2(true)
+        dispatch(getUserFollowing(id))
+    }
 
     return (
         <>
             {
-                !isLoading && (
+                modal && (
+                    <>
+                        <div onClick={() => setModal(false)} className='w-full h-screen cursor-pointer absolute left-0 z-50 overflow-hidden bg-black/20'>
+                        </div>
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[350px] mx-auto">
+                            <div className="p-4 max-w-md bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+                                <div className="flex justify-between items-center mb-4">
+                                    <h3 className="text-xl mx-auto font-bold leading-none text-gray-900 dark:text-white">Followers</h3>
+                                </div>
+                                <div className="flow-root">
+                                    <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+                                        {
+                                            followers.length > 0 ? followers.map((follower, index) => (
+                                                <li key={index} className="py-3 sm:py-4">
+                                                    <div className="flex items-center space-x-4">
+                                                        <div className="flex-shrink-0">
+                                                            <img className="w-8 h-8 rounded-full" src={Logo} alt="Neil" />
+                                                        </div>
+                                                        <div className="flex-1 min-w-0 hover: cursor-pointer">
+                                                            <p onClick={() => { navigate(`/profile/${follower.user}`); setModal(false) }} className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                                {follower.username}
+                                                            </p>
+                                                        </div>
+                                                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                            {
+                                                                user?._id !== follower.user ? (
+                                                                    <button disabled={isAuth ? false : true} onClick={() => { navigate(`/profile/${follower.user}`); setModal(false) }} className="bg-pink-500 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm: ease-linear transition-all duration-150" type="button">
+                                                                        Visit
+                                                                    </button>
+                                                                )
+                                                                    :
+                                                                    (<button disabled={isAuth ? false : true} onClick={() => { navigate(`/profile/${follower.user}`); setModal(false) }} className="border border-pink-500 text-pink-600 active:bg-pink-600 uppercase font-semibold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150" type="button">
+                                                                        You
+                                                                    </button>)
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            ))
+                                                :
+                                                <div className='text-center text-sm text-slate-400'>You don't have followers!</div>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )
+            }
+            {
+                modal2 && (
+                    <>
+                        <div onClick={() => setModal2(false)} className='w-full h-screen cursor-pointer absolute left-0 z-50 overflow-hidden bg-black/20'>
+                        </div>
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[350px] mx-auto">
+                            <div className="p-4 max-w-md bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+                                <div className="flex justify-between items-center mb-4">
+                                    <h3 className="text-xl mx-auto font-bold leading-none text-gray-900 dark:text-white">Following</h3>
+                                </div>
+                                <div className="flow-root">
+                                    <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+                                        {
+                                            userInfo?.following.length > 0 ? userInfo?.following.map((following, index) => (
+                                                <li key={index} className="py-3 sm:py-4">
+                                                    <div className="flex items-center space-x-4">
+                                                        <div className="flex-shrink-0">
+                                                            <img className="w-8 h-8 rounded-full" src={Logo} alt="Neil" />
+                                                        </div>
+                                                        <div className="flex-1 min-w-0 hover: cursor-pointer">
+                                                            <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                                {following.username}
+                                                            </p>
+                                                        </div>
+                                                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                            {
+                                                                user?._id !== following.user ? (
+                                                                    <button disabled={isAuth ? false : true} onClick={() => { navigate(`/profile/${following.user}`); setModal2(false) }} className="bg-pink-500 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm: ease-linear transition-all duration-150" type="button">
+                                                                        Visit
+                                                                    </button>
+                                                                )
+                                                                    :
+                                                                    (<button disabled={isAuth ? false : true} onClick={() => { navigate(`/profile/${following.user}`); setModal2(false) }} className="border border-pink-500 text-pink-600 active:bg-pink-600 uppercase font-semibold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150" type="button">
+                                                                        You
+                                                                    </button>)
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            ))
+                                                :
+                                                <div className='text-center text-sm text-slate-400'>You don't have followings!</div>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )
+            }
+            {
+                !isLoading ? (
                     <>
                         <section className="relative block h-[50vh] bg-slate-200 dark:bg-slate-600">
                             <div className="back absolute top-0 w-full h-full -skew-y-1 -translate-y-10">
@@ -97,11 +220,14 @@ function ProfilePage() {
                                             </div>
                                             <div className="w-full lg:w-4/12 px-4 lg:order-1">
                                                 <div className="flex justify-center py-4 lg:pt-4 pt-8">
-                                                    <div className="mr-4 p-3 text-center">
-                                                        <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600 dark:text-white">{followers?.length || 0}</span><span className="text-sm text-blueGray-400 dark:text-white">Followers</span>
+                                                    <div onClick={handleModal} className="cursor-pointer mr-4 p-3 text-center">
+                                                        <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600 dark:text-white">{followers?.length}</span><span className="text-sm text-blueGray-400 dark:text-white">Followers</span>
+                                                    </div>
+                                                    <div onClick={handleModal2} className="cursor-pointer mr-4 p-3 text-center">
+                                                        <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600 dark:text-white">{userInfo?.following.length}</span><span className="text-sm text-blueGray-400 dark:text-white">Followings</span>
                                                     </div>
                                                     <div className="mr-4 p-3 text-center">
-                                                        <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600 dark:text-white">{userInfo?.posts.length || 0}</span><span className="text-sm text-blueGray-400 dark:text-white">Posts</span>
+                                                        <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600 dark:text-white">{userInfo?.posts.length}</span><span className="text-sm text-blueGray-400 dark:text-white">Posts</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -110,13 +236,14 @@ function ProfilePage() {
                                             <h3 className="text-4xl font-semibold leading-normal text-blueGray-700 mb-2 dark:text-white">
                                                 {userInfo?.username}
                                             </h3>
-                                            <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase dark:text-white/90">
-                                                Los Angeles, California
+                                            <div onClick={() => { navigator.clipboard.writeText(`${userInfo?.email}`); toast.success('Copied!') }} className="text-sm cursor-pointer leading-normal mt-5 mb-2 text-blueGray-400 font-bold uppercase dark:text-white/90">
+                                                <p className='text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase dark:text-white/90'>{userInfo?.email}</p>
+                                                <sub>Click to copy</sub>
                                             </div>
                                             <div className="text-2xl text-start ml-20 py-10 leading-normal mt-0 mb-2 font-bold capitalize dark:text-white">
                                                 Last update
                                                 {
-                                                    latestPost._id ? (<div className="max-w-sm mt-5 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                                                    latestPost?._id ? (<div className="max-w-sm mt-5 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                                                         <div>
                                                             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{latestPost.title}</h5>
                                                         </div>
@@ -145,6 +272,15 @@ function ProfilePage() {
                         </section>
                     </>
                 )
+                    :
+                    (
+                        <div className='w-full h-screen bg-white/90 flex items-center justify-center dark:bg-black/90'>
+                            <PulseLoader
+                                color={window.localStorage.getItem('theme') === 'light' ? '#000' : '#fff'}
+                                speedMultiplier={0.5}
+                            />
+                        </div>
+                    )
             }
         </>
     )

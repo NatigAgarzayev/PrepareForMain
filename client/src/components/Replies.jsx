@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Moment from 'react-moment'
+import logo from '../images/logo-auth.svg'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeComment, getPostComments, likeTheComment, unlikeTheComment } from '../redux/features/commentSlice'
 import { toast } from 'react-toastify'
@@ -80,7 +81,7 @@ function Replies({ reply, replyId, itemId }) {
                             <div className="flex items-center">
                                 <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white"><img
                                     className="mr-2 w-6 h-6 rounded-full"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
+                                    src={logo}
                                     alt={reply?.username} />
                                     <span onClick={() => navigate(`/profile/${reply.author}`)} className={user?._id === reply.author ? 'bg-yellow-400 rounded-3xl px-3 py-0.5 font-semibold text-gray-600 cursor-pointer text-black/80' : 'font-semibold text-zync-600 cursor-pointer'}>{reply?.username}</span></p>
                                 <p className="text-sm text-gray-600 dark:text-white">
@@ -88,7 +89,7 @@ function Replies({ reply, replyId, itemId }) {
                                 </p>
                             </div>
                             <button id="dropdownComment1Button" data-dropdown-toggle="dropdownComment1"
-                                className="btn-trigger mr-16 inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                                className="btn-trigger mr-5 inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                                 type="button">
                                 <svg className="btn-trigger w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg">

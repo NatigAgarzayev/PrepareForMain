@@ -70,6 +70,9 @@ import WriteEmailPage from './pages/WriteEmailPage'
   ]);
 
 function App() {
+  useEffect(() => {
+    window.sessionStorage.setItem('mute', true)
+  }, [])
   const dispatch = useDispatch()
   if (window.localStorage.getItem('theme') === 'light') {
     document.documentElement.classList.add('light')

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import logo from '../images/logo-auth.svg'
 import Moment from 'react-moment'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeComment, getPostComments, likeTheComment, unlikeTheComment } from '../redux/features/commentSlice'
@@ -104,7 +105,7 @@ function Comment({ comments }) {
                                         <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
                                             <img
                                                 className="mr-2 w-6 h-6 rounded-full"
-                                                src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
+                                                src={logo}
                                                 alt={item?.username} />
                                             <span onClick={() => navigate(`/profile/${item.author}`)} className={user?._id === item.author ? 'bg-yellow-400 rounded-3xl px-3 py-0.5 font-semibold text-gray-600 cursor-pointer dark:text-black/80' : 'font-semibold text-zync-600 cursor-pointer'}>{item?.username}</span></p>
                                         <p className="text-sm text-gray-600 dark:text-white">

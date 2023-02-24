@@ -9,7 +9,6 @@ export const createPost = async (req, res) => {
     try {
         const {title, text} = req.body
         const user = await User.findById(req.userId)
-
         if(req.files){
             let fileName = Date.now().toString() + req.files.image.name
             const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -90,7 +89,6 @@ export const getMyPosts = async (req, res) => {
                 return Post.findById(post._id)
             }),
         )
-        console.log(list)
         res.json(list)
     } catch (error) {
         res.json({message: "Something go wrong!"})
@@ -149,7 +147,6 @@ export const unlikePost = async (req, res) => {
         if(!post){
             return res.json({message: "Post doesn't exist!"})
         }
-        console.log(req.userId, req.params.id)
         await Post.findByIdAndUpdate(req.params.id, {
             $pull: {likes: req.userId}
         })
