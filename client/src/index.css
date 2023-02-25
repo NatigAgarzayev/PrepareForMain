@@ -77,7 +77,7 @@ li{
 
 .fadeIn{
   animation-name: fadeIn;
-  animation-duration: 1s;
+  animation-duration: 0.5s;
 }
 
 .edit__user{
@@ -88,4 +88,8 @@ li{
 .edit__user:hover{
   background-color: rgba(0, 0, 0, 0.7);
   opacity: 1;
+}
+
+.admin__bg{
+  background: url('../src/images/admin-login-bg.jpeg') no-repeat center / cover;
 }

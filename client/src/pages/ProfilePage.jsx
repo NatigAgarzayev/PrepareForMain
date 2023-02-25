@@ -2,17 +2,19 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import Logo from '../images/logo-auth.svg'
 import { checkIsAuth } from '../redux/features/authSlice'
 import { followUser, getUserFollowers, getUserFollowing, unfollowUser } from '../redux/features/followersSlice'
 import { getUserLatestPost } from '../redux/features/postSlice'
-import { changeUserAvatar, getUserAvatar, getUserById, resetUserAvatar } from '../redux/features/profileSlice'
+import { changeUserAvatar, getStatus, getUserAvatar, getUserById, resetUserAvatar, updateStatus } from '../redux/features/profileSlice'
 import PulseLoader from 'react-spinners/PulseLoader'
 function ProfilePage() {
     const navigate = useNavigate()
     const [modal, setModal] = useState(false)
     const [modal2, setModal2] = useState(false)
     const [avatar, setAvatar] = useState(false)
+    const [status, setStatus] = useState(false)
+    const [saveDis, setSaveDis] = useState(true)
+    const [userStatus, setUserStatus] = useState('')
     const [view, setView] = useState(false)
     const [image, setImage] = useState('')
     const { user } = useSelector(state => state.auth)
@@ -20,19 +22,22 @@ function ProfilePage() {
     const { isLoading } = useSelector(state => state.profile)
     const userInfo = useSelector(state => state.profile.user)
     const { followers } = useSelector(state => state.followers)
-    const { status } = useSelector(state => state.followers)
+    const statusToast = useSelector(state => state.followers.status)
     const { id } = useParams()
     const dispatch = useDispatch()
     const { latestPost } = useSelector(state => state.post)
     const userAvatar = useSelector(state => state.profile.avatar)
+    const { statusUser } = useSelector(state => state.profile)
+
     useEffect(() => {
-        if (status) {
-            toast.info(status)
+        if (statusToast) {
+            toast.info(statusToast)
         }
-    }, [status])
+    }, [statusToast])
 
     useEffect(() => {
         dispatch(getUserAvatar(id))
+        dispatch(getStatus(id))
         dispatch(getUserFollowers(id))
         dispatch(getUserFollowing(id))
     }, [id, dispatch])
@@ -100,12 +105,41 @@ function ProfilePage() {
         await dispatch(resetUserAvatar(id))
         dispatch(getUserAvatar(id))
     }
+    const handleStatus = (status) => {
+        setStatus(true)
+        setUserStatus(status)
+    }
+
+    const saveStatus = async () => {
+        if (userStatus.trim() === '') {
+            toast.warning('This field is required!')
+            return
+        }
+        let status = userStatus
+        try {
+            setStatus(false)
+            await dispatch(updateStatus({ id, status }))
+            dispatch(getStatus(id))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const statusInputHandler = (e) => {
+        setUserStatus(e.target.value)
+        if (e.target.value === statusUser) {
+            setSaveDis(true)
+        }
+        else {
+            setSaveDis(false)
+        }
+    }
 
     return (
         <>
             {
                 avatar && (
-                    <div className='absolute z-30 w-full h-screen bg-black/20 flex items-center justify-center'>
+                    <div className=' absolute z-30 w-full h-screen bg-black/20 flex items-center justify-center'>
                         <div id="popup-modal" tabIndex="-1" className="absolute flex items-center justify-center">
                             <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                                 <button onClick={() => setAvatar(false)} type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="popup-modal">
@@ -314,38 +348,58 @@ function ProfilePage() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="text-center mt-8 pb-10">
+                                        <div className="text-center mt-8">
+                                            {
+                                                userInfo?.role === 'ADMIN' ? (
+                                                    <sup className='text-sm font-light uppercase text-gray-900 dark:text-white '>administrator</sup>
+                                                )
+                                                    :
+                                                    (
+                                                        <sup className='text-sm font-light uppercase text-gray-900 dark:text-white '>user</sup>
+                                                    )
+                                            }
                                             <h3 className="text-4xl font-semibold leading-normal text-blueGray-700 mb-2 dark:text-white">
                                                 {userInfo?.username}
                                             </h3>
-                                            <div onClick={() => { navigator.clipboard.writeText(`${userInfo?.email}`); toast.success('Copied!') }} className="text-sm cursor-pointer leading-normal mt-5 mb-2 text-blueGray-400 font-bold uppercase dark:text-white/90">
-                                                <p className='text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase dark:text-white/90'>{userInfo?.email}</p>
-                                                <sub>Click to copy</sub>
+                                            <div className={(user?._id === id || user?.role === 'ADMIN') ? 'cursor-pointer w-[500px] mx-auto text-center' : ' w-[500px] mx-auto text-center'} onClick={(user?._id === id || user?.role === 'ADMIN') && (() => handleStatus(statusUser))}>
+                                                <p className='dark:text-white/90'>{statusUser}</p>
                                             </div>
-                                            <div className="text-2xl text-start ml-20 py-10 leading-normal mt-0 mb-2 font-bold capitalize dark:text-white">
-                                                Last update
-                                                {
-                                                    latestPost?._id ? (<div className="max-w-sm mt-5 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                                                        <div>
-                                                            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{latestPost.title}</h5>
-                                                        </div>
-                                                        <p className="mb-3 h-5 text-[14px] font-normal overflow-hidden text-ellipsis text-gray-700 dark:text-gray-400">{latestPost.text}</p>
-                                                        <div onClick={() => navigate(`/${latestPost._id}`)} className="inline-flex items-center px-3 py-2 cursor-pointer text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                            Read more
-                                                            <svg aria-hidden="true" className="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
-                                                        </div>
-                                                    </div>)
-                                                        :
-                                                        user?._id === id ?
-                                                            (<div div className='flex gap-4 items-center'>
-                                                                <div className='text-lg text-slate-600 dark:text-white'>Let's create youe first post</div>
-                                                                <button onClick={() => navigate('/new')} className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create</button>
-                                                            </div>)
+
+                                            <div className='flex gap-10 pt-10'>
+                                                <div className="text-2xl flex-1 text-start py-10 leading-normal mt-0 mb-2 font-bold capitalize dark:text-white">
+                                                    Last update
+                                                    {
+                                                        latestPost?._id ? (<div className="flex items-center justify-around mt-5 h-[120px] p-6 border border-gray-200 rounded-lg shadow">
+                                                            <div>
+                                                                <div>
+                                                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{latestPost.title}</h5>
+                                                                </div>
+                                                                <p className="mb-3 h-5 text-[14px] font-normal overflow-hidden text-ellipsis text-gray-700 dark:text-gray-400">{latestPost.text}</p>
+                                                            </div>
+                                                            <div onClick={() => navigate(`/${latestPost._id}`)} className="inline-flex items-center px-3 py-2 cursor-pointer text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                                Go to Post
+                                                                <svg aria-hidden="true" className="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+                                                            </div>
+                                                        </div>)
                                                             :
-                                                            (<div className='flex gap-4 items-center'>
-                                                                <div className='text-lg text-slate-600 normal-case dark:text-white/90'><span className='font-bold text-black capitalize dark:text-white'>{userInfo?.username || 'This user'}</span> doesn't have any posts!</div>
-                                                            </div>)
-                                                }
+                                                            user?._id === id ?
+                                                                (<div div className='flex justify-center gap-4 items-center border border-gray-200 h-[120px] p-6 mt-5 rounded-lg'>
+                                                                    <div className='text-lg text-slate-600 dark:text-white'>Let's create youe first post</div>
+                                                                    <button onClick={() => navigate('/new')} className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create</button>
+                                                                </div>)
+                                                                :
+                                                                (<div className='flex justify-center gap-4 items-center border border-gray-200 h-[120px] p-6 mt-5 rounded-lg'>
+                                                                    <div className='text-lg text-slate-600 normal-case dark:text-white/90'><span className='font-bold text-black capitalize dark:text-white'>{userInfo?.username || 'This user'}</span> doesn't have any posts!</div>
+                                                                </div>)
+                                                    }
+                                                </div>
+                                                <div className='flex-1 text-2xl text-start py-10 leading-normal mt-0 mb-2 font-bold capitalize dark:text-white'>
+                                                    Contact
+                                                    <div onClick={() => { navigator.clipboard.writeText(`${userInfo?.email}`); toast.success('Copied!') }} className="flex items-center min-w-full justify-around text-sm border border-gray-200 h-[120px] p-6 rounded-lg shadow text-center max-w-fit cursor-pointer leading-normal mt-5 mb-2 text-blueGray-400 font-bold uppercase dark:text-white/90">
+                                                        <p className='text-lg leading-normal mt-0 text-blueGray-400 font-bold uppercase dark:text-white/90'>{userInfo?.email}</p>
+                                                        <sub>Click to copy</sub>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -363,6 +417,28 @@ function ProfilePage() {
                             />
                         </div>
                     )
+            }
+            {
+                status && (
+                    <div className="fadeIn absolute z-30 w-full h-screen top-0 left-0 bg-black/20">
+                        <div className="absolute w-[400px] bg-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg shadow dark:bg-gray-700">
+                            <button onClick={() => { setStatus(false); setSaveDis(true) }} type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="authentication-modal">
+                                <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+                            </button>
+                            <div className="px-6 py-6 lg:px-8">
+                                <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">Submit your status</h3>
+                                <form className="space-y-6" action="#">
+                                    <div>
+                                        <label htmlFor="status" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your status</label>
+                                        <textarea value={userStatus} onChange={(e) => statusInputHandler(e)} maxLength={86} placeholder="Max 86 letters...." id="status" className="bg-gray-50 resize-none outline-none h-20 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"></textarea>
+                                    </div>
+                                    <button disabled={saveDis ? true : false} onClick={saveStatus} type="button" className="disabled:bg-blue-400 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                )
             }
         </>
     )

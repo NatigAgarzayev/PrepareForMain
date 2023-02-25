@@ -97,7 +97,7 @@ function Navbar() {
                                             </svg>
                                             <span className="absolute animate-ping inline-flex rounded-full top-[7.2px] right-[11.5px] h-[10px] w-[10px] bg-sky-500"></span>
                                         </div>
-                                        <div className="menu__btn md:order-2 relative">
+                                        <div className="menu__btn md:order-2 relative z-20">
                                             <button type="button" className=" w-14 h-14 flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 ring-2 ring-gray-300" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
                                                 <img className="w-14 h-14 rounded-full object-cover" src={`http://localhost:4444/${avatar}`} alt="nf" />
                                             </button>

@@ -4,6 +4,7 @@ import axios from '../../utils/axios'
 const initialState = {
     isLoading: false,
     avatar: '',
+    statusUser: '',
     user: null,
 }
 
@@ -37,6 +38,23 @@ export const resetUserAvatar = createAsyncThunk('profile/resetUserAvatar', async
 export const getUserAvatar = createAsyncThunk('profile/getUserAvatar', async(id) => {
     try {
         const {data} = await axios.get(`/profile/avatar/${id}`, id)
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+export const updateStatus = createAsyncThunk('profile/updateStatus', async({id, status}) => {
+    try {
+        const {data} = await axios.post(`/profile/status/${id}`, {id, status})
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+})
+export const getStatus = createAsyncThunk('profile/getStatus', async(id) => {
+    try {
+        const {data} = await axios.get(`/profile/status/${id}`, id)
         return data
     } catch (error) {
         console.log(error)
@@ -86,6 +104,25 @@ export const profileSlice = createSlice({
             state.avatar = action.payload
         },
         [resetUserAvatar.rejected]: (state) => {
+            state.isLoading = false
+        },
+        [updateStatus.pending]: (state) => {
+            state.isLoading = true
+        },
+        [updateStatus.fulfilled]: (state) => {
+            state.isLoading = false
+        },
+        [updateStatus.rejected]: (state) => {
+            state.isLoading = false
+        },
+        [getStatus.pending]: (state) => {
+            state.isLoading = true
+        },
+        [getStatus.fulfilled]: (state, action) => {
+            state.isLoading = false
+            state.statusUser = action.payload
+        },
+        [getStatus.rejected]: (state) => {
             state.isLoading = false
         },
     }

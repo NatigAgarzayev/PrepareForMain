@@ -1,21 +1,16 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function FAQ() {
+    const navigate = useNavigate()
     return (
         <div>
             <section
-                x-data="
-   {
-   openFaq1: false, 
-   openFaq2: false, 
-   openFaq3: false, 
-   openFaq4: false, 
-   openFaq5: false, 
-   openFaq6: false
-   }
-   "
                 className="relative z-20 h-screen overflow-hidden bg-white pt-5 pb-10 dark:bg-gray-800"
             >
+                <button onClick={() => navigate('/')} type="button" className="absolute z-20 left-10 top-10 text-slate-500 border border-slate-500 hover:bg-slate-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800">
+                    <svg aria-hidden="true" className="rotate-180 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+                </button>
                 <div className="container mx-auto">
                     <div className="-mx-4 flex flex-wrap">
                         <div className="w-full px-4">

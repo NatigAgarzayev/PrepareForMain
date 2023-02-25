@@ -73,3 +73,33 @@ export const resetAvatar = async(req, res) => {
         res.json({message: "Problem with reset avatar!"})
     }
 }
+
+export const changeStatus = async(req, res) => {
+    try {
+        const {id, status} = req.body
+        console.log(id, status)
+        const user = await User.findById(req.params.id)
+        if(!user){
+            return res.json({message: "User doesn't exist!"})
+        }
+        await User.findByIdAndUpdate(req.params.id, {
+            status: status
+        })
+        res.json(status)
+    } catch (error) {
+        res.json({message: "Problem with change status!"})
+    }
+}
+
+export const getStatus = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id)
+        if(!user){
+            return res.json({message: "User doesn't exist!"})
+        }
+        const userStatus = user.status
+        res.json(userStatus)
+    } catch (error) {
+        res.json({message: "Problem with getting user status!"})
+    }
+}

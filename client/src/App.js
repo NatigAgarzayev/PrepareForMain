@@ -19,6 +19,7 @@ import ProfilePage from './pages/ProfilePage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import WriteEmailPage from './pages/WriteEmailPage'
 import FAQ from './pages/FAQ';
+import AdminAuth from './pages/AdminAuth';
 
 
  const router = createBrowserRouter([
@@ -71,6 +72,10 @@ import FAQ from './pages/FAQ';
     {
       path: "/faq",
       element: <FAQ />
+    },
+    {
+      path: "/admin",
+      element: <AdminAuth />
     }
   ]);
 
@@ -92,7 +97,7 @@ function App() {
   return (
     <>
         <RouterProvider router={router} />
-        <ToastContainer autoClose={1500} theme="dark" position='top-center'/>
+        <ToastContainer autoClose={1500} theme={window.localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'} position='top-center'/>
     </>
   )
 }
