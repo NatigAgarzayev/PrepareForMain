@@ -42,6 +42,20 @@ function SidebarRight({ popularPosts }) {
                         }
                     </ul>
                 </div>
+                <ul className="absolute bottom-40 px-10 flex flex-wrap gap-5 text-gray-900 dark:text-white/90">
+                    <li className='hover:underline'>
+                        <Link to={'/'}>Help</Link >
+                    </li>
+                    <li className='hover:underline'>
+                        <Link to={'/'}>Contact</Link >
+                    </li>
+                    <li className='hover:underline'>
+                        <Link to={'/faq'}>FAQ</Link >
+                    </li>
+                    <li className='hover:underline'>
+                        <Link to={'/faq'}>Privacy Policy</Link >
+                    </li>
+                </ul>
             </div>
         </div>
     )

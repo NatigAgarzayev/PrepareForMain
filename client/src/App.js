@@ -18,6 +18,7 @@ import EditPostPage from './pages/EditPostPage'
 import ProfilePage from './pages/ProfilePage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import WriteEmailPage from './pages/WriteEmailPage'
+import FAQ from './pages/FAQ';
 
 
  const router = createBrowserRouter([
@@ -66,6 +67,10 @@ import WriteEmailPage from './pages/WriteEmailPage'
     {
       path: "/reset/:token",
       element: <ResetPasswordPage />,
+    },
+    {
+      path: "/faq",
+      element: <FAQ />
     }
   ]);
 
