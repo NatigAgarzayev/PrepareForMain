@@ -11,10 +11,12 @@ export const doFollow = async(req, res) => {
         const followerInfo = {
             user: me._id,
             username: me.username,
+            icon: me.avatar
         }
         const followingInfo = {
             user: user._id,
             username: user.username,
+            icon: user.avatar
         }
         const followers = await User.findByIdAndUpdate(req.params.id, {
             $push: {followers: followerInfo}

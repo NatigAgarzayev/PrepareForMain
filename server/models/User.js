@@ -8,12 +8,14 @@ const UserSchema = new Schema({
         {
             user: { type: mongoose.Schema.Types.ObjectId, ref: "User"},
             username: {type: String},
+            icon: {type: String},
         }
     ],
     following: [
         {
             user: { type: mongoose.Schema.Types.ObjectId, ref: "User"},
             username: {type: String},
+            icon: {type: String},
         }
     ],
     posts: [{

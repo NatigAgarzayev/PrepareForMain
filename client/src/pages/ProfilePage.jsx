@@ -154,10 +154,10 @@ function ProfilePage() {
                                         {
                                             followers.length > 0 ? followers.map((follower, index) => (
                                                 <li key={index} className="py-3 sm:py-4">
-                                                    <div className="flex items-center space-x-4">
-                                                        <div className="flex-shrink-0">
-                                                            <img className="w-8 h-8 rounded-full" src={Logo} alt="Neil" />
-                                                        </div>
+                                                    <div className="flex items-center space-x-4 ">
+                                                        {/* <div className="flex-shrink-0">
+                                                            <img className="w-8 h-8 object-cover rounded-full" src={`http://localhost:4444/${follower.icon}`} alt="Neil" />
+                                                        </div> */}
                                                         <div className="flex-1 min-w-0 hover: cursor-pointer">
                                                             <p onClick={() => { navigate(`/profile/${follower.user}`); setModal(false) }} className="text-sm font-medium text-gray-900 truncate dark:text-white">
                                                                 {follower.username}
@@ -203,13 +203,13 @@ function ProfilePage() {
                                     <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                                         {
                                             userInfo?.following.length > 0 ? userInfo?.following.map((following, index) => (
-                                                <li key={index} className="py-3 sm:py-4">
+                                                <li key={index} className="py-3 px-3 sm:py-4">
                                                     <div className="flex items-center space-x-4">
-                                                        <div className="flex-shrink-0">
-                                                            <img className="w-8 h-8 rounded-full" src={Logo} alt="Neil" />
-                                                        </div>
+                                                        {/* <div className="flex-shrink-0">
+                                                            <img className="w-8 h-8 object-cover rounded-full" src={`http://localhost:4444/${following.icon}`} alt="Neil" />
+                                                        </div> */}
                                                         <div className="flex-1 min-w-0 hover: cursor-pointer">
-                                                            <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                            <p className="text-xl font-medium text-gray-900 truncate dark:text-white">
                                                                 {following.username}
                                                             </p>
                                                         </div>
@@ -257,7 +257,7 @@ function ProfilePage() {
                         <section className=" relative z-20 pt-16 h-[50vh] bg-slate-200 dark:bg-slate-600">
                             <div className="container mx-auto px-4">
                                 <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64 dark:bg-slate-700">
-                                    <button onClick={() => navigate(-1)} type="button" className="absolute mt-5 ml-5 mb-5 text-slate-500 border border-slate-500 hover:bg-slate-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800">
+                                    <button onClick={() => navigate('/')} type="button" className="absolute mt-5 ml-5 mb-5 text-slate-500 border border-slate-500 hover:bg-slate-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800">
                                         <svg aria-hidden="true" className="rotate-180 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
                                     </button>
                                     <div className="px-6">

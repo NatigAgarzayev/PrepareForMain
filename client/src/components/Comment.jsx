@@ -104,10 +104,10 @@ function Comment({ comments }) {
                                 <footer className="flex justify-between items-center mb-2">
                                     <div className="flex items-center">
                                         <p onClick={() => navigate(`/profile/${item.author}`)} className="inline-flex cursor-pointer items-center mr-3 text-sm text-gray-900 dark:text-white">
-                                            {/* <img
+                                            <img
                                                 className="mr-2 w-10 h-10 object-cover rounded-full"
-                                                src={`http://localhost:4444/${user.avatar}`}
-                                                alt={item?.username} /> */}
+                                                src={`http://localhost:4444/${item.icon}`}
+                                                alt={item?.username} />
                                             <span className={user?._id === item.author ? 'bg-yellow-400 rounded-3xl px-3 py-0.5 font-semibold text-gray-600 cursor-pointer dark:text-black/80' : 'border rounded-3xl px-3 py-0.5 font-semibold text-zync-600 cursor-pointer'}>{item?.username}</span>
                                         </p>
                                         <p className="text-sm text-gray-600 dark:text-white">

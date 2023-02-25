@@ -14,6 +14,7 @@ export const createComment = async (req, res) => {
             username: user.username,
             comment,
             parentId,
+            icon: user.avatar,
             author: req.userId,
         })
         await newComment.save()

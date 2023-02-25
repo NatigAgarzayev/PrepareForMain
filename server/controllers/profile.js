@@ -13,6 +13,8 @@ export const getUserById = async (req, res) => {
 export const changeAvatar = async (req, res) => {
     try {
         const user = await User.findById(req.userId)
+        const username = user.username
+        const comments = await Comment.find({username})
         if(!user){
             return res.json({message: "User doesn't exist!"})
         }
@@ -21,6 +23,11 @@ export const changeAvatar = async (req, res) => {
         req.files.image.mv(path.join(__dirname, '..', 'uploads', fileName))
         await User.findByIdAndUpdate(req.userId, {
             avatar: fileName
+        })
+        comments.forEach(async (comment) => {
+            await Comment.findByIdAndUpdate(comment._id, {
+                icon: fileName
+            })
         })
         res.json(fileName)
     } catch (error) {
@@ -44,6 +51,8 @@ export const getAvatar = async(req, res) => {
 export const resetAvatar = async(req, res) => {
     try {
         const user = await User.findById(req.userId)
+        const username = user.username
+        const comments = await Comment.find({username})
         if(!user){
             return res.json({message: "User doesn't exist!"})
         }
@@ -51,6 +60,12 @@ export const resetAvatar = async(req, res) => {
 
         await User.findByIdAndUpdate(req.userId, {
             avatar: fileName
+        })
+
+        comments.forEach(async (comment) => {
+            await Comment.findByIdAndUpdate(comment._id, {
+                icon: fileName
+            })
         })
 
         res.json(fileName)
