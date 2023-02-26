@@ -53,26 +53,33 @@ export const likeComment = async (req, res) => {
         if(!comment){
             return res.json({message: "Comment doesn't exist!"})
         }
-        await Comment.findByIdAndUpdate(req.params.id, {
-            $push: {likes: req.userId}
-        })
-        res.json({message: "You liked it!"})
+        const index = comment.likes.includes(req.userId)
+
+        if (!index) {
+            comment.likes.push(req.userId);
+        } else {
+            comment.likes = comment.likes.filter((id) => String(id) !== req.userId);
+        }
+
+
+        const updatedComment = await Comment.findByIdAndUpdate(req.params.id, comment)
+        res.json(updatedComment)
     } catch (error) {
         res.json({message: "Couldn't like the post :("})
     }
 }
 
-export const unlikeComment = async (req, res) => {
-    try {
-        const comment = await Comment.findById(req.params.id)
-        if(!comment){
-            return res.json({message: "Comment doesn't exist!"})
-        }
-        await Comment.findByIdAndUpdate(req.params.id, {
-            $pull: {likes: req.userId}
-        })
-        res.json({message: "You unliked it!"})
-    } catch (error) {
-        res.json({message: "Couldn't like the post :("})
-    }
-}
+// export const unlikeComment = async (req, res) => {
+//     try {
+//         const comment = await Comment.findById(req.params.id)
+//         if(!comment){
+//             return res.json({message: "Comment doesn't exist!"})
+//         }
+//         await Comment.findByIdAndUpdate(req.params.id, {
+//             $pull: {likes: req.userId}
+//         })
+//         res.json({message: "You unliked it!"})
+//     } catch (error) {
+//         res.json({message: "Couldn't like the post :("})
+//     }
+// }

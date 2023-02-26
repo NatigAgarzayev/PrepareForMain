@@ -10,7 +10,6 @@ function SidebarRight({ popularPosts }) {
     useEffect(() => {
         dispatch(getUserFollowing(user?._id))
     }, [dispatch, user?._id])
-    const { limitedFollowing } = useSelector(state => state.followers)
     const navigate = useNavigate()
     return (
         <div className="relative pt-20 flex flex-col h-screen bg-white shadow w-[300px] dark:bg-gray-700">
@@ -23,12 +22,12 @@ function SidebarRight({ popularPosts }) {
                     <h2 className="ml-10 text-xl font-light uppercase text-black dark:text-white">Popular Posts</h2>
                 </div>
                 <div className="flex-1">
-                    <ul className="pt-2 pb-4 space-y-1 text-sm">
+                    <ul className="pt-2 pb-4 text-sm">
                         {
                             popularPosts
                                 ? (popularPosts.map(item => (
                                     <Link key={item._id} to={`/${item._id}`} >
-                                        <li className="animate-[fadeIn_1s_ease-in-out] rounded-sm hover:bg-blue-600/20 border-r-4 border-white hover:border-r-4 hover:border-indigo-500 dark:border-white dark:hover:bg-white/20">
+                                        <li className="mt-1 animate-[fadeIn_1s_ease-in-out] rounded-sm hover:bg-blue-600/20 border-r-4 border-white hover:border-r-4 hover:border-indigo-500 dark:border-white dark:hover:bg-white/20">
                                             <div
                                                 to="/"
                                                 className="flex items-center p-2 pl-10 space-x-3 rounded-md"

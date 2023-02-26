@@ -7,7 +7,7 @@ import Posts from '../components/Posts'
 import { Helmet } from "react-helmet";
 function MainPage() {
     const dispatch = useDispatch()
-    const [sorted, setSorted] = useState(false)
+    const [sorted, setSorted] = useState(true)
     let { posts, popularPosts } = useSelector(state => state.post)
     useEffect(() => {
         dispatch(getAllPosts())
@@ -43,9 +43,13 @@ function MainPage() {
                     {
                         !sorted
                             ?
-                            <Posts posts={posts} />
+                            posts && posts.map(post => (
+                                <Posts item={post} />
+                            ))
                             :
-                            <Posts posts={posts = posts.slice().sort((a, b) => b.views - a.views)} />
+                            posts && posts.slice().sort((a, b) => b.views - a.views).map(post => (
+                                <Posts item={post} />
+                            ))
                     }
                 </div>
             </div>

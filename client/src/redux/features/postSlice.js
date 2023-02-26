@@ -53,15 +53,6 @@ export const likeThePost = createAsyncThunk('post/likeThePost', async (id) => {
     }
 })
 
-export const unlikeThePost = createAsyncThunk('post/unlikeThePost', async(id) => {
-    try {
-        const {data} = await axios.delete(`/posts/unlike/${id}`, id)
-        return data
-    } catch (error) {
-        console.log(error)
-    }
-})
-
 export const postSlice = createSlice({
     name: 'post',
     initialState,
@@ -107,15 +98,6 @@ export const postSlice = createSlice({
             state.loading = false
         },
         [likeThePost.rejected]: (state) => {
-            state.loading = false
-        },
-        [unlikeThePost.pending]: (state) => {
-            state.loading = false
-        },
-        [unlikeThePost.fulfilled]: (state) => {
-            state.loading = false
-        },
-        [unlikeThePost.rejected]: (state) => {
             state.loading = false
         },
         [getUserLatestPost.pending]: (state) => {

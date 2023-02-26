@@ -10,6 +10,7 @@ import {
   import Layout from './components/Layout'
 import MainPage from './pages/MainPage'
 import PostsPage from './pages/PostsPage'
+import UserPostsPage from './pages/UserPostsPage'
 import PostPage from './pages/PostPage'
 import AddPostPage from './pages/AddPostPage'
 import RegisterPage from './pages/RegisterPage'
@@ -20,7 +21,7 @@ import ResetPasswordPage from './pages/ResetPasswordPage';
 import WriteEmailPage from './pages/WriteEmailPage'
 import FAQ from './pages/FAQ';
 import AdminAuth from './pages/AdminAuth';
-
+import { getAdmin } from './redux/features/adminSlice';
 
  const router = createBrowserRouter([
     {
@@ -34,6 +35,10 @@ import AdminAuth from './pages/AdminAuth';
         {
           path: "/posts",
           element: <PostsPage />
+        },
+        {
+          path: "/posts/:id",
+          element: <UserPostsPage />
         },
         {
           path: "/:id",
@@ -75,7 +80,11 @@ import AdminAuth from './pages/AdminAuth';
     },
     {
       path: "/admin",
-      element: <AdminAuth />
+      element: <AdminAuth />,
+    },
+    {
+      path: "/admin/dashboard",
+      element: <div>Hello admin</div>
     }
   ]);
 
@@ -92,6 +101,10 @@ function App() {
   }
   useEffect(() => {
     dispatch(getMe())
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(getAdmin())
   }, [dispatch])
 
   return (

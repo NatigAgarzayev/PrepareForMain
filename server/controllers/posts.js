@@ -95,6 +95,21 @@ export const getMyPosts = async (req, res) => {
     }
 }
 
+//Get users posts
+export const getUsersPosts = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id)
+        const list = await Promise.all(
+            user.posts.map(post => {
+                return Post.findById(post._id)
+            }),
+        )
+        res.json(list)
+    } catch (error) {
+        res.json({message: "Something go wrong!"})
+    }
+}
+
 //Delete post
 export const removePost = async (req, res) => {
     try {
@@ -132,27 +147,18 @@ export const likePost = async (req, res) => {
         if(!post){
             return res.json({message: "Post doesn't exist!"})
         }
-        await Post.findByIdAndUpdate(req.params.id, {
-            $push: {likes: req.userId}
-        })
-        res.json({message: "You liked it!"})
+        const index = post.likes.includes(req.userId)
+
+        if (!index) {
+            post.likes.push(req.userId);
+        } else {
+            post.likes = post.likes.filter((id) => String(id) !== req.userId);
+        }
+
+        const updatedPost = await Post.findByIdAndUpdate(req.params.id, post)
+        res.json(updatedPost)
     } catch (error) {
         res.json({message: "Couldn't like the post :("})
-    }
-}
-
-export const unlikePost = async (req, res) => {
-    try {
-        const post = await Post.findById(req.params.id)
-        if(!post){
-            return res.json({message: "Post doesn't exist!"})
-        }
-        await Post.findByIdAndUpdate(req.params.id, {
-            $pull: {likes: req.userId}
-        })
-        res.json({message: "You unliked it!"})
-    } catch (error) {
-        res.json({message: "Couldn't unlike the post :("})
     }
 }
 

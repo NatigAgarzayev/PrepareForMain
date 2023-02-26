@@ -342,7 +342,7 @@ function ProfilePage() {
                                                     <div onClick={handleModal2} className="cursor-pointer mr-4 p-3 text-center">
                                                         <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600 dark:text-white">{userInfo?.following.length}</span><span className="text-sm text-blueGray-400 dark:text-white">Followings</span>
                                                     </div>
-                                                    <div className="mr-4 p-3 text-center">
+                                                    <div onClick={() => navigate(`/posts/${id}`)} className="cursor-pointer mr-4 p-3 text-center">
                                                         <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600 dark:text-white">{userInfo?.posts.length}</span><span className="text-sm text-blueGray-400 dark:text-white">Posts</span>
                                                     </div>
                                                 </div>
@@ -361,7 +361,7 @@ function ProfilePage() {
                                             <h3 className="text-4xl font-semibold leading-normal text-blueGray-700 mb-2 dark:text-white">
                                                 {userInfo?.username}
                                             </h3>
-                                            <div className={(user?._id === id || user?.role === 'ADMIN') ? 'cursor-pointer w-[500px] mx-auto text-center' : ' w-[500px] mx-auto text-center'} onClick={(user?._id === id || user?.role === 'ADMIN') && (() => handleStatus(statusUser))}>
+                                            <div className={(user?._id === id || user?.role === 'ADMIN') ? 'cursor-pointer w-[500px] mx-auto text-center' : ' w-[500px] mx-auto text-center'} onClick={(user?._id === id || user?.role === 'ADMIN') ? (() => handleStatus(statusUser)) : null}>
                                                 <p className='dark:text-white/90'>{statusUser}</p>
                                             </div>
 
@@ -383,19 +383,19 @@ function ProfilePage() {
                                                         </div>)
                                                             :
                                                             user?._id === id ?
-                                                                (<div div className='flex justify-center gap-4 items-center border border-gray-200 h-[120px] p-6 mt-5 rounded-lg'>
+                                                                (<div div className='flex justify-center gap-4 shadow items-center border border-gray-200 h-[120px] p-6 mt-5 rounded-lg'>
                                                                     <div className='text-lg text-slate-600 dark:text-white'>Let's create youe first post</div>
                                                                     <button onClick={() => navigate('/new')} className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create</button>
                                                                 </div>)
                                                                 :
-                                                                (<div className='flex justify-center gap-4 items-center border border-gray-200 h-[120px] p-6 mt-5 rounded-lg'>
+                                                                (<div className='flex justify-center gap-4 shadow items-center border border-gray-200 h-[120px] p-6 mt-5 rounded-lg'>
                                                                     <div className='text-lg text-slate-600 normal-case dark:text-white/90'><span className='font-bold text-black capitalize dark:text-white'>{userInfo?.username || 'This user'}</span> doesn't have any posts!</div>
                                                                 </div>)
                                                     }
                                                 </div>
                                                 <div className='flex-1 text-2xl text-start py-10 leading-normal mt-0 mb-2 font-bold capitalize dark:text-white'>
                                                     Contact
-                                                    <div onClick={() => { navigator.clipboard.writeText(`${userInfo?.email}`); toast.success('Copied!') }} className="flex items-center min-w-full justify-around text-sm border border-gray-200 h-[120px] p-6 rounded-lg shadow text-center max-w-fit cursor-pointer leading-normal mt-5 mb-2 text-blueGray-400 font-bold uppercase dark:text-white/90">
+                                                    <div onClick={() => { navigator.clipboard.writeText(`${userInfo?.email}`); toast.success('Copied!') }} className="flex flex-col gap-0 items-center min-w-full justify-around text-sm border border-gray-200 h-[120px] p-6 rounded-lg shadow text-center max-w-fit cursor-pointer leading-normal mt-5 mb-2 text-blueGray-400 font-bold uppercase dark:text-white/90">
                                                         <p className='text-lg leading-normal mt-0 text-blueGray-400 font-bold uppercase dark:text-white/90'>{userInfo?.email}</p>
                                                         <sub>Click to copy</sub>
                                                     </div>
@@ -432,7 +432,7 @@ function ProfilePage() {
                                         <label htmlFor="status" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your status</label>
                                         <textarea value={userStatus} onChange={(e) => statusInputHandler(e)} maxLength={86} placeholder="Max 86 letters...." id="status" className="bg-gray-50 resize-none outline-none h-20 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"></textarea>
                                     </div>
-                                    <button disabled={saveDis ? true : false} onClick={saveStatus} type="button" className="disabled:bg-blue-400 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
+                                    <button disabled={saveDis ? true : false} onClick={saveStatus} type="button" className="disabled:bg-blue-400 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 dark:disabled:bg-blue-400">Save</button>
                                 </form>
                             </div>
                         </div>

@@ -211,7 +211,13 @@ function PostPage() {
                                             </button>
                                         </form>
                                     </div>
-                                    <div className='pt-10 pb-20'><Comment comments={comments} /></div>
+                                    <div className='pt-10 pb-20'>
+                                        {
+                                            comments && comments.map(comment => (
+                                                <Comment item={comment} />
+                                            ))
+                                        }
+                                    </div>
                                 </div>
                             </>
                         )

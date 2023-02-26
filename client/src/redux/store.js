@@ -5,6 +5,7 @@ import postReducer from './features/postSlice'
 import profileReducer from './features/profileSlice'
 import followersReducer from './features/followersSlice'
 import resetReducer from './features/resetSlice'
+import adminReducer from './features/adminSlice'
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -13,5 +14,6 @@ export const store = configureStore({
     profile: profileReducer,
     followers: followersReducer,
     reset: resetReducer,
+    admin: adminReducer
   },
 })
