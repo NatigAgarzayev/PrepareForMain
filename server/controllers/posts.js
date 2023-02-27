@@ -51,7 +51,8 @@ export const createPost = async (req, res) => {
 //Get All
 export const getAll = async (req, res) => {
     try {
-        const posts = await Post.find().sort('-createdAt')
+        let n = 10;
+        const posts = await Post.find().limit(n).sort('-createdAt')
         const popularPosts = await Post.find().limit(5).sort('-views')
 
         if(!posts){
@@ -115,7 +116,7 @@ export const removePost = async (req, res) => {
     try {
         const post = await Post.findByIdAndDelete(req.params.id)
         if(!post){
-            return res.json({message: "The question doesn't exist!"})
+            return res.json({message: "The post doesn't exist!"})
         }
         await User.findByIdAndUpdate(req.userId, {
             $pull: {posts: req.params.id}

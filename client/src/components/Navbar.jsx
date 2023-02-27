@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Settings from './Settings'
 import { getUserAvatar } from '../redux/features/profileSlice'
+import { getUserNotification, readNotificationByUser } from '../redux/features/notificationsSlice'
 
 
 function Navbar() {
@@ -19,8 +20,11 @@ function Navbar() {
     const [isSearch, setIsSearch] = useState(false)
     const { avatar } = useSelector(state => state.profile)
     const { user } = useSelector(state => state.auth)
+    const { notifications } = useSelector(state => state.notification)
+    const [not, setNot] = useState(false)
     useEffect(() => {
         dispatch(getUserAvatar(user?._id))
+        dispatch(getUserNotification())
     }, [user?._id, dispatch])
 
     const logoutHandle = () => {
@@ -41,6 +45,11 @@ function Navbar() {
         else {
             setIsSearch(true)
         }
+    }
+
+    const handleRead = async (id) => {
+        await dispatch(readNotificationByUser(id))
+        dispatch(getUserNotification())
     }
 
 
@@ -71,7 +80,7 @@ function Navbar() {
                                                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                                     <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                                                 </div>
-                                                <input value={search} onChange={handleSearch} type="text" id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Posts" autoComplete="off" />
+                                                <input value={search} onChange={handleSearch} type="text" id="default-search" className="block md:w-[300px] lg:w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Posts" autoComplete="off" />
                                                 <ul className={isSearch ? "border overflow-hidden rounded-lg w-full absolute bg-white dark:bg-gray-600" : "hidden"}>
                                                     {
                                                         isSearch &&
@@ -79,7 +88,7 @@ function Navbar() {
                                                             .filter(item => item.title.toLowerCase().includes(search.toLowerCase())).length !== 0 ? posts
                                                                 .filter(item => item.title.toLowerCase().includes(search.toLowerCase()))
                                                                 .map(item => (
-                                                                    <li onClick={() => { navigate(`/${item._id}`); setSearch(''); setIsSearch(false) }} className='w-full p-5 bg-slate-200 cursor-pointer font-semibold hover:bg-slate-300 dark:bg-slate-700 text-white dark:hover:bg-slate-800' key={item._id}>{item.title}</li>
+                                                                    <li key={item?._id} onClick={() => { navigate(`/${item._id}`); setSearch(''); setIsSearch(false) }} className='w-full p-5 bg-slate-200 cursor-pointer font-semibold hover:bg-slate-300 dark:bg-slate-700 text-white dark:hover:bg-slate-800'>{item.title}</li>
                                                                 ))
                                                             :
                                                             <div className='text-center text-xl py-5 text-slate-400'>Not found</div>)
@@ -89,13 +98,49 @@ function Navbar() {
                                         </div>
                                     </div>
                                     <div className='z-10 flex gap-10 items-center'>
-                                        <div className='relative hover:bg-gray-200/80 cursor-pointer rounded-full w-[40px] h-[40px] flex items-center justify-center'>
-                                            <svg width="22" height="30" viewBox="0 0 22 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M16 15C16 13.4087 15.3679 11.8826 14.2426 10.7574C13.1174 9.63214 11.5913 9 10 9C8.4087 9 6.88258 9.63214 5.75736 10.7574C4.63214 11.8826 4 13.4087 4 15C4 22 1 24 1 24H19C19 24 16 22 16 15Z" stroke="#808080" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                <path d="M11.73 28C11.5542 28.3031 11.3019 28.5547 10.9982 28.7295C10.6946 28.9044 10.3504 28.9965 10 28.9965C9.64964 28.9965 9.30541 28.9044 9.00179 28.7295C8.69818 28.5547 8.44583 28.3031 8.27002 28" stroke="#808080" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                <circle className="" cx="14.5" cy="7.5" r="6.5" fill="#4E9BB9" stroke="white" strokeWidth="2" />
-                                            </svg>
-                                            <span className="absolute animate-ping inline-flex rounded-full top-[7.2px] right-[11.5px] h-[10px] w-[10px] bg-sky-500"></span>
+                                        <div className='relative'>
+                                            <div onClick={() => setNot(true)} className='relative z-20 hover:bg-gray-200/80 cursor-pointer rounded-full w-[40px] h-[40px] flex items-center justify-center'>
+                                                <svg width="22" height="30" viewBox="0 0 22 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M16 15C16 13.4087 15.3679 11.8826 14.2426 10.7574C13.1174 9.63214 11.5913 9 10 9C8.4087 9 6.88258 9.63214 5.75736 10.7574C4.63214 11.8826 4 13.4087 4 15C4 22 1 24 1 24H19C19 24 16 22 16 15Z" stroke="#808080" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                    <path d="M11.73 28C11.5542 28.3031 11.3019 28.5547 10.9982 28.7295C10.6946 28.9044 10.3504 28.9965 10 28.9965C9.64964 28.9965 9.30541 28.9044 9.00179 28.7295C8.69818 28.5547 8.44583 28.3031 8.27002 28" stroke="#808080" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                    <circle className={notifications?.length > 0 ? null : 'hidden'} cx="14.5" cy="7.5" r="6.5" fill="#4E9BB9" stroke="" strokeWidth="2" />
+                                                </svg>
+                                                <span className={notifications?.length > 0 ? "absolute animate-ping inline-flex rounded-full top-[7.2px] right-[11.5px] h-[10px] w-[10px] bg-sky-500" : 'hidden'}></span>
+                                            </div>
+                                            {
+                                                not && (
+                                                    <>
+                                                        <div onClick={() => setNot(false)} className={not ? 'fixed inset-0 z-20 w-full h-full' : 'hidden fixed inset-0 z-20 w-full h-full'}></div>
+                                                        <div className='fadeIn absolute right-0 max-h-[400px] overflow-y-auto bg-gray-100 border px-5 py-1 z-30 rounded-lg dark:bg-gray-900'>
+                                                            {
+                                                                notifications.length > 0 ? notifications.map(item => (
+                                                                    <div key={item?._id} class="flex my-5 flex-col w-[400px] px-2 py-4 border bg-white shadow-md hover:shodow-lg rounded-2xl dark:bg-gray-800">
+                                                                        <div class="flex items-center justify-between">
+                                                                            <div class="flex items-center">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                    class="w-16 h-16 rounded-2xl p-3 border border-blue-100 text-blue-400 bg-blue-50 dark:border-gray-800 dark:text-blue-400 dark:bg-gray-900" fill="none"
+                                                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                                                </svg>
+                                                                                <div class="flex flex-col ml-3">
+                                                                                    <div class="font-medium w-[210px] overflow-hidden text-ellipsis leading-none mb-1 dark:text-gray-100">{item?.title}</div>
+                                                                                    <p class="text-sm w-[210px] overflow-hidden text-ellipsis text-gray-600 leading-none mt-1 dark:text-gray-500">{item?.text}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <button onClick={() => handleRead(item._id)} class="flex-no-shrink bg-emerald-500 px-5 ml-4 py-2 text-sm shadow-sm hover:shadow-lg font-medium tracking-wider border-2 border-emerald-500 text-white rounded-full">Mark</button>
+                                                                        </div>
+                                                                    </div>
+                                                                ))
+                                                                    :
+                                                                    (
+                                                                        <div className='w-[300px] py-5 text-center text-gray-400 dark:text-white'>There are no notifications yet</div>
+                                                                    )
+                                                            }
+                                                        </div>
+                                                    </>
+                                                )
+                                            }
                                         </div>
                                         <div className="menu__btn md:order-2 relative z-20">
                                             <button type="button" className=" w-14 h-14 flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 ring-2 ring-gray-300" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">

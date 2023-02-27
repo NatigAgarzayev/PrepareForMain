@@ -9,6 +9,8 @@ import profileRoute from './routes/profile.js'
 import followersRoute from './routes/followers.js'
 import resetRoute from './routes/reset.js'
 import adminRoute from './routes/admin.js'
+import notificationRoute from './routes/notifications.js'
+import reportRoute from './routes/reports.js'
 import fileUpload from "express-fileupload"
 import bodyParser from "body-parser"
 const app = express()
@@ -27,6 +29,8 @@ app.use('/api/comments', commentRoute)
 app.use('/api/profile', profileRoute)
 app.use('/api/followers', followersRoute)
 app.use('/api/reset', resetRoute)
+app.use('/api/notification', notificationRoute)
+app.use('/api/report', reportRoute)
 //admin
 app.use('/admin', adminRoute)
 

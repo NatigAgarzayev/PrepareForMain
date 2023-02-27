@@ -22,6 +22,10 @@ import WriteEmailPage from './pages/WriteEmailPage'
 import FAQ from './pages/FAQ';
 import AdminAuth from './pages/AdminAuth';
 import { getAdmin } from './redux/features/adminSlice';
+import AdminDashboardPage from './pages/AdminDashboardPage';
+import AdminLayout from './components/AdminLayout';
+import AdminFormPage from './pages/AdminFormPage';
+import AdminReportsPages from './pages/AdminReportsPages';
 
  const router = createBrowserRouter([
     {
@@ -79,13 +83,28 @@ import { getAdmin } from './redux/features/adminSlice';
       element: <FAQ />
     },
     {
-      path: "/admin",
+      path: "/admin/login",
       element: <AdminAuth />,
     },
     {
-      path: "/admin/dashboard",
-      element: <div>Hello admin</div>
-    }
+      path: "/admin",
+      element: <AdminLayout />,
+      children: [
+        {
+          path: "/admin",
+          element: <AdminDashboardPage />
+        },
+        {
+          path: "/admin/forms",
+          element: <AdminFormPage />
+        },
+        {
+          path: "/admin/reports",
+          element: <AdminReportsPages />
+        }
+      ]
+    },
+    
   ]);
 
 function App() {

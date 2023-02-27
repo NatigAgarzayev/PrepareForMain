@@ -10,12 +10,12 @@ function AdminAuth() {
     const [password, setPassword] = useState('')
     const { status } = useSelector(state => state.admin)
     const isAuthAdmin = useSelector(isAdminHere)
-    console.log(isAuthAdmin)
     useEffect(() => {
         if (status) {
             toast.info(status)
         }
-        if (isAuthAdmin) navigate('dashboard')
+        if (isAuthAdmin) navigate('/admin')
+        // if (!isAuthAdmin) navigate('/admin/login')
     }, [status, isAuthAdmin])
 
     const adminLoginHandler = () => {

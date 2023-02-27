@@ -6,6 +6,7 @@ import { removeComment, getPostComments, likeTheComment } from '../redux/feature
 import { toast } from 'react-toastify'
 import { checkIsAuth } from '../redux/features/authSlice'
 import { createComment } from '../redux/features/commentSlice'
+import { sendUserReport } from '../redux/features/reportSlice'
 function Replies({ reply, replyId, itemId }) {
     const navigate = useNavigate()
     const { id } = useParams()
@@ -16,6 +17,8 @@ function Replies({ reply, replyId, itemId }) {
     const postId = id
     const inp = useRef()
     const [likes, setLikes] = useState(reply?.likes)
+    const [isReport, setIsReport] = useState({ isOpen: false, guilty: '' })
+    const [reportContent, setReportContent] = useState('')
 
     const handleDeleteComment = async (id) => {
         try {
@@ -69,8 +72,64 @@ function Replies({ reply, replyId, itemId }) {
         }
     }
 
+    const handleReport = (id) => {
+        setIsReport({ isOpen: false })
+        const finiteResult = {
+            contentId: id,
+            content: reportContent,
+            by: user?._id,
+            guilty: reply?.author,
+            contentType: 'comment'
+        }
+        dispatch(sendUserReport(finiteResult))
+        toast.info('Thanks for Reporting.')
+    }
+
     return (
         <>
+            {
+                isReport.isOpen && (
+                    <>
+                        <div onClick={() => setIsReport({ isOpen: false })} className="fixed inset-0 z-10 w-full h-full bg-slate-100/30" ></div>
+
+                        <div className="fadeIn absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                            <div className="relative w-[400px] h-full max-w-md md:h-auto">
+                                <div className="relative px-10 bg-white rounded-lg shadow dark:bg-gray-700">
+                                    <button onClick={() => setIsReport({ isOpen: false })} type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="popup-modal">
+                                        <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+                                    </button>
+                                    <fieldset>
+                                        <p class="text-lg mt-5 text-gray-500 text-center font-bold dark:text-white">What problem</p>
+                                        <div class="my-8 space-y-4">
+                                            <div onClick={() => setReportContent("Violent or repulsive content")} class="flex items-center">
+                                                <input id="report-1" name="report-radio" type="radio" class="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+                                                <label for="report-1" class="ml-3 block text-[16px] cursor-pointer font-medium text-gray-700 dark:text-white">Violent or repulsive content</label>
+                                            </div>
+                                            <div onClick={() => setReportContent("Hateful or abusive content")} class="flex items-center">
+                                                <input id="report-2" name="report-radio" type="radio" class="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+                                                <label for="report-2" class="ml-3 block text-[16px] cursor-pointer font-medium text-gray-700 dark:text-white">Hateful or abusive content</label>
+                                            </div>
+                                            <div onClick={() => setReportContent("Harmful or dangerous acts")} class="flex items-center">
+                                                <input id="report-3" name="report-radio" type="radio" class="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+                                                <label for="report-3" class="ml-3 block text-[16px] cursor-pointer font-medium text-gray-700 dark:text-white">Harmful or dangerous acts</label>
+                                            </div>
+                                            <div onClick={() => setReportContent("Spam or misleading")} class="flex items-center">
+                                                <input id="report-4" name="report-radio" type="radio" class="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+                                                <label for="report-4" class="ml-3 block text-[16px] cursor-pointer font-medium text-gray-700 dark:text-white">Spam or misleading</label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <div className="p-6 text-center">
+                                        <button onClick={() => handleReport(reply?._id)} data-modal-hide="popup-modal" type="button" className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                            Send
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )
+            }
             {
                 replyId === itemId && (
                     <article className="relative max-w-[930px] bg-white border-l-2 pl-4 border-gray-200 ml-auto py-6 mb-6 mt-6 text-base dark:bg-gray-800" >
@@ -110,8 +169,9 @@ function Replies({ reply, replyId, itemId }) {
                                         )
                                     }
                                     <li>
-                                        <Link to="/"
-                                            className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Report</Link>
+                                        <div
+                                            onClick={() => setIsReport({ isOpen: true, guilty: reply?._id })}
+                                            className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Report</div>
                                     </li>
                                 </ul>
                             </div>

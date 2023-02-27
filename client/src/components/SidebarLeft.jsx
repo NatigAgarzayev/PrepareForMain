@@ -18,7 +18,7 @@ function SidebarLeft() {
     }
 
     return (
-        <div>
+        <div className='hidden md:block'>
             {
                 isAuth
                     ? (<div className="pt-20 flex flex-col h-screen bg-white shadow w-[300px] dark:bg-gray-700 text-white">
