@@ -53,7 +53,7 @@ function ResetPasswordPage() {
                 <title>New Password</title>
             </Helmet>
             <div className=" container mx-auto">
-                <div className='w-96 py-10 backdrop-blur-lg border-2 rounded-2xl mx-auto'>
+                <div className='w-84 sm:w-96 py-10 backdrop-blur-lg border-2 rounded-2xl mx-auto'>
                     {
                         !isReset ?
                             (

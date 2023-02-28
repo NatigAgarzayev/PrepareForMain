@@ -65,13 +65,13 @@ function ResetPasswordPage() {
                 <title>Reset Password</title>
             </Helmet>
             <div className=" container mx-auto">
-                <div className='w-96 py-16 backdrop-blur-lg border-2 rounded-2xl mx-auto'>
+                <div className='w-84 sm:w-96 py-16 backdrop-blur-lg border-2 rounded-2xl mx-auto'>
                     {
                         !isSuc ?
                             (
                                 <div className='w-80 mx-auto'>
                                     <h1 className='text-2xl sm:text-3xl md:text-4xl font-bold mb-8 text-white'>Your Email</h1>
-                                    <form className='w-full sm:min-w-[330px]' onSubmit={e => e.preventDefault()}>
+                                    <form className='' onSubmit={e => e.preventDefault()}>
                                         <div className='mt-5'>
                                             <label htmlFor="username" className="block mb-2 text-[16px] font-bold text-white/90">Username <span className='text-red-600'>*</span></label>
                                             <div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
 import { checkIsAuth, logout } from '../redux/features/authSlice'
@@ -18,17 +18,17 @@ function SidebarLeft() {
     }
 
     return (
-        <div className='hidden md:block'>
+        <div className=''>
             {
                 isAuth
-                    ? (<div className="pt-20 flex flex-col px-0 h-screen bg-white shadow max-w-[300px] xl:w-[300px] dark:bg-gray-700 text-white">
-                        <div className="space-y-3">
+                    ? (<div className=" flex flex-col justify-center px-0 h-screen bg-white shadow dark:bg-gray-700 text-white">
+                        <div className="space-y-3 flex flex-col items-center text-left">
                             <div className="flex items-center">
                                 <h2 className="ml-4 xl:ml-16 text-xl font-light uppercase text-black dark:text-white">Menu</h2>
                             </div>
-                            <div className="flex-1">
+                            <div className="flex-1 justify-center">
                                 <ul className="pt-2 pb-4 space-y-1 text-sm">
-                                    <li className="rounded-sm hover:bg-blue-600/20 border-l-4 border-white hover:border-l-4 hover:border-indigo-500 dark:border-white dark:hover:bg-white/20">
+                                    <li className="rounded-sm hover:bg-blue-600/20   dark:hover:bg-white/20">
                                         <NavLink
                                             to="/"
                                             className="flex items-center p-2 pl-4 xl:pl-16 space-x-3 rounded-md"
@@ -41,7 +41,7 @@ function SidebarLeft() {
                                             <span className='font-bold text-gray-700 dark:text-white'>Posts</span>
                                         </NavLink>
                                     </li>
-                                    <li onClick={() => setSetting(true)} className="rounded-sm cursor-pointer hover:bg-blue-600/20 border-l-4 border-white hover:border-l-4 hover:border-indigo-500 dark:border-white dark:hover:bg-white/20">
+                                    <li onClick={() => setSetting(true)} className="rounded-sm cursor-pointer hover:bg-blue-600/20   dark:hover:bg-white/20">
                                         <div
 
                                             className="flex items-center p-2 pl-4 xl:pl-16 space-x-3 rounded-md"
@@ -68,7 +68,7 @@ function SidebarLeft() {
                                             <span className='font-bold text-gray-700 dark:text-white'>Settings</span>
                                         </div>
                                     </li>
-                                    <li className="rounded-sm hover:bg-blue-600/20 border-l-4 border-white hover:border-l-4 hover:border-indigo-500 dark:border-white dark:hover:bg-white/20">
+                                    <li className="rounded-sm hover:bg-blue-600/20   dark:hover:bg-white/20">
                                         <NavLink
                                             onClick={handleLogout}
                                             to="/login"
@@ -100,7 +100,7 @@ function SidebarLeft() {
                             </div>
                             <div className="flex-1">
                                 <ul className="pt-2 pb-4 space-y-1 text-sm">
-                                    <li className="rounded-sm hover:bg-blue-600/20 border-l-4 border-white hover:border-l-4 hover:border-indigo-500 dark:border-white dark:hover:bg-white/20">
+                                    <li className="rounded-sm hover:bg-blue-600/20   dark:hover:bg-white/20">
                                         <NavLink
                                             to="/posts"
                                             className="flex items-center p-2 pl-4 xl:pl-16 space-x-3 rounded-md"
@@ -114,7 +114,7 @@ function SidebarLeft() {
                                             <span className='font-bold text-gray-700 dark:text-white'>My Posts</span>
                                         </NavLink>
                                     </li>
-                                    <li onClick={() => setModal(true)} className="flex items-center cursor-pointer rounded-sm hover:bg-blue-600/20 border-l-4 border-white hover:border-l-4 hover:border-indigo-500 dark:border-white dark:hover:bg-white/20">
+                                    <li onClick={() => setModal(true)} className="flex items-center cursor-pointer rounded-sm hover:bg-blue-600/20   dark:hover:bg-white/20">
                                         <div
                                             className="flex items-center p-2 pl-4 xl:pl-16 space-x-3 rounded-md"
                                         >
@@ -177,7 +177,7 @@ function SidebarLeft() {
                             </div>
                             <div className="flex-1">
                                 <ul className="pt-2 pb-4 space-y-1 text-sm">
-                                    <li className="rounded-sm hover:bg-blue-600/20 border-l-4 border-white hover:border-l-4 hover:border-indigo-500 dark:border-white dark:hover:bg-white/20">
+                                    <li className="rounded-sm hover:bg-blue-600/20   dark:hover:bg-white/20">
                                         <Link
                                             to="/login"
                                             className="flex items-center p-2 pl-4 xl:pl-16 space-x-3 rounded-md"
@@ -191,7 +191,7 @@ function SidebarLeft() {
                                             <span className='font-bold text-gray-700 dark:text-white'>Login</span>
                                         </Link>
                                     </li>
-                                    <li className="rounded-sm hover:bg-blue-600/20 border-l-4 border-white hover:border-l-4 hover:border-indigo-500 dark:border-white dark:hover:bg-white/20">
+                                    <li className="rounded-sm hover:bg-blue-600/20   dark:hover:bg-white/20">
                                         <Link
                                             to="/register"
                                             className="flex items-center p-2 pl-4 xl:pl-16 space-x-3 rounded-md"

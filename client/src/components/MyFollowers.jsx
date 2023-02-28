@@ -33,8 +33,8 @@ function MyFollowers() {
                             followers.length > 0 ? followers.map((follower, index) => (
                                 <li key={index} className="py-3 sm:py-4">
                                     <div className="flex items-center space-x-4">
-                                        <div className="flex-shrink-0">
-                                            <img className="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-1.jpg" alt="Neil" />
+                                        <div className="bg-black rounded-full">
+                                            <p className='w-8 h-8 rounded-full text-white uppercase flex items-center justify-center'>{follower?.username.slice(0, 2)}</p>
                                         </div>
                                         <div className="flex-1 min-w-0 hover: cursor-pointer">
                                             <p className="text-sm font-medium text-gray-900 truncate dark:text-white">

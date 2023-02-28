@@ -23,9 +23,9 @@ function PostsPage() {
     }
     useEffect(() => {
         fetchMyPosts()
-    }, [])
+    }, [fetchMyPosts])
     return (
-        <div className='flex gap-5 calc__height dark:bg-gray-600'>
+        <div className='flex flex-col md:flex-row gap-0 md:gap-5 calc__height dark:bg-gray-600'>
             <Helmet>
                 <meta charSet="utf-8" />
                 <title>My posts</title>
@@ -42,10 +42,10 @@ function PostsPage() {
                 </div>
                 {
                     posts && posts.map(item => (
-                        <div key={item?._id} className="animate-[fadeIn_1s_ease-in-out] relative mb-10 border rounded-lg p-[30px] flex gap-4 cursor-pointer dark:bg-gray-800">
+                        <div key={item?._id} className="animate-[fadeIn_1s_ease-in-out] max-w-[1600px] relative mb-10 border rounded-lg p-[30px] flex gap-4 cursor-pointer dark:bg-gray-800">
                             <div className="w-full pr-8">
-                                <h3 onClick={() => handlePostById(item?._id)} className='text-zinc-600 text-2xl font-semibold dark:text-white'>{item?.title}</h3>
-                                <small className='mt-[5px] text-[16px] mb-3 text-zinc-800 dark:text-white'>
+                                <h3 onClick={() => handlePostById(item?._id)} className='text-zinc-600 max-w-lg text-ellipsis overflow-hidden sm:text-2xl md:text-3xl lg:text-4xl font-semibold dark:text-white'>{item?.title}</h3>
+                                <small className='mt-[5px] text-sm sm:text-[16px] mb-3 text-zinc-800 dark:text-white'>
                                     <Moment date={item?.createdAt} format='DD MMM YYYY, hh:mm' />
                                 </small>
                                 <p className='text-slate-700 dark:text-white/90'>Author: <span onClick={() => navigate(`/profile/${item?.author}`)} className='text-slate-500 font-semibold hover:underline dark:text-white'>{item?.username}</span></p>
@@ -54,19 +54,19 @@ function PostsPage() {
 
                                         item?.imageUrl && item.imageUrl.includes('.mp4') ?
                                             <div className='relative'>
-                                                <button className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-[100px] h-[100px] bg-white flex items-center justify-center rounded-full'>
-                                                    <svg className='fill-black absolute w-[50px] h-[50px] left-7 top-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z" /></svg>
+                                                <button className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-[75px] h-[75px] sm:w-[100px] sm:h-[100px] bg-white flex items-center justify-center rounded-full'>
+                                                    <svg className='fill-black absolute left-6 top-5  w-[35px] h-[35px] sm:w-[50px] sm:h-[50px] sm:left-7 sm:top-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z" /></svg>
                                                 </button>
-                                                <video className="relative mx-auto overflow-hidden rounded-3xl">
+                                                <video className="relative w-full mx-auto overflow-hidden rounded-3xl">
                                                     <source src={`http://localhost:4444/${item?.imageUrl}`} type="video/mp4" />
                                                 </video>
                                             </div >
                                             : (
-                                                <img className='object-cover w-full h-auto hover' src={`http://localhost:4444/${item?.imageUrl}`} alt='' />
+                                                <img className='object-cover w-full h-auto max-w-3xl' src={`http://localhost:4444/${item?.imageUrl}`} alt='' />
                                             )
                                     }
                                 </div>
-                                <p onClick={() => handlePostById(item?._id)} className='max-w-[75%] overflow-hidden text-ellipsis text-gray-400 h-17 mt-6 mb-12 dark:text-white/90'>{item?.text}</p>
+                                <p onClick={() => handlePostById(item?._id)} className='max-w-[1200px] overflow-hidden text-ellipsis text-sm md:text-[16px] text-gray-400 max-h-24 mt-6 mb-12 dark:text-white/90'>{item?.text}</p>
                             </div>
                             <div className="absolute right-5 bottom-5 flex gap-5 items-center">
                                 <div onClick={() => handlePostById(item?._id)} className="flex gap-3 items-center">
@@ -84,7 +84,7 @@ function PostsPage() {
                 {
                     !isLoading && posts.length === 0 && (
                         <div className='max-w-fit flex flex-col items-center gap-8 mx-auto'>
-                            <p className='text-5xl font-semibold dark:text-white'>You don't have any posts!</p>
+                            <p className='text-xl sm:text-3xl md:text-5xl font-semibold dark:text-white'>You don't have any posts!</p>
                             <Link to="/new" className="flex justify-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-6 py-3.5 text-center" >Add Question</Link>
                         </div>
                     )

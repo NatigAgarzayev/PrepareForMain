@@ -189,9 +189,9 @@ function ProfilePage() {
                                             followers.length > 0 ? followers.map((follower, index) => (
                                                 <li key={index} className="py-3 sm:py-4">
                                                     <div className="flex items-center space-x-4 ">
-                                                        {/* <div className="flex-shrink-0">
-                                                            <img className="w-8 h-8 object-cover rounded-full" src={`http://localhost:4444/${follower.icon}`} alt="Neil" />
-                                                        </div> */}
+                                                        <div className="bg-black rounded-full">
+                                                            <p className='w-8 h-8 rounded-full text-white uppercase flex items-center justify-center'>{follower?.username.slice(0, 2)}</p>
+                                                        </div>
                                                         <div className="flex-1 min-w-0 hover: cursor-pointer">
                                                             <p onClick={() => { navigate(`/profile/${follower.user}`); setModal(false) }} className="text-sm font-medium text-gray-900 truncate dark:text-white">
                                                                 {follower.username}
@@ -239,11 +239,11 @@ function ProfilePage() {
                                             userInfo?.following.length > 0 ? userInfo?.following.map((following, index) => (
                                                 <li key={index} className="py-3 px-3 sm:py-4">
                                                     <div className="flex items-center space-x-4">
-                                                        {/* <div className="flex-shrink-0">
-                                                            <img className="w-8 h-8 object-cover rounded-full" src={`http://localhost:4444/${following.icon}`} alt="Neil" />
-                                                        </div> */}
+                                                        <div className="bg-black rounded-full">
+                                                            <p className='w-8 h-8 rounded-full text-white uppercase flex items-center justify-center'>{following?.username.slice(0, 2)}</p>
+                                                        </div>
                                                         <div className="flex-1 min-w-0 hover: cursor-pointer">
-                                                            <p className="text-xl font-medium text-gray-900 truncate dark:text-white">
+                                                            <p className="text-[16px] font-medium text-gray-900 truncate dark:text-white">
                                                                 {following.username}
                                                             </p>
                                                         </div>
@@ -275,8 +275,8 @@ function ProfilePage() {
             }
             {
                 view && (
-                    <div onClick={() => setView(false)} className='w-full h-screen cursor-pointer absolute left-0 z-50 overflow-hidden bg-black/20'>
-                        <img className='border absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  w-[740px] h-[740px] object-cover rounded-full bg-white' src={`http://localhost:4444/${userAvatar}`} alt="User avatar" />
+                    <div onClick={() => setView(false)} className='w-full min-h-screen cursor-pointer absolute left-0 z-50 overflow-hidden bg-black/20'>
+                        <img className='border absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  w-2/5 h-auto object-cover rounded-full bg-white' src={`http://localhost:4444/${userAvatar}`} alt="User avatar" />
                     </div>
                 )
             }
@@ -288,7 +288,7 @@ function ProfilePage() {
                                 <span id="blackOverlay" className="z-10 w-full h-full absolute opacity-50 bg-black"></span>
                             </div>
                         </section >
-                        <section className=" relative z-20 pt-16 h-[50vh] bg-slate-200 dark:bg-slate-600">
+                        <section className=" relative z-20 pt-16 pb-5 min-h-[50vh] bg-slate-200 dark:bg-slate-600">
                             <div className="container mx-auto px-4">
                                 <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64 dark:bg-slate-700">
                                     <button onClick={() => navigate('/')} type="button" className="absolute mt-5 ml-5 mb-5 text-slate-500 border border-slate-500 hover:bg-slate-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800">
@@ -298,7 +298,6 @@ function ProfilePage() {
                                         <div className="flex flex-wrap justify-center">
                                             <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
                                                 <div className='absolute -top-16'>
-                                                    {/* HERE */}
                                                     <div className='relative overflow-hidden rounded-full'>
                                                         <img className='border w-[140px] h-[140px] object-cover rounded-full bg-white' src={`http://localhost:4444/${userAvatar}`} alt="User avatar" />
                                                         {
@@ -317,8 +316,8 @@ function ProfilePage() {
                                                     </div >
                                                 </div>
                                             </div>
-                                            <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
-                                                <div className="py-6 px-3 mt-32 sm:mt-0">
+                                            <div className="w-full flex justify-center py-2 lg:w-4/12 px-4 order-3 lg:text-right lg:self-center">
+                                                <div className="px-3 mt-6 sm:mt-0">
                                                     {
                                                         user?._id !== id ? (followers.filter(x => x.user === user?._id).length !== 1 ? (
                                                             <button disabled={isAuth ? false : true} onClick={handleFollow} className="bg-pink-500 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150" type="button">
@@ -335,7 +334,7 @@ function ProfilePage() {
                                                 </div>
                                             </div>
                                             <div className="w-full lg:w-4/12 px-4 lg:order-1">
-                                                <div className="flex justify-center py-4 lg:pt-4 pt-8">
+                                                <div className="flex justify-center py-4 mt-10 lg:pt-4 lg:mt-0 pt-8">
                                                     <div onClick={handleModal} className="cursor-pointer mr-4 p-3 text-center">
                                                         <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600 dark:text-white">{followers?.length}</span><span className="text-sm text-blueGray-400 dark:text-white">Followers</span>
                                                     </div>
@@ -348,7 +347,7 @@ function ProfilePage() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="text-center mt-8">
+                                        <div className="text-center mt-2">
                                             {
                                                 userInfo?.role === 'ADMIN' ? (
                                                     <sup className='text-sm font-light uppercase text-gray-900 dark:text-white '>administrator</sup>
@@ -361,23 +360,26 @@ function ProfilePage() {
                                             <h3 className="text-4xl font-semibold leading-normal text-blueGray-700 mb-2 dark:text-white">
                                                 {userInfo?.username}
                                             </h3>
-                                            <div className={(user?._id === id || user?.role === 'ADMIN') ? 'cursor-pointer w-[500px] mx-auto text-center' : ' w-[500px] mx-auto text-center'} onClick={(user?._id === id || user?.role === 'ADMIN') ? (() => handleStatus(statusUser)) : null}>
+                                            <div className={(user?._id === id || user?.role === 'ADMIN') ? 'cursor-pointer max-w-[500px] mx-auto text-center' : ' max-w-[500px] mx-auto text-center'} onClick={(user?._id === id || user?.role === 'ADMIN') ? (() => handleStatus(statusUser)) : null}>
                                                 <p className='dark:text-white/90'>{statusUser}</p>
+                                                <div className='mt-1'>
+                                                    <svg className={(user?._id === id || user?.role === 'ADMIN') ? 'w-3 h-3 fill-white flex mx-auto' : 'hidden'} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" /></svg>
+                                                </div>
                                             </div>
 
-                                            <div className='flex gap-10 pt-10'>
-                                                <div className="text-2xl flex-1 text-start py-10 leading-normal mt-0 mb-2 font-bold capitalize dark:text-white">
+                                            <div className='block lg:flex gap-10 pt-10'>
+                                                <div className="text-2xl flex-1 text-start py-5 lg:py-10 leading-normal mt-0 mb-2 font-bold capitalize dark:text-white">
                                                     Last update
                                                     {
-                                                        latestPost?._id ? (<div className="flex items-center justify-around mt-5 h-[120px] p-6 border border-gray-200 rounded-lg shadow">
+                                                        latestPost?._id ? (<div className="flex items-center justify-around mt-5 min-h-[120px] p-6 border border-gray-200 rounded-lg shadow">
                                                             <div>
-                                                                <div>
-                                                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{latestPost.title}</h5>
+                                                                <div className='overflow-hidden text-ellipsis'>
+                                                                    <h5 className="mb-2 overflow-hidden text-ellipsis  text-xl md:text-2xl max-w-[470px] font-bold tracking-tight text-gray-900 dark:text-white">{latestPost.title}</h5>
                                                                 </div>
-                                                                <p className="mb-3 h-5 text-[14px] font-normal overflow-hidden text-ellipsis text-gray-700 dark:text-gray-400">{latestPost.text}</p>
+                                                                <p className="mb-3 h-5 text-[14px] max-w-[470px] font-normal overflow-hidden text-ellipsis text-gray-700 dark:text-gray-400">{latestPost.text}</p>
                                                             </div>
                                                             <div onClick={() => navigate(`/${latestPost._id}`)} className="inline-flex items-center px-3 py-2 cursor-pointer text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                                Go to Post
+                                                                Go
                                                                 <svg aria-hidden="true" className="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
                                                             </div>
                                                         </div>)
@@ -393,7 +395,7 @@ function ProfilePage() {
                                                                 </div>)
                                                     }
                                                 </div>
-                                                <div className='flex-1 text-2xl text-start py-10 leading-normal mt-0 mb-2 font-bold capitalize dark:text-white'>
+                                                <div className='flex-1 text-2xl text-start pb-5 py-0 lg:py-10 leading-normal mt-0 mb-2 font-bold capitalize dark:text-white'>
                                                     Contact
                                                     <div onClick={() => { navigator.clipboard.writeText(`${userInfo?.email}`); toast.success('Copied!') }} className="flex flex-col gap-0 items-center min-w-full justify-around text-sm border border-gray-200 h-[120px] p-6 rounded-lg shadow text-center max-w-fit cursor-pointer leading-normal mt-5 mb-2 text-blueGray-400 font-bold uppercase dark:text-white/90">
                                                         <p className='text-lg leading-normal mt-0 text-blueGray-400 font-bold uppercase dark:text-white/90'>{userInfo?.email}</p>

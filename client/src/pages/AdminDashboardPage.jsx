@@ -10,7 +10,7 @@ function AdminDashboardPage() {
     const { stats } = useSelector(state => state.admin)
     const { status } = useSelector(state => state.admin)
     const selectValue = useRef()
-
+    console.log(stats)
     useEffect(() => {
         if (status === 'You are logged in as ADMIN!') {
             return
@@ -165,7 +165,7 @@ function AdminDashboardPage() {
                     </>
                 )
             }
-            <div div className='flex-1 pt-10' >
+            <div div className='flex-1 pt-10 pb-24 ' >
                 <h3 className="text-gray-700 text-3xl ml-8 font-medium">Dashboard</h3>
                 <div className="mt-4">
                     <div className="flex flex-wrap">
@@ -306,7 +306,89 @@ function AdminDashboardPage() {
                                                     </td>
 
                                                     <td className="px-6 py-4 whitespace-no-wrap text-left border-b border-gray-200 text-sm leading-5 font-medium">
-                                                        {/* <button className="text-indigo-600 hover:text-indigo-900">Edit</button> */}
+                                                        <button onClick={() => setIsDelete({ isOpen: true, deletedUser: item?._id })} disabled={item?.role === 'ADMIN' ? true : false} className="text-red-600 hover:text-red-900 disabled:text-red-400">Delete</button>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div className="flex flex-col mt-8">
+                    <div className="-my-2 py-2 overflow-x-auto sm:px-6 lg:px-8">
+
+                        <div className="relative mb-10 mx-4 lg:mx-0">
+                            <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                                <svg className="w-5 h-5 text-gray-500" viewBox="0 0 24 24" fill="none">
+                                    <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </span>
+
+                            <input value={searchResult} onChange={e => setSearchResult(e.target.value)} className="w-32 py-3 border pl-10 pr-4 rounded-md form-input sm:w-64 focus:border-indigo-600" type="text" placeholder="Search by username" />
+                        </div>
+
+                        <p className='mb-4 text-gray-400'>*You can change status, role or delete user. Also sort by name and by followers.</p>
+
+                        <div className="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
+                            <table className="min-w-full">
+                                <thead>
+                                    <tr>
+                                        <th className="flex gap-2 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            <span>Name</span>
+                                            {
+                                                sortedName ?
+                                                    (
+                                                        <svg onClick={() => { setSortedName(false); setSortWay(true) }} className='cursor-pointer w-4 h-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" /></svg>
+                                                    )
+                                                    :
+                                                    (
+                                                        <svg onClick={() => { setSortedName(true); setSortWay(true) }} className='cursor-pointer w-4 h-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8H288c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" /></svg>
+                                                    )
+                                            }
+                                        </th>
+                                        <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th className="flex gap-2 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            <span>Followers/-ings</span>
+                                            {
+                                                sortedFollowers ?
+                                                    (
+                                                        <svg onClick={() => { setSortedFollowers(false); setSortWay(false) }} className='cursor-pointer w-4 h-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" /></svg>
+                                                    )
+                                                    :
+                                                    (
+                                                        <svg onClick={() => { setSortedFollowers(true); setSortWay(false) }} className='cursor-pointer w-4 h-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8H288c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" /></svg>
+                                                    )
+                                            }
+                                        </th>
+                                        <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="bg-white relative">
+                                    {
+                                        stats.post && stats.post
+                                            .filter(item => item?.title.toLowerCase().includes(searchResult.toLowerCase()))
+                                            .sort((a, b) => (sortWay ? (sortedName ? b.title.localeCompare(a.title) : a.title.localeCompare(b.title)) : sortedFollowers ? (a?.likes.length - b?.likes.length) : (b?.likes.length - a?.likes.length)))
+                                            .map(item => (
+                                                <tr className='fadeIn' key={item._id}>
+                                                    <td className="px-6 py-4 cursor-pointer whitespace-no-wrap border-b border-gray-200">
+                                                        <div className="flex items-center">
+                                                            <div className="ml-4">
+                                                                <div className="text-sm leading-5 font-medium text-gray-900">{item?.author}</div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                    <td className="px-6 cursor-pointer py-4 whitespace-no-wrap border-b border-gray-200">
+                                                        <div className="text-sm w-[100px] p-2 text-ellipsis overflow-hidden whitespace-nowrap leading-5 text-gray-500 hover:bg-emerald-100 rounded-lg">{item?.status}</div>
+                                                    </td>
+
+                                                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                        <span className="px-2 inline-flex text-[16px] leading-5 font-semibold rounded-full bg-green-100 text-green-800">{item?.likes.length}</span>
+                                                    </td>
+
+                                                    <td className="px-6 py-4 whitespace-no-wrap text-left border-b border-gray-200 text-sm leading-5 font-medium">
                                                         <button onClick={() => setIsDelete({ isOpen: true, deletedUser: item?._id })} disabled={item?.role === 'ADMIN' ? true : false} className="text-red-600 hover:text-red-900 disabled:text-red-400">Delete</button>
                                                     </td>
                                                 </tr>

@@ -14,7 +14,7 @@ function AdminSidebar() {
         <div className=''>
             <div className="fixed inset-0 z-20 transition-opacity bg-black opacity-50 lg:hidden"></div>
 
-            <div className="h-screen fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-gray-900 lg:translate-x-0 lg:static lg:inset-0">
+            <div className="min-h-screen h-full fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-gray-900 lg:translate-x-0 lg:static lg:inset-0">
                 <div className="flex items-center justify-center mt-8">
                     <div className="flex items-center">
                         <svg className="w-12 h-12" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">

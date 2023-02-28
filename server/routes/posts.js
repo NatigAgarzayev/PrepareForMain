@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { createPost, getAll, getById, removePost, getPostComments, likePost, getUserPosts, getMyPosts, getUsersPosts  } from "../controllers/posts.js"
+import { createPost, getAll, getById, removePost, getPostComments, likePost, getUserPosts, getMyPosts, getUsersPosts, updatePost  } from "../controllers/posts.js"
 import { checkAuth } from "../utils/checkAuth.js"
 const router = new Router() 
 
@@ -39,9 +39,7 @@ router.get('/comments/:id', getPostComments)
 //http://localhost:4444/api/posts/like/:id
 router.post('/like/:id', checkAuth, likePost)
 
-//Unlike post
-//http://localhost:4444/api/posts/unlike/:id
-// router.delete('/unlike/:id', checkAuth, unlikePost)
-
+// edit post
+router.put('/:id', checkAuth, updatePost)
 
 export default router

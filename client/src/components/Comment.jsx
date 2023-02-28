@@ -37,6 +37,9 @@ function Comment({ item }) {
         }
     }
     const handleCommentMenu = (e) => {
+        document.querySelectorAll('.drop').forEach(el => {
+            el.classList.add('hidden')
+        });
         if (e.target.classList.contains('btn-trigger')) {
             if (e.target.parentElement.classList.contains('btn-trigger') && e.target.tagName !== 'path') {
                 e.target.parentElement.parentElement.children[2].classList.remove('hidden')
@@ -60,7 +63,10 @@ function Comment({ item }) {
             return
         }
         try {
-            inp.current.classList.add('hidden')
+            document.querySelectorAll('.drop').forEach(el => {
+                el.classList.add('hidden')
+            });
+            // inp.current.classList.add('hidden')
             const postId = id
             const parentId = parentComm
             dispatch(createComment({ postId, comment, parentId }))
@@ -124,23 +130,23 @@ function Comment({ item }) {
                                         <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
                                     </button>
                                     <fieldset>
-                                        <p class="text-lg mt-5 text-gray-500 text-center font-bold dark:text-white">What problem</p>
-                                        <div class="my-8 space-y-4">
-                                            <div onClick={() => setReportContent("Violent or repulsive content")} class="flex items-center">
-                                                <input id="report-1" name="report-radio" type="radio" class="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-                                                <label for="report-1" class="ml-3 block text-[16px] cursor-pointer font-medium text-gray-700 dark:text-white">Violent or repulsive content</label>
+                                        <p className="text-lg mt-5 text-gray-500 text-center font-bold dark:text-white">What problem</p>
+                                        <div className="my-8 space-y-4">
+                                            <div onClick={() => setReportContent("Violent or repulsive content")} className="flex items-center">
+                                                <input id="report-1" name="report-radio" type="radio" className="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+                                                <label for="report-1" className="ml-3 block text-[16px] cursor-pointer font-medium text-gray-700 dark:text-white">Violent or repulsive content</label>
                                             </div>
-                                            <div onClick={() => setReportContent("Hateful or abusive content")} class="flex items-center">
-                                                <input id="report-2" name="report-radio" type="radio" class="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-                                                <label for="report-2" class="ml-3 block text-[16px] cursor-pointer font-medium text-gray-700 dark:text-white">Hateful or abusive content</label>
+                                            <div onClick={() => setReportContent("Hateful or abusive content")} className="flex items-center">
+                                                <input id="report-2" name="report-radio" type="radio" className="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+                                                <label for="report-2" className="ml-3 block text-[16px] cursor-pointer font-medium text-gray-700 dark:text-white">Hateful or abusive content</label>
                                             </div>
-                                            <div onClick={() => setReportContent("Harmful or dangerous acts")} class="flex items-center">
-                                                <input id="report-3" name="report-radio" type="radio" class="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-                                                <label for="report-3" class="ml-3 block text-[16px] cursor-pointer font-medium text-gray-700 dark:text-white">Harmful or dangerous acts</label>
+                                            <div onClick={() => setReportContent("Harmful or dangerous acts")} className="flex items-center">
+                                                <input id="report-3" name="report-radio" type="radio" className="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+                                                <label for="report-3" className="ml-3 block text-[16px] cursor-pointer font-medium text-gray-700 dark:text-white">Harmful or dangerous acts</label>
                                             </div>
-                                            <div onClick={() => setReportContent("Spam or misleading")} class="flex items-center">
-                                                <input id="report-4" name="report-radio" type="radio" class="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-                                                <label for="report-4" class="ml-3 block text-[16px] cursor-pointer font-medium text-gray-700 dark:text-white">Spam or misleading</label>
+                                            <div onClick={() => setReportContent("Spam or misleading")} className="flex items-center">
+                                                <input id="report-4" name="report-radio" type="radio" className="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+                                                <label for="report-4" className="ml-3 block text-[16px] cursor-pointer font-medium text-gray-700 dark:text-white">Spam or misleading</label>
                                             </div>
                                         </div>
                                     </fieldset>

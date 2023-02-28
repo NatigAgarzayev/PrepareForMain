@@ -176,3 +176,28 @@ export const getUserPosts = async (req, res) => {
         res.json({message: "We can't get user's post"})
     }
 }
+
+export const updatePost = async(req, res) => {
+    try {
+        const {title, text, id} = req.body
+        const post = await Post.findById(id)
+        console.log(req.files)
+        if(req.files){
+            let fileName = Date.now().toString() + req.files.image.name
+            const __dirname = dirname(fileURLToPath(import.meta.url))
+            req.files.image.mv(path.join(__dirname, '..', 'uploads', fileName))
+            post.imageUrl = fileName || ''
+        }
+        post.title = title
+        post.text = text
+
+        console.log(post)
+
+        await post.save()
+
+        res.json(post)
+
+    } catch (error) {
+        res.json({message: "We can't update the post"})
+    }
+} 

@@ -22,9 +22,9 @@ function AddPostPage() {
             toast.warning('Please write title!')
             return
         }
-        if (title.trim().split('').length < 20) {
+        if (title.trim().split('').length < 10 || title.trim().split('').length > 60) {
             val1.current.focus()
-            toast.warning('At least 20 letters!')
+            toast.warning('From 10 to 60 letters!!!')
             return
         }
         if (text.trim() === '') {
@@ -32,9 +32,9 @@ function AddPostPage() {
             toast.warning('Please write text!')
             return
         }
-        if (text.trim().split('').length < 30) {
+        if (text.trim().split('').length < 30 || title.trim().split('').length > 500) {
             val2.current.focus()
-            toast.warning('At least 30 letters!')
+            toast.warning('From 30 to 500 letters!')
             return
         }
         try {

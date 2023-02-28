@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import SidebarLeft from '../components/SidebarLeft'
 import Moment from 'react-moment'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -11,6 +11,7 @@ import Comment from '../components/Comment'
 import { createComment, getPostComments } from '../redux/features/commentSlice'
 import { checkIsAuth } from '../redux/features/authSlice'
 import { sendUserReport } from '../redux/features/reportSlice'
+import SidebarLeftHam from '../components/SidebarLeftHam'
 function PostPage() {
     const dispatch = useDispatch()
     const isAuth = useSelector(checkIsAuth)
@@ -23,11 +24,15 @@ function PostPage() {
     const [comment, setComment] = useState('')
     const [isReport, setIsReport] = useState({ isOpen: false, guilty: '' })
     const [reportContent, setReportContent] = useState('')
+    const [menu, setMenu] = useState(false)
 
     useEffect(() => {
         document.addEventListener("click", handlePostMenu, true)
     }, [])
     const handlePostMenu = (e) => {
+        document.querySelectorAll('.drop-2').forEach(el => {
+            el.classList.add('hidden')
+        });
         if (e.target.classList.contains('btn-trigger-2')) {
             if (e.target.parentElement.classList.contains('btn-trigger-2') && e.target.tagName !== 'path') {
                 e.target.parentElement.parentElement.children[1].classList.remove('hidden')
@@ -113,6 +118,10 @@ function PostPage() {
         toast.info('Thanks for Reporting.')
     }
 
+    const handleEdit = () => {
+        navigate(`/${id}/edit`)
+    }
+
     return (
         <div className='flex calc__height'>
             <Helmet>
@@ -125,6 +134,35 @@ function PostPage() {
             <div className="relative flex-1 dark:bg-gray-600">
                 <>
                     {
+                        menu && (
+                            <div className='fadeIn absolute w-full h-screen top-0 left-0 z-40'>
+                                <SidebarLeftHam />
+                            </div>
+                        )
+                    }
+                    <div onClick={menu ? () => setMenu(false) : () => setMenu(true)} className="flex justify-center sm:hidden fixed right-5 cursor-pointer bottom-5 z-50 w-[60px] h-[60px] bg-gray-900 rounded-full">
+                        <div className='flex items-center justify-center'>
+                            {
+                                !menu
+                                    ?
+                                    (
+                                        <div onClick={() => setMenu(true)} className='space-y-2'>
+                                            <span className="block w-8 h-0.5 bg-gray-100"></span>
+                                            <span className="block w-8 h-0.5 bg-gray-100"></span>
+                                            <span className="block w-5 h-0.5 bg-gray-100"></span>
+                                        </div>
+                                    )
+                                    :
+                                    (
+                                        <div onClick={() => setMenu(false)} className='space-y-2'>
+                                            <span className="block w-8 h-0.5 bg-gray-100"></span>
+                                            <span className="block w-5 h-0.5 bg-gray-100"></span>
+                                        </div>
+                                    )
+                            }
+                        </div >
+                    </div>
+                    {
                         isReport.isOpen && (
                             <>
                                 <div onClick={() => setIsReport({ isOpen: false })} className="fixed inset-0 z-10 w-full h-full bg-slate-100/30" ></div>
@@ -136,23 +174,23 @@ function PostPage() {
                                                 <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
                                             </button>
                                             <fieldset>
-                                                <p class="text-lg mt-5 text-gray-500 text-center font-bold dark:text-white">What problem</p>
-                                                <div class="my-8 space-y-4">
-                                                    <div onClick={() => setReportContent("Violent or repulsive content")} class="flex items-center">
-                                                        <input id="report-1" name="report-radio" type="radio" class="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-                                                        <label for="report-1" class="ml-3 block text-[16px] cursor-pointer font-medium text-gray-700 dark:text-white">Violent or repulsive content</label>
+                                                <p className="text-lg mt-5 text-gray-500 text-center font-bold dark:text-white">What problem</p>
+                                                <div className="my-8 space-y-4">
+                                                    <div onClick={() => setReportContent("Violent or repulsive content")} className="flex items-center">
+                                                        <input id="report-1" name="report-radio" type="radio" className="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+                                                        <label for="report-1" className="ml-3 block text-[16px] cursor-pointer font-medium text-gray-700 dark:text-white">Violent or repulsive content</label>
                                                     </div>
-                                                    <div onClick={() => setReportContent("Hateful or abusive content")} class="flex items-center">
-                                                        <input id="report-2" name="report-radio" type="radio" class="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-                                                        <label for="report-2" class="ml-3 block text-[16px] cursor-pointer font-medium text-gray-700 dark:text-white">Hateful or abusive content</label>
+                                                    <div onClick={() => setReportContent("Hateful or abusive content")} className="flex items-center">
+                                                        <input id="report-2" name="report-radio" type="radio" className="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+                                                        <label for="report-2" className="ml-3 block text-[16px] cursor-pointer font-medium text-gray-700 dark:text-white">Hateful or abusive content</label>
                                                     </div>
-                                                    <div onClick={() => setReportContent("Harmful or dangerous acts")} class="flex items-center">
-                                                        <input id="report-3" name="report-radio" type="radio" class="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-                                                        <label for="report-3" class="ml-3 block text-[16px] cursor-pointer font-medium text-gray-700 dark:text-white">Harmful or dangerous acts</label>
+                                                    <div onClick={() => setReportContent("Harmful or dangerous acts")} className="flex items-center">
+                                                        <input id="report-3" name="report-radio" type="radio" className="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+                                                        <label for="report-3" className="ml-3 block text-[16px] cursor-pointer font-medium text-gray-700 dark:text-white">Harmful or dangerous acts</label>
                                                     </div>
-                                                    <div onClick={() => setReportContent("Spam or misleading")} class="flex items-center">
-                                                        <input id="report-4" name="report-radio" type="radio" class="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-                                                        <label for="report-4" class="ml-3 block text-[16px] cursor-pointer font-medium text-gray-700 dark:text-white">Spam or misleading</label>
+                                                    <div onClick={() => setReportContent("Spam or misleading")} className="flex items-center">
+                                                        <input id="report-4" name="report-radio" type="radio" className="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+                                                        <label for="report-4" className="ml-3 block text-[16px] cursor-pointer font-medium text-gray-700 dark:text-white">Spam or misleading</label>
                                                     </div>
                                                 </div>
                                             </fieldset>
@@ -173,7 +211,7 @@ function PostPage() {
                                 <button onClick={() => navigate(-1)} type="button" className="mt-5 ml-5 mb-5 text-slate-500 border border-slate-500 hover:bg-slate-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800">
                                     <svg aria-hidden="true" className="rotate-180 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
                                 </button>
-                                <div className='animate-[fadeIn_1s_ease-in-out] h-full px-2 pb-20 overflow-y-scroll '>
+                                <div className='animate-[fadeIn_1s_ease-in-out] max-w-[1600px] h-full px-2 pb-20 overflow-y-scroll '>
                                     <div key={item?._id} className="relative mb-10 border p-[30px] flex gap-4 rounded-lg dark:bg-gray-800">
                                         <div className="absolute right-0 top-5">
                                             <button id="dropdownComment1Button" data-dropdown-toggle="dropdownComment1"
@@ -192,10 +230,15 @@ function PostPage() {
                                                 <ul className="py-1 text-sm text-gray-700 dark:text-gray-200"
                                                     aria-labelledby="dropdownMenuIconHorizontalButton">
                                                     {
-                                                        user?._id === item.author && (
-                                                            <li onClick={handleDelete}>
-                                                                <p className="block py-2 px-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Remove</p>
-                                                            </li>
+                                                        (user?._id === item.author || user?.role === "ADMIN") && (
+                                                            <>
+                                                                <li onClick={handleDelete}>
+                                                                    <p className="block py-2 px-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Remove</p>
+                                                                </li>
+                                                                <li onClick={handleEdit}>
+                                                                    <p className="block py-2 px-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</p>
+                                                                </li>
+                                                            </>
                                                         )
                                                     }
                                                     <li>
@@ -206,9 +249,9 @@ function PostPage() {
                                                 </ul>
                                             </div>
                                         </div>
-                                        <div className="w-full pr-8">
-                                            <h3 className='text-zinc-600 text-5xl font-semibold mb-3 dark:text-white'>{item.title}</h3>
-                                            <small className='mt-[5px] text-[16px] text-zinc-800 dark:text-white'>
+                                        <div className="w-full">
+                                            <h3 className='text-zinc-600 sm:text-2xl md:text-3xl lg:text-4xl font-semibold mb-3 dark:text-white'>{item.title}</h3>
+                                            <small className='mt-[5px] text-sm sm:text-[16px] text-zinc-800 dark:text-white'>
                                                 <Moment date={item.createdAt} format='DD MMM YYYY, hh:mm' />
                                             </small>
                                             <p className='text-slate-700 dark:text-white/90'>Author: <span onClick={() => navigate(`/profile/${item?.author}`)} className='text-slate-500 font-semibold cursor-pointer hover:underline dark:text-white'>{item?.username}</span></p>
@@ -225,17 +268,17 @@ function PostPage() {
                                                                         <svg className='w-7 h-7 fill-white' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M533.6 32.5C598.5 85.3 640 165.8 640 256s-41.5 170.8-106.4 223.5c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C557.5 398.2 592 331.2 592 256s-34.5-142.2-88.7-186.3c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zM473.1 107c43.2 35.2 70.9 88.9 70.9 149s-27.7 113.8-70.9 149c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C475.3 341.3 496 301.1 496 256s-20.7-85.3-53.2-111.8c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zm-60.5 74.5C434.1 199.1 448 225.9 448 256s-13.9 56.9-35.4 74.5c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C393.1 284.4 400 271 400 256s-6.9-28.4-17.7-37.3c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zM301.1 34.8C312.6 40 320 51.4 320 64V448c0 12.6-7.4 24-18.9 29.2s-25 3.1-34.4-5.3L131.8 352H64c-35.3 0-64-28.7-64-64V224c0-35.3 28.7-64 64-64h67.8L266.7 40.1c9.4-8.4 22.9-10.4 34.4-5.3z" /></svg>
                                                                 }
                                                             </div>
-                                                            <video controls muted={muted === 'true' ? true : false} onMouseOver={(e) => e.target.play()} width={1000} height={600} loop className=" mx-auto cursor-pointer embed-responsive embed-responsive-16by9 relative overflow-hidden rounded-3xl" >
+                                                            <video controls muted={muted === 'true' ? true : false} onMouseOver={(e) => e.target.play()} width={1000} height={600} loop className="mx-auto cursor-pointer embed-responsive embed-responsive-16by9 relative overflow-hidden rounded-2xl" >
                                                                 <source src={`http://localhost:4444/${item?.imageUrl}`} type="video/mp4" />
                                                             </video>
                                                         </div>
                                                         : (
-                                                            <img className='object-cover w-full mx-auto ' src={`http://localhost:4444/${item?.imageUrl}`} alt='' />
+                                                            <img className='object-cover w-full mx-auto max-w-5xl' src={`http://localhost:4444/${item?.imageUrl}`} alt='' />
                                                         )
 
                                                 }
                                             </div>
-                                            <p className='max-w-[75%] text-gray-400 mt-6 mb-12 dark:text-white/90'>{item.text}</p>
+                                            <p className='max-w-1/2 w-full overflow-hidden text-ellipsis text-sm md:text-[16px] text-gray-400 mt-6 mb-12 dark:text-white/90'>{item.text}</p>
                                         </div>
                                         <div className="absolute right-5 bottom-5 flex gap-5 items-center">
                                             <div className="flex gap-3 items-center">
