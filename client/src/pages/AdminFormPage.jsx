@@ -50,7 +50,10 @@ function AdminFormPage() {
         }
         try {
             await dispatch(registerUser({ username, email, password }))
-            navigate('/admin')
+            setUsername('')
+            setEmail('')
+            setPassword('')
+            setPasswordCon('')
         } catch (error) {
             console.log(error)
         }

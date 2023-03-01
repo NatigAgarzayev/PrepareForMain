@@ -43,7 +43,7 @@ function Posts({ item }) {
                 </div>
             </div>
             <div className="w-full md:pr-8">
-                <h3 onClick={() => handlePostById(item?._id)} className='text-zinc-600 select-none max-w-lg text-ellipsis overflow-hidden sm:text-2xl md:text-3xl lg:text-4xl mb-3 font-semibold dark:text-white'>{item?.title}</h3>
+                <h3 onClick={() => handlePostById(item?._id)} className='text-zinc-600 select-none text-ellipsis overflow-hidden sm:text-2xl md:text-3xl lg:text-4xl mb-3 font-semibold dark:text-white'>{item?.title}</h3>
                 <small onClick={() => handlePostById(item?._id)} className='mt-[5px] text-sm sm:text-[16px] select-none text-zinc-800 dark:text-white'>
                     <Moment date={item?.createdAt} format='DD MMM YYYY, hh:mm' />
                 </small>

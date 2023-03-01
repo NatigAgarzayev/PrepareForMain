@@ -87,6 +87,15 @@ export const notificationCreating = createAsyncThunk('admin/notificationCreating
     }
 })
 
+export const deletePosts = createAsyncThunk('admin/deletePosts', async (id) => {
+    try {
+        const {data} = await axios.delete(`/admin/post/delete/${id}`, id)
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 export const adminSlice = createSlice({
   name: 'admin',
   initialState,
@@ -180,7 +189,20 @@ export const adminSlice = createSlice({
         [changeUserStatus.rejected]: (state, action) => {
             state.status = action.payload.message
             state.isLoading = false
-        }
+        },
+        [deleteUsers.pending]: (state) => {
+            state.isLoading = true
+            state.status = null
+        },
+        [deleteUsers.fulfilled]: (state, action) => {
+            state.isLoading = false
+            state.status = action.payload.message
+            // state.stats.post = state.stats.post.filter(x => x._id !== action.payload.post._id)
+        },
+        [deleteUsers.rejected]: (state, action) => {
+            state.status = action.payload.message
+            state.isLoading = false
+        },
     }
 })
 

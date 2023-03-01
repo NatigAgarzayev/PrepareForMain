@@ -7,9 +7,9 @@ import {
     changeRole,
     changeStatus,
     createNotification,
+    deletePost
 } from '../controllers/admin.js'
 import { adminHere } from "../utils/adminHere.js"
-import {checkAuth} from '../utils/checkAuth.js'
 const router = new Router
 
 //admin login
@@ -32,5 +32,8 @@ router.post('/user/status', adminHere, changeStatus)
 
 //create notification
 router.post('/notification',adminHere, createNotification)
+
+//delete post
+router.delete('/post/delete/:id', adminHere, deletePost)
 
 export default router

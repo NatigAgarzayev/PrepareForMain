@@ -22,9 +22,9 @@ function AddPostPage() {
             toast.warning('Please write title!')
             return
         }
-        if (title.trim().split('').length < 10 || title.trim().split('').length > 60) {
+        if (title.trim().split('').length < 10 || title.trim().split('').length > 80) {
             val1.current.focus()
-            toast.warning('From 10 to 60 letters!!!')
+            toast.warning('From 10 to 80 letters!!!')
             return
         }
         if (text.trim() === '') {
@@ -61,7 +61,7 @@ function AddPostPage() {
         <div className='py-20 min-h-screen dark:bg-gray-600'>
             <Helmet>
                 <meta charSet="utf-8" />
-                <title>New question  </title>
+                <title>New post  </title>
             </Helmet>
             <div className="container mx-auto px-5">
                 <h1 className='text-5xl font-semibold dark:text-white'>Add New Post</h1>

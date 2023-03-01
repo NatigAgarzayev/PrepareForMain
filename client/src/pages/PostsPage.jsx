@@ -44,7 +44,7 @@ function PostsPage() {
                     posts && posts.map(item => (
                         <div key={item?._id} className="animate-[fadeIn_1s_ease-in-out] max-w-[1600px] relative mb-10 border rounded-lg p-[30px] flex gap-4 cursor-pointer dark:bg-gray-800">
                             <div className="w-full pr-8">
-                                <h3 onClick={() => handlePostById(item?._id)} className='text-zinc-600 max-w-lg text-ellipsis overflow-hidden sm:text-2xl md:text-3xl lg:text-4xl font-semibold dark:text-white'>{item?.title}</h3>
+                                <h3 onClick={() => handlePostById(item?._id)} className='text-zinc-600 text-ellipsis overflow-hidden sm:text-2xl md:text-3xl lg:text-4xl font-semibold dark:text-white'>{item?.title}</h3>
                                 <small className='mt-[5px] text-sm sm:text-[16px] mb-3 text-zinc-800 dark:text-white'>
                                     <Moment date={item?.createdAt} format='DD MMM YYYY, hh:mm' />
                                 </small>

@@ -1,25 +1,29 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { changeUserRole, changeUserStatus, deleteUsers, getDashStats } from '../redux/features/adminSlice'
-
+import { changeUserRole, changeUserStatus, deletePosts, deleteUsers, getDashStats } from '../redux/features/adminSlice'
+import newPost from '../images/new-post.png'
+import newComments from '../images/new-comments.png'
+import newUsers from '../images/new-users.png'
+import Pagination from '../components/Pagination'
 function AdminDashboardPage() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { stats } = useSelector(state => state.admin)
     const { status } = useSelector(state => state.admin)
     const selectValue = useRef()
-    console.log(stats)
+
     useEffect(() => {
         if (status === 'You are logged in as ADMIN!') {
             return
         }
         if (status) {
-            toast(status)
+            toast.info(status)
         }
     }, [status])
 
+    //user
     const [isDelete, setIsDelete] = useState({ isOpen: false, deletedUser: '' })
     const [changeRole, setChangeRole] = useState({ isOpen: false, prevRole: '', userRole: '' })
     const [changeStatus, setChangeStatus] = useState({ isOpen: false, userStatus: '' })
@@ -30,13 +34,27 @@ function AdminDashboardPage() {
     const [sortWay, setSortWay] = useState(true)
     const [userDetail, setUserDetail] = useState({ isOpen: false, userInfo: '' })
 
-    useEffect(() => {
+    //post
+    const [sortedPostName, setSortedPostName] = useState(false)
+    const [sortedLikes, setSortedLikes] = useState(false)
+    const [sortPostWay, setSortPostWay] = useState(true)
+    const [postDetail, setPostDetail] = useState({ isOpen: false, postInfo: '' })
+    const [searchPostResult, setSearchPostResult] = useState('')
+    const [isPostDelete, setIsPostDelete] = useState({ isOpen: false, deletedPost: '' })
+
+
+    const fetchStats = useCallback(() => {
         dispatch(getDashStats())
     }, [dispatch])
 
-    const handleDelete = (id) => {
-        dispatch(deleteUsers(id))
+    useEffect(() => {
+        fetchStats()
+    }, [fetchStats, dispatch])
+
+    const handleDelete = async (id) => {
+        await dispatch(deleteUsers(id))
         setIsDelete({ isOpen: false })
+        dispatch(getDashStats())
     }
 
     const handleRole = (id) => {
@@ -56,15 +74,105 @@ function AdminDashboardPage() {
         const userView = stats.user.filter(x => x._id === id)
         setUserDetail({ isOpen: true, userInfo: userView })
     }
+    const handleViewPost = (id) => {
+        const postView = stats.post.filter(x => x._id === id)
+        setPostDetail({ isOpen: true, postInfo: postView })
+        console.log(postView)
+    }
+
+    const handleDeletePost = async (id) => {
+        await dispatch(deletePosts(id))
+        setIsPostDelete({ isOpen: false })
+        dispatch(getDashStats())
+    }
 
     return (
         <>
             {
+                isPostDelete.isOpen && (
+                    <>
+                        <div div className=" fixed inset-0 z-10 w-full h-full bg-slate-100/30" ></div>
+
+                        <div className="fadeIn fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                            <div className="relative w-[400px] h-full max-w-md md:h-auto">
+                                <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                    <button onClick={() => setIsPostDelete({ isOpen: false })} type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="popup-modal">
+                                        <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+                                    </button>
+                                    <div className="p-6 text-center">
+                                        <svg aria-hidden="true" className="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                        <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete this POST?</h3>
+                                        <button onClick={() => handleDeletePost(isPostDelete.deletedPost)} data-modal-hide="popup-modal" type="button" className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                            Yes, I'm sure
+                                        </button>
+                                        <button onClick={() => setIsPostDelete({ isOpen: false })} data-modal-hide="popup-modal" type="button" className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">No, cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )
+            }
+            {
+                postDetail.isOpen && (
+                    <>
+                        <div onClick={() => setPostDetail({ isOpen: false })} className="fixed inset-0 z-10 w-full h-full bg-slate-100/30" ></div>
+
+                        <div className="fadeIn fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                            <div className="relative w-[400px] h-full max-w-md md:h-auto">
+                                <div className="relative pt-10 bg-white rounded-lg shadow dark:bg-gray-700">
+                                    <p className='text-center mb-2 text-gray-700 text-lg dark:text-white'>{postDetail.postInfo[0]?.username}</p>
+                                    <div className='w-48 h-48 mx-auto overflow-hidden'>
+                                        {
+                                            postDetail.postInfo[0].imageUrl.includes('.mp4') ? (
+                                                <video className="relative mx-auto w-full overflow-hidden rounded-3xl">
+                                                    <source src={`http://localhost:4444/${postDetail.postInfo[0]?.imageUrl}`} type="video/mp4" />
+                                                </video>
+                                            )
+                                                :
+                                                (
+                                                    postDetail.postInfo[0].imageUrl !== '' ?
+                                                        <img className="object-cover w-48 h-48" src={`http://localhost:4444/${postDetail.postInfo[0]?.imageUrl}`} alt="" />
+                                                        :
+                                                        <div className='text-2xl text-white flex items-center h-full justify-center'>
+                                                            <p>*No image*</p>
+                                                        </div>
+                                                )
+
+                                        }
+                                    </div>
+
+                                    <p className='text-center w-56 mx-auto mt-5 text-gray-600 text-xs dark:text-white'>Title</p>
+                                    <p className='text-center h-[70px] mx-auto overflow-hidden w-56 text-ellipsis text-gray-900 text-2xl dark:text-white'>{postDetail.postInfo[0]?.title}</p>
+                                    <div className=" gap-5">
+                                        <div>
+                                            <p className='text-center mx-auto mt-5 text-gray-600 text-sm dark:text-white'>Likes</p>
+                                            <p className='text-center text-gray-700 text-lg dark:text-white'>{postDetail.postInfo[0]?.likes.length}</p>
+                                        </div>
+                                        <div>
+                                            <p className='text-center mx-auto mt-5 text-gray-600 text-sm dark:text-white'>Views</p>
+                                            <p className='text-center text-gray-700 text-lg dark:text-white'>{postDetail.postInfo[0]?.views}</p>
+                                        </div>
+                                        <div>
+                                            <p className='text-center mx-auto mt-5 text-gray-600 text-sm dark:text-white'>Comments</p>
+                                            <p className='text-center text-gray-700 text-lg dark:text-white'>{postDetail.postInfo[0]?.comments.length}</p>
+                                        </div>
+                                    </div >
+                                    <div className="p-6 pt-16 text-center">
+                                        <button onClick={() => navigate(`/${postDetail.postInfo[0]?._id}`)} data-modal-hide="popup-modal" type="button" className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">View</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )
+            }
+            {
                 userDetail.isOpen && (
                     <>
-                        <div onClick={() => setUserDetail({ isOpen: false })} className="fixed inset-0 z-10 w-full h-full bg-slate-100/30" ></div>
+                        <div onClick={() => setUserDetail({ isOpen: false })} className="fixed  inset-0 z-10 w-full h-full bg-slate-100/30" ></div>
 
-                        <div className="fadeIn absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                        <div className="fadeIn fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                             <div className="relative w-[400px] h-full max-w-md md:h-auto">
                                 <div className="relative pt-10 bg-white rounded-lg shadow dark:bg-gray-700">
                                     <p className='text-center mb-2 text-gray-700 text-lg dark:text-white'>{userDetail.userInfo[0]?.role}</p>
@@ -92,7 +200,7 @@ function AdminDashboardPage() {
                     <>
                         <div div className="fixed inset-0 z-10 w-full h-full bg-slate-100/30" ></div>
 
-                        <div className="fadeIn absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                        <div className="fadeIn fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                             <div className="relative w-[400px] h-full max-w-md md:h-auto">
                                 <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                                     <button onClick={() => setChangeStatus({ isOpen: false })} type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="popup-modal">
@@ -117,7 +225,7 @@ function AdminDashboardPage() {
                     <>
                         <div div className=" fixed inset-0 z-10 w-full h-full bg-slate-100/30" ></div>
 
-                        <div className="fadeIn absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                        <div className="fadeIn fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                             <div className="relative w-[400px] h-full max-w-md md:h-auto">
                                 <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                                     <button onClick={() => setChangeRole({ isOpen: false })} type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="popup-modal">
@@ -145,7 +253,7 @@ function AdminDashboardPage() {
                     <>
                         <div div className=" fixed inset-0 z-10 w-full h-full bg-slate-100/30" ></div>
 
-                        <div className="fadeIn absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                        <div className="fadeIn fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                             <div className="relative w-[400px] h-full max-w-md md:h-auto">
                                 <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                                     <button onClick={() => setIsDelete({ isOpen: false })} type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="popup-modal">
@@ -171,15 +279,8 @@ function AdminDashboardPage() {
                     <div className="flex flex-wrap">
                         <div className="w-full px-6 sm:w-1/2 xl:w-1/3">
                             <div className="flex items-center px-5 py-6 shadow-sm rounded-md bg-white">
-                                <div className="p-3 rounded-full bg-indigo-600 bg-opacity-75">
-                                    <svg className="h-8 w-8 text-white" viewBox="0 0 28 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M18.2 9.08889C18.2 11.5373 16.3196 13.5222 14 13.5222C11.6804 13.5222 9.79999 11.5373 9.79999 9.08889C9.79999 6.64043 11.6804 4.65556 14 4.65556C16.3196 4.65556 18.2 6.64043 18.2 9.08889Z" fill="currentColor" />
-                                        <path d="M25.2 12.0444C25.2 13.6768 23.9464 15 22.4 15C20.8536 15 19.6 13.6768 19.6 12.0444C19.6 10.4121 20.8536 9.08889 22.4 9.08889C23.9464 9.08889 25.2 10.4121 25.2 12.0444Z" fill="currentColor" />
-                                        <path d="M19.6 22.3889C19.6 19.1243 17.0927 16.4778 14 16.4778C10.9072 16.4778 8.39999 19.1243 8.39999 22.3889V26.8222H19.6V22.3889Z" fill="currentColor" />
-                                        <path d="M8.39999 12.0444C8.39999 13.6768 7.14639 15 5.59999 15C4.05359 15 2.79999 13.6768 2.79999 12.0444C2.79999 10.4121 4.05359 9.08889 5.59999 9.08889C7.14639 9.08889 8.39999 10.4121 8.39999 12.0444Z" fill="currentColor" />
-                                        <path d="M22.4 26.8222V22.3889C22.4 20.8312 22.0195 19.3671 21.351 18.0949C21.6863 18.0039 22.0378 17.9556 22.4 17.9556C24.7197 17.9556 26.6 19.9404 26.6 22.3889V26.8222H22.4Z" fill="currentColor" />
-                                        <path d="M6.64896 18.0949C5.98058 19.3671 5.59999 20.8312 5.59999 22.3889V26.8222H1.39999V22.3889C1.39999 19.9404 3.2804 17.9556 5.59999 17.9556C5.96219 17.9556 6.31367 18.0039 6.64896 18.0949Z" fill="currentColor" />
-                                    </svg>
+                                <div className="rounded-full bg-white bg-opacity-75">
+                                    <img className='w-[56px] h-[56px]' src={newUsers} alt="" />
                                 </div>
 
                                 <div className="mx-5">
@@ -191,12 +292,8 @@ function AdminDashboardPage() {
 
                         <div className="w-full mt-6 px-6 sm:w-1/2 xl:w-1/3 sm:mt-0">
                             <div className="flex items-center px-5 py-6 shadow-sm rounded-md bg-white">
-                                <div className="p-3 rounded-full bg-orange-600 bg-opacity-75">
-                                    <svg className="h-8 w-8 text-white" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M4.19999 1.4C3.4268 1.4 2.79999 2.02681 2.79999 2.8C2.79999 3.57319 3.4268 4.2 4.19999 4.2H5.9069L6.33468 5.91114C6.33917 5.93092 6.34409 5.95055 6.34941 5.97001L8.24953 13.5705L6.99992 14.8201C5.23602 16.584 6.48528 19.6 8.97981 19.6H21C21.7731 19.6 22.4 18.9732 22.4 18.2C22.4 17.4268 21.7731 16.8 21 16.8H8.97983L10.3798 15.4H19.6C20.1303 15.4 20.615 15.1004 20.8521 14.6261L25.0521 6.22609C25.2691 5.79212 25.246 5.27673 24.991 4.86398C24.7357 4.45123 24.2852 4.2 23.8 4.2H8.79308L8.35818 2.46044C8.20238 1.83722 7.64241 1.4 6.99999 1.4H4.19999Z" fill="currentColor" />
-                                        <path d="M22.4 23.1C22.4 24.2598 21.4598 25.2 20.3 25.2C19.1403 25.2 18.2 24.2598 18.2 23.1C18.2 21.9402 19.1403 21 20.3 21C21.4598 21 22.4 21.9402 22.4 23.1Z" fill="currentColor" />
-                                        <path d="M9.1 25.2C10.2598 25.2 11.2 24.2598 11.2 23.1C11.2 21.9402 10.2598 21 9.1 21C7.9402 21 7 21.9402 7 23.1C7 24.2598 7.9402 25.2 9.1 25.2Z" fill="currentColor" />
-                                    </svg>
+                                <div className="rounded-full bg-white-600 bg-opacity-75">
+                                    <img className='w-[56px] h-[56px]' src={newPost} alt="" />
                                 </div>
 
                                 <div className="mx-5">
@@ -208,11 +305,8 @@ function AdminDashboardPage() {
 
                         <div className="w-full mt-6 px-6 sm:w-1/2 xl:w-1/3 xl:mt-0">
                             <div className="flex items-center px-5 py-6 shadow-sm rounded-md bg-white">
-                                <div className="p-3 rounded-full bg-pink-600 bg-opacity-75">
-                                    <svg className="h-8 w-8 text-white" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M6.99998 11.2H21L22.4 23.8H5.59998L6.99998 11.2Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
-                                        <path d="M9.79999 8.4C9.79999 6.08041 11.6804 4.2 14 4.2C16.3196 4.2 18.2 6.08041 18.2 8.4V12.6C18.2 14.9197 16.3196 16.8 14 16.8C11.6804 16.8 9.79999 14.9197 9.79999 12.6V8.4Z" stroke="currentColor" strokeWidth="2" />
-                                    </svg>
+                                <div className="rounded-full bg-white bg-opacity-75">
+                                    <img className='w-[56px] h-[56px]' src={newComments} alt="" />
                                 </div>
 
                                 <div className="mx-5">
@@ -224,8 +318,8 @@ function AdminDashboardPage() {
                     </div>
                 </div>
                 <div className="flex flex-col mt-8">
+                    <h2 className='text-4xl font-medium ml-8 mb-5'>Users Table:</h2>
                     <div className="-my-2 py-2 overflow-x-auto sm:px-6 lg:px-8">
-
                         <div className="relative mb-10 mx-4 lg:mx-0">
                             <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                                 <svg className="w-5 h-5 text-gray-500" viewBox="0 0 24 24" fill="none">
@@ -316,9 +410,10 @@ function AdminDashboardPage() {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col mt-8">
-                    <div className="-my-2 py-2 overflow-x-auto sm:px-6 lg:px-8">
 
+                <div className="flex flex-col mt-8">
+                    <h2 className='text-4xl font-medium ml-8 mb-5'>Posts Table:</h2>
+                    <div className="-my-2 py-2 overflow-x-auto sm:px-6 lg:px-8">
                         <div className="relative mb-10 mx-4 lg:mx-0">
                             <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                                 <svg className="w-5 h-5 text-gray-500" viewBox="0 0 24 24" fill="none">
@@ -326,7 +421,7 @@ function AdminDashboardPage() {
                                 </svg>
                             </span>
 
-                            <input value={searchResult} onChange={e => setSearchResult(e.target.value)} className="w-32 py-3 border pl-10 pr-4 rounded-md form-input sm:w-64 focus:border-indigo-600" type="text" placeholder="Search by username" />
+                            <input value={searchPostResult} onChange={e => setSearchPostResult(e.target.value)} className="w-32 py-3 border pl-10 pr-4 rounded-md form-input sm:w-64 focus:border-indigo-600" type="text" placeholder="Search by title" />
                         </div>
 
                         <p className='mb-4 text-gray-400'>*You can change status, role or delete user. Also sort by name and by followers.</p>
@@ -338,27 +433,27 @@ function AdminDashboardPage() {
                                         <th className="flex gap-2 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             <span>Name</span>
                                             {
-                                                sortedName ?
+                                                sortedPostName ?
                                                     (
-                                                        <svg onClick={() => { setSortedName(false); setSortWay(true) }} className='cursor-pointer w-4 h-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" /></svg>
+                                                        <svg onClick={() => { setSortedPostName(false); setSortPostWay(true) }} className='cursor-pointer w-4 h-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" /></svg>
                                                     )
                                                     :
                                                     (
-                                                        <svg onClick={() => { setSortedName(true); setSortWay(true) }} className='cursor-pointer w-4 h-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8H288c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" /></svg>
+                                                        <svg onClick={() => { setSortedPostName(true); setSortPostWay(true) }} className='cursor-pointer w-4 h-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8H288c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" /></svg>
                                                     )
                                             }
                                         </th>
-                                        <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Title</th>
                                         <th className="flex gap-2 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            <span>Followers/-ings</span>
+                                            <span>Likes</span>
                                             {
-                                                sortedFollowers ?
+                                                sortedLikes ?
                                                     (
-                                                        <svg onClick={() => { setSortedFollowers(false); setSortWay(false) }} className='cursor-pointer w-4 h-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" /></svg>
+                                                        <svg onClick={() => { setSortedLikes(false); setSortPostWay(false) }} className='cursor-pointer w-4 h-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" /></svg>
                                                     )
                                                     :
                                                     (
-                                                        <svg onClick={() => { setSortedFollowers(true); setSortWay(false) }} className='cursor-pointer w-4 h-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8H288c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" /></svg>
+                                                        <svg onClick={() => { setSortedLikes(true); setSortPostWay(false) }} className='cursor-pointer w-4 h-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8H288c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" /></svg>
                                                     )
                                             }
                                         </th>
@@ -368,20 +463,20 @@ function AdminDashboardPage() {
                                 <tbody className="bg-white relative">
                                     {
                                         stats.post && stats.post
-                                            .filter(item => item?.title.toLowerCase().includes(searchResult.toLowerCase()))
-                                            .sort((a, b) => (sortWay ? (sortedName ? b.title.localeCompare(a.title) : a.title.localeCompare(b.title)) : sortedFollowers ? (a?.likes.length - b?.likes.length) : (b?.likes.length - a?.likes.length)))
+                                            .filter(item => item?.title.toLowerCase().includes(searchPostResult.toLowerCase()))
+                                            .sort((a, b) => (sortPostWay ? (sortedPostName ? b.title.localeCompare(a.title) : a.title.localeCompare(b.title)) : sortedLikes ? (a?.likes.length - b?.likes.length) : (b?.likes.length - a?.likes.length)))
                                             .map(item => (
                                                 <tr className='fadeIn' key={item._id}>
-                                                    <td className="px-6 py-4 cursor-pointer whitespace-no-wrap border-b border-gray-200">
+                                                    <td onClick={() => handleViewPost(item?._id)} className="px-6 py-4 cursor-pointer whitespace-no-wrap border-b border-gray-200">
                                                         <div className="flex items-center">
                                                             <div className="ml-4">
-                                                                <div className="text-sm leading-5 font-medium text-gray-900">{item?.author}</div>
+                                                                <div className="text-sm leading-5 font-medium text-gray-900">{item?.title}</div>
                                                             </div>
                                                         </div>
                                                     </td>
 
                                                     <td className="px-6 cursor-pointer py-4 whitespace-no-wrap border-b border-gray-200">
-                                                        <div className="text-sm w-[100px] p-2 text-ellipsis overflow-hidden whitespace-nowrap leading-5 text-gray-500 hover:bg-emerald-100 rounded-lg">{item?.status}</div>
+                                                        <div className="text-sm p-2 text-ellipsis overflow-hidden whitespace-nowrap leading-5 text-gray-500 hover:bg-emerald-100 rounded-lg">{item?.username}</div>
                                                     </td>
 
                                                     <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
@@ -389,7 +484,7 @@ function AdminDashboardPage() {
                                                     </td>
 
                                                     <td className="px-6 py-4 whitespace-no-wrap text-left border-b border-gray-200 text-sm leading-5 font-medium">
-                                                        <button onClick={() => setIsDelete({ isOpen: true, deletedUser: item?._id })} disabled={item?.role === 'ADMIN' ? true : false} className="text-red-600 hover:text-red-900 disabled:text-red-400">Delete</button>
+                                                        <button onClick={() => setIsPostDelete({ isOpen: true, deletedPost: item?._id })} className="text-red-600 hover:text-red-900 disabled:text-red-400">Delete</button>
                                                     </td>
                                                 </tr>
                                             ))

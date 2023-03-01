@@ -76,8 +76,7 @@ export const resetAvatar = async(req, res) => {
 
 export const changeStatus = async(req, res) => {
     try {
-        const {id, status} = req.body
-        console.log(id, status)
+        const {status} = req.body
         const user = await User.findById(req.params.id)
         if(!user){
             return res.json({message: "User doesn't exist!"})

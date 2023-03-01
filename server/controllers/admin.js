@@ -142,3 +142,19 @@ export const createNotification = async(req, res) => {
         res.json({message: "Problem with create notification!"})
     }
 }
+
+export const deletePost = async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id)
+        if(!post) {
+            return res.json({message: "This post doesn't exist!"})
+        }
+        await Post.findByIdAndDelete(req.params.id)
+        res.json({
+            post,
+            message: `You deleted ${post?.username}'s post`
+        })
+    } catch (error) {
+        res.json({message: "Problem with delete notification!"})
+    }
+}

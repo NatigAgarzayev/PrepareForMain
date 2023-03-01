@@ -108,6 +108,7 @@ import AdminReportsPages from './pages/AdminReportsPages';
   ]);
 
 function App() {
+
   useEffect(() => {
     window.sessionStorage.setItem('mute', true)
   }, [])

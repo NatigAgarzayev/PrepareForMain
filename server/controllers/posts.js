@@ -181,7 +181,6 @@ export const updatePost = async(req, res) => {
     try {
         const {title, text, id} = req.body
         const post = await Post.findById(id)
-        console.log(req.files)
         if(req.files){
             let fileName = Date.now().toString() + req.files.image.name
             const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -190,8 +189,6 @@ export const updatePost = async(req, res) => {
         }
         post.title = title
         post.text = text
-
-        console.log(post)
 
         await post.save()
 
