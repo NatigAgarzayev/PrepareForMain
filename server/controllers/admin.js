@@ -145,11 +145,15 @@ export const createNotification = async(req, res) => {
 
 export const deletePost = async (req, res) => {
     try {
-        const post = await Post.findById(req.params.id)
+        const {postid, userid} = req.body
+        const post = await Post.findById(postid)
         if(!post) {
             return res.json({message: "This post doesn't exist!"})
         }
-        await Post.findByIdAndDelete(req.params.id)
+        await User.findByIdAndUpdate(userid, {
+            $pull: {posts: postid}
+        })
+        await Post.findByIdAndDelete(postid)
         res.json({
             post,
             message: `You deleted ${post?.username}'s post`

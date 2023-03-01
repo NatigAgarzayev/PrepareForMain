@@ -87,9 +87,14 @@ export const notificationCreating = createAsyncThunk('admin/notificationCreating
     }
 })
 
-export const deletePosts = createAsyncThunk('admin/deletePosts', async (id) => {
+export const deletePosts = createAsyncThunk('admin/deletePosts', async ({postid, userid}) => {
     try {
-        const {data} = await axios.delete(`/admin/post/delete/${id}`, id)
+        const {data} = await axios.delete(`/admin/post/delete`, {
+            data: {
+                postid,
+                userid
+            }
+        })
         return data
     } catch (error) {
         console.log(error)

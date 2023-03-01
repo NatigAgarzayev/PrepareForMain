@@ -34,6 +34,6 @@ router.post('/user/status', adminHere, changeStatus)
 router.post('/notification',adminHere, createNotification)
 
 //delete post
-router.delete('/post/delete/:id', adminHere, deletePost)
+router.delete('/post/delete', adminHere, deletePost)
 
 export default router
