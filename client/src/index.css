@@ -27,6 +27,18 @@ li{
   }
 }
 
+@keyframes banner {
+  0%{
+    transform: translateX(100%);
+  }
+  50%{
+    transform: translateX(0);
+  }
+  100%{
+    transform: translateX(-100%);
+  }
+}
+
 /* Works on Firefox */
 * {
   scrollbar-width: thin;
@@ -92,4 +104,11 @@ li{
 
 .admin__bg{
   background: url('../src/images/admin-login-bg.jpeg') no-repeat center / cover;
+}
+
+.banner__cycle{
+  animation-name: banner;
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 }

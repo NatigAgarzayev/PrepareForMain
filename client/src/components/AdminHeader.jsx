@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 import { logout } from '../redux/features/adminSlice'
 
 function AdminHeader() {
@@ -28,7 +27,10 @@ function AdminHeader() {
                     </button>
                 </div>
 
-                <div className="flex items-center">
+                <div className="flex items-center justify-between w-full">
+                    <div className="w-78 whitespace-nowrap overflow-hidden">
+                        <p className="banner__cycle text-3xl font-medium">Admin Dashborad - use <span className='font-bold'>{admin?.username || 'ralp'}</span>right now</p>
+                    </div>
                     <div className="relative">
                         <div className='flex items-center gap-5'>
                             <p className='font-bold'>{admin?.username}</p>

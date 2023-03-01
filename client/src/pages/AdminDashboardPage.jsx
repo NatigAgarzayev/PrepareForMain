@@ -431,7 +431,7 @@ function AdminDashboardPage() {
                                 <thead>
                                     <tr>
                                         <th className="flex gap-2 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            <span>Name</span>
+                                            <span>Title</span>
                                             {
                                                 sortedPostName ?
                                                     (
@@ -443,7 +443,7 @@ function AdminDashboardPage() {
                                                     )
                                             }
                                         </th>
-                                        <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                                        <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Author</th>
                                         <th className="flex gap-2 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             <span>Likes</span>
                                             {
