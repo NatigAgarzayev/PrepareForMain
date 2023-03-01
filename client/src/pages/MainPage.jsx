@@ -54,23 +54,23 @@ function MainPage() {
                 <meta charSet="utf-8" />
                 <title>connect.com  </title>
             </Helmet>
-            <div onClick={menu ? () => setMenu(false) : () => setMenu(true)} className="flex justify-center sm:hidden fixed left-5 cursor-pointer bottom-5 z-50 w-[60px] h-[60px] bg-gray-900 rounded-full">
+            <div onClick={menu ? () => setMenu(false) : () => setMenu(true)} className="flex justify-center md:hidden fixed left-5 cursor-pointer bottom-5 z-50 w-[60px] h-[60px] bg-gray-900 dark:bg-gray-100 rounded-full">
                 <div className='flex items-center justify-center'>
                     {
                         !menu
                             ?
                             (
                                 <div onClick={() => setMenu(true)} className='space-y-2'>
-                                    <span className="block w-8 h-0.5 bg-gray-100"></span>
-                                    <span className="block w-8 h-0.5 bg-gray-100"></span>
-                                    <span className="block w-5 h-0.5 bg-gray-100"></span>
+                                    <span className="block w-8 h-0.5 bg-gray-100 dark:bg-gray-900"></span>
+                                    <span className="block w-8 h-0.5 bg-gray-100 dark:bg-gray-900"></span>
+                                    <span className="block w-5 h-0.5 bg-gray-100 dark:bg-gray-900"></span>
                                 </div>
                             )
                             :
                             (
                                 <div onClick={() => setMenu(false)} className='space-y-2'>
-                                    <span className="block w-8 h-0.5 bg-gray-100"></span>
-                                    <span className="block w-5 h-0.5 bg-gray-100"></span>
+                                    <span className="block w-8 h-0.5 bg-gray-100 dark:bg-gray-900"></span>
+                                    <span className="block w-5 h-0.5 bg-gray-100 dark:bg-gray-900"></span>
                                 </div>
                             )
                     }
